@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wii Party Trinkspiel</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- PWA Zeug -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta name="theme-color" content="#1a1a1a" />
+</head>
+<body>
+  <div class="container">
+    <h1>🍻 Wii Party Trinken</h1>
+    <p class="disclaimer">Verantwortungsvoll trinken • 18+</p>
+
+    <!-- Spieler hinzufügen -->
+    <div id="setup">
+      <input type="text" id="neuerSpieler" placeholder="Name eingeben" />
+      <button onclick="spielerHinzufuegen()">+ Spieler</button>
+      <button onclick="spielStarten()" id="startBtn" disabled>Spiel starten!</button>
+    </div>
+
+    <ul id="spielerListe"></ul>
+
+    <!-- Hauptspiel (wird sichtbar nach Start) -->
+    <div id="spiel" class="hidden">
+      <div class="tracker">
+        <h2>Aktueller Stand</h2>
+        <div id="trinkStand"></div>
+      </div>
+
+      <div class="buttons">
+        <h3>Was ist passiert?</h3>
+        <button onclick="felderTrinken()">Vor/Zurück springen</button>
+        <button onclick="hoelle()">In die Hölle gefallen</button>
+        <button onclick="blauerWerfer()">Blauer Werfer</button>
+        <button onclick="roterWerfer()">Roter Werfer</button>
+        <button class="big" onclick="minispiel()">Minispiel starten!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
