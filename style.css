@@ -129,3 +129,19 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   font-size: 3.5rem !important;
   color: #ff4757;
 }
+
+.spieler-wahl { margin: 20px 0; }
+#spielerButtons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 15px 0; }
+.spieler-btn {
+  padding: 15px 20px; font-size: 1.3rem; background: #333; border: 3px solid #555; border-radius: 15px;
+}
+.spieler-btn.active { background: #ffa502 !important; color: black; border-color: #ff6b35; transform: scale(1.1); }
+
+#kugelOverlay { 
+  display: none !important; 
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+  background: rgba(0,0,0,0.97); 
+  align-items: center; justify-content: center; 
+  z-index: 9999; 
+}
+#kugelOverlay[style*="flex"] { display: flex !important; }
