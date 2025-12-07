@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wii Party Trinkspiel</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- PWA Zeug -->
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
@@ -14,43 +13,45 @@
 <body>
   <div class="container">
     <h1>🍻 Wii Party Trinken</h1>
+    <p class="disclaimer">Verantwortungsvoll trinken • 18+</p>
 
-    <!-- Spieler hinzufügen -->
+    <!-- Setup -->
     <div id="setup">
-      <input type="text" id="neuerSpieler" placeholder="Name eingeben" />
+      <input type="text" id="neuerSpieler" placeholder="Name eingeben" maxlength="15" />
       <button onclick="spielerHinzufuegen()">+ Spieler</button>
       <button onclick="spielStarten()" id="startBtn" disabled>Spiel starten!</button>
+      <p id="spielerAnzahl">0 / 4 Spieler</p>
     </div>
 
     <ul id="spielerListe"></ul>
 
-    <!-- Hauptspiel (wird sichtbar nach Start) -->
+    <!-- Hauptspiel -->
     <div id="spiel" class="hidden">
-      <div class="tracker">
-        <h2>Aktueller Stand</h2>
-        <div id="trinkStand"></div>
+      <div class="tracker" id="trinkStand"></div>
+
+      <div class="spieler-wahl">
+        <h3>Wer ist gerade dran?</h3>
+        <div id="spielerButtons"></div>
       </div>
 
       <div class="buttons">
-        <h3>Was ist passiert?</h3>
-        <button onclick="felderTrinken()">Vor/Zurück springen</button>
-        <button onclick="hoelle()">In die Hölle gefallen</button>
-        <button onclick="blauerWerfer()">Blauer Bimbo</button>
-        <button onclick="roterWerfer()">Roter Bimbo</button>
-        <button class="big" onclick="minispiel()">Minispiel starten!</button>
+        <button onclick="felderTrinken()">➤ Felder vor/zurück</button>
+        <button onclick="hoelle()">In die Hölle</button>
+        <button onclick="blauerWerfer()">Blauer Werfer (verteilen)</button>
+        <button onclick="roterWerfer()">Roter Werfer (selber)</button>
+        <button class="big" onclick="minispiel()">Minispiel – Kugel ziehen!</button>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
-
-  <!-- Kugel-Animation Overlay -->
-<div id="kugelOverlay" class="hidden" style="display:none !important;">
-  <div id="kugelContainer">
-    <div id="kugel">?</div>
-    <div id="kugelText">Zieh eine Kugel...</div>
+  <!-- Kugel-Animation -->
+  <div id="kugelOverlay" style="display:none;">
+    <div id="kugelContainer">
+      <div id="kugel">?</div>
+      <div id="kugelText">Zieh eine Kugel...</div>
+    </div>
   </div>
-</div>
-  
+
+  <script src="script.js"></script>
 </body>
-</html>
+</html
