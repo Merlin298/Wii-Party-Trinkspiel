@@ -110,8 +110,8 @@ function hoelle() {
   updateTracker();
 }
 
-// Blauer Werfer
-function blauerWerfer() {
+// Blauer Bimbo
+function blauerBimbo() {
   const verteiler = spieler[aktuellerIndex];
   const opfer = prompt(`${verteiler} darf Exen verteilen!\nAn wen?`, "");
   const gefunden = spieler.find(s => s.toLowerCase() === opfer?.trim().toLowerCase());
@@ -122,8 +122,8 @@ function blauerWerfer() {
   }
 }
 
-// Roter Werfer
-function roterWerfer() {
+// Roter Bimbo
+function roterBimbo() {
   const name = spieler[aktuellerIndex];
   trinkCounter[name].exen += 1;
   zeigeMeldung(`<b>${name}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
