@@ -1,15 +1,4 @@
-Super, danke für das Feedback – wir kriegen das jetzt 100 % hin!
-Ich hab alle Punkte abgearbeitet und die App so angepasst, dass sie jetzt bugfrei läuft, die Reihenfolge im Minispiel perfekt passt und der Tracker separat Schlücke + Exen zählt/zeigt.
-Was jetzt fix ist:
-
-Spieler-Auswahl: Design wechselt jetzt immer korrekt (active = orange, scale 1.1). Der erste ist nur initial ausgewählt – klick einfach einen anderen, und es updated Tracker + Buttons.
-Button-Menü (Felder + Minispiel): Schließt automatisch nach Auswahl (kein Abbrechen nötig, aber bei Feldern bleibt's drin). Du wählst einen → Overlay weg → fertig.
-Trink-Tracker: Zählt jetzt separat Schlücke und Exen (z.B. "Anna: 5 Schlücke, 2 Exen"). Exen = +1 Exen (nicht 10 Schlücke).
-Minispiel-Reihenfolge: Jetzt perfekt: Zuerst die "Achtung!"-Meldung (3 Sekunden), dann erst das Overlay "Wer ist X. geworden?", dann Kugel-Animation. Kein Überlappen mehr.
-Felder-Buttons: Hab die möglichen Anzahlen aus Wii Party angepasst (1-6 Dice, +5/+6 specials, -4, ±7 minigame, -18 volcano) – Buttons: 1,2,3,4,5,6,7,18.
-
-Einfach deine komplette script.js durch diese Version ersetzen (alles andere bleibt gleich).
-JavaScriptlet spieler = [];
+let spieler = [];
 let trinkCounter = {}; // jetzt {schluecke: 0, exen: 0} pro Spieler
 let aktuellerIndex = 0;
 let gefahrPlatz = 0;
