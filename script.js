@@ -13,7 +13,7 @@ const kugeln = [
   "Zufall 0-10 Schlücke"
 ];
 
-// Setup
+// Setup (fix: korrekter Init für trinkCounter)
 function spielerHinzufuegen() {
   const input = document.getElementById("neuerSpieler");
   const name = input.value.trim();
@@ -39,7 +39,7 @@ function spielStarten() {
   updateTracker();
 }
 
-// Spieler-Auswahl (fix: immer korrekt active)
+// Spieler-Auswahl (fix: active wechselt korrekt)
 function setAktuellerSpieler(index) {
   aktuellerIndex = index;
   renderSpielerButtons();
@@ -54,7 +54,7 @@ function renderSpielerButtons() {
   ).join("");
 }
 
-// Tracker (mit Schlücke + Exen)
+// Tracker (Schlücke + Exen separat)
 function updateTracker() {
   document.getElementById("trinkStand").innerHTML =
     spieler.map((s, i) => `<div ${i === aktuellerIndex ? 'class="aktuell"' : ''}>
@@ -80,16 +80,16 @@ function felderTrinken() {
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;color:white;`;
   overlay.innerHTML = `
     <h2>${name} – wie viele Felder?</h2>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[1,2,3,4,5,6,7,18].map(n => 
         `<button onclick="felderBestaetigt(${n}, this)" 
                  style="padding:20px;font-size:2rem;background:#ff4757;border:none;border-radius:15px;">
           ${n}
         </button>`
       ).join("")}
-      <button onclick="this.closest('div').remove()" 
-              style="grid-column:1/5;padding:15px;background:#333;">Abbrechen</button>
     </div>
+    <button onclick="this.closest('div').remove()" 
+            style="margin-top:20px;padding:15px 30px;background:#333;">Abbrechen</button>
   `;
   document.body.appendChild(overlay);
 }
@@ -99,10 +99,10 @@ function felderBestaetigt(anzahl, btn) {
   trinkCounter[name].schluecke += anzahl;
   zeigeMeldung(`<b>${name}</b> trinkt <b>${anzahl} Schlücke</b>!`);
   updateTracker();
-  btn.closest("div").remove(); // Overlay schließen
+  btn.closest("div").remove(); // Overlay sofort schließen
 }
 
-// Hölle (Exen)
+// Hölle
 function hoelle() {
   const name = spieler[aktuellerIndex];
   trinkCounter[name].exen += 1;
@@ -110,7 +110,7 @@ function hoelle() {
   updateTracker();
 }
 
-// Blauer Werfer (Exen verteilen)
+// Blauer Werfer
 function blauerWerfer() {
   const verteiler = spieler[aktuellerIndex];
   const opfer = prompt(`${verteiler} darf Exen verteilen!\nAn wen?`, "");
@@ -122,7 +122,7 @@ function blauerWerfer() {
   }
 }
 
-// Roter Werfer (selber Exen)
+// Roter Werfer
 function roterWerfer() {
   const name = spieler[aktuellerIndex];
   trinkCounter[name].exen += 1;
@@ -130,7 +130,7 @@ function roterWerfer() {
   updateTracker();
 }
 
-// Minispiel (korrekte Reihenfolge: Meldung → Overlay → Kugel)
+// Minispiel (fix: Reihenfolge Achtung! → Wer? → Kugel)
 function minispiel() {
   if (minispielPhase !== 0) return;
   minispielPhase = 1;
@@ -142,9 +142,8 @@ function minispiel() {
     <b>Achtung!</b><br>
     Wer <span style="color:#ff4757;font-size:3rem">${gefahrPlatz}. Platz</span> wird,<br>
     muss eine Kugel ziehen!
-  `, 3000); // 3 Sekunden
+  `, 4000);
 
-  // Overlay nach der Meldung
   setTimeout(() => {
     const overlay = document.createElement("div");
     overlay.id = "minispielOverlay";
@@ -152,7 +151,7 @@ function minispiel() {
       display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:30px;color:white;`;
     overlay.innerHTML = `
       <h2>Wer ist ${gefahrPlatz}. geworden?</h2>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+      <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;max-width:90%;">
         ${spieler.map(s => 
           `<button class="spieler-btn" style="padding:25px 40px;font-size:2rem;" onclick="personGewaehlt('${s}')">${s}</button>`
         ).join("")}
@@ -160,7 +159,7 @@ function minispiel() {
       </div>
     `;
     document.body.appendChild(overlay);
-  }, 1500); // etwas früher, damit es nahtlos ist
+  }, 3500); // nach der Meldung
 }
 
 function personGewaehlt(person) {
