@@ -98,18 +98,21 @@ function minispiel() {
   const platz = Math.floor(Math.random() * spieler.length) + 1;
   const opfer = spieler[platz - 1];
 
-  // Overlay anzeigen + Animation starten
   const overlay = document.getElementById("kugelOverlay");
   const kugel = document.getElementById("kugel");
   const text = document.getElementById("kugelText");
-  
-  overlay.classList.remove("hidden");
-  text.innerHTML = `${opfer} (Platz ${platz}) zieht eine Kugel...`;
 
-  // Nach 2,5 Sekunden Kugel "stoppt" und Ergebnis kommt
+  // ← Diese Zeile sorgt dafür, dass es wirklich versteckt bleibt, bis wir es brauchen
+  overlay.classList.add("hidden");
+  overlay.classList.remove("hidden");  // jetzt erst richtig anzeigen
+
+  text.innerHTML = `${opfer} (Platz ${platz}) zieht eine Kugel...`;
+  kugel.innerHTML = "?";
+  kugel.style.animation = "roll 2s infinite linear";
+
   setTimeout(() => {
     kugel.style.animation = "none";
-    kugel.offsetHeight; // force reflow
+    kugel.offsetHeight;
     kugel.style.animation = "bounce 0.6s";
 
     const kugelInhalt = kugeln[Math.floor(Math.random() * kugeln.length)];
@@ -121,17 +124,15 @@ function minispiel() {
       finalText = `${opfer}<br><span class="kugel-ergebnis">${schluecke} Schlücke!</span>`;
     } else if (kugelInhalt === "Exen verteilen") {
       kugel.innerHTML = "↔";
-      setTimeout(() => {
-        overlay.classList.add("hidden");
-        blauerWerfer(); // nutzt deine bestehende Funktion
-      }, 2000);
+      setTimeout(() => overlay.classList.add("hidden"), 2000);
+      setTimeout(blauerWerfer, 2200);
       return;
     } else if (kugelInhalt === "Exen") {
       schluecke = 10;
-      kugel.innerHTML = "🍺";
+      kugel.innerHTML = "EXEN";
       finalText = `${opfer}<br><span class="kugel-ergebnis">EXEN!</span>`;
     } else if (kugelInhalt === "Nichts") {
-      kugel.innerHTML = "😇";
+      kugel.innerHTML = "NICHTS";
       finalText = `${opfer}<br><span class="kugel-ergebnis">NICHTS!</span>`;
     } else {
       schluecke = parseInt(kugelInhalt);
@@ -143,11 +144,7 @@ function minispiel() {
     text.innerHTML = finalText;
     updateTracker();
 
-    // Nach weiteren 2,5 Sekunden wieder weg
-    setTimeout(() => {
-      overlay.classList.add("hidden");
-    }, 3000);
-
+    setTimeout(() => overlay.classList.add("hidden"), 3000);
   }, 2500);
 }
 
