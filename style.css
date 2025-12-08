@@ -153,20 +153,30 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   z-index: 10000;
 }
 
-#glueckradContainer { text-align: center; position: relative; }
+#glueckradContainer {
+  text-align: center;
+  position: relative;
+  width: 340px;
+}
 
 #glueckradPfeil {
-  position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
-  font-size: 4rem; color: #ff4757; z-index: 10;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 4.5rem;
+  color: #ff4757;
   text-shadow: 3px 3px #000;
+  z-index: 10;
   animation: arrow-blink 1s infinite alternate;
 }
 
 #glueckrad {
-  width: 320px; height: 320px;
+  width: 340px;
+  height: 340px;
   border-radius: 50%;
   background: conic-gradient(
-    from 0deg,
+    from 16.3635deg, /* genau Mitte jedes Sektors */
     #ff6b6b 0deg 32.727deg,
     #4ecdc4 32.727deg 65.455deg,
     #45b7d1 65.455deg 98.182deg,
@@ -180,49 +190,57 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
     #ff4757 327.273deg 360deg
   );
   position: relative;
-  border: 10px solid #222;
-  box-shadow: 0 0 60px rgba(255,71,87,0.6);
-  transition: transform 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+  border: 12px solid #222;
+  box-shadow: 0 0 70px rgba(255,71,87,0.7);
+  animation: spin 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards;
 }
 
-.rad-labels { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+.rad-labels {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
 
 .label {
   position: absolute;
   width: 100%; height: 100%;
-  font-size: 2.4rem; font-weight: bold; color: white;
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: white;
   text-shadow: 3px 3px 3px #000;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: 
-    rotate(calc(var(--i) * 32.727deg))
-    translateY(-140px)
-    rotate(calc(-1 * var(--i) * 32.727deg));
+    rotate(calc(var(--i) * 32.727deg + 16.3635deg))
+    translateY(-135px)
+    rotate(calc(-1 * (var(--i) * 32.727deg + 16.3635deg)));
 }
 
 #glueckrad::after {
   content: "";
   position: absolute;
   top: 50%; left: 50%;
-  width: 80px; height: 80px;
+  width: 90px; height: 90px;
   background: #111;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  border: 6px solid #333;
+  border: 8px solid #333;
   z-index: 2;
 }
 
-#endZahl {
-  margin-top: 30px;
-  font-size: 6rem;
-  font-weight: bold;
-  color: #ff4757;
-  text-shadow: 4px 4px #000;
-  animation: bounce 0.8s;
-}
-
 #radText {
-  margin-top: 20px;
+  margin-top: 30px;
   font-size: 2.8rem;
   color: #ffa502;
   text-shadow: 3px 3px #000;
+}
+
+#endZahl {
+  margin-top: 20px;
+  font-size: 7rem;
+  font-weight: bold;
+  color: #ff4757;
+  text-shadow: 5px 5px #000;
+  animation: bounce 0.8s;
 }
