@@ -8,9 +8,9 @@ const kugeln = [
   /*"3 Schlücke",
   "4 Schlücke",
   "5 Schlücke",
-  "Exen",*/
+  "Exen",
   "Exen verteilen",
-  //"Nichts",
+  "Nichts",*/
   "Zufall 0-10 Schlücke"
 ];
 
@@ -276,23 +276,20 @@ function glückradZiehen(person) {
   radText.innerHTML = `${person} dreht das Glücksrad...`;
   endZahlDiv.style.display = "none";
 
-  const endZahl = Math.floor(Math.random() * 11);
+  const endZahl = Math.floor(Math.random() * 11);               // 0–10 (wirklich random)
+  const extraUmdrehungen = Math.floor(Math.random() * 8) + 5;   // 5–12 volle Umdrehungen
+  const extraZeit = Math.random() * 2 + 4.5;                    // 4.5–6.5 Sekunden
+  const chaosWinkel = Math.random() * 360;                     // totaler Chaos-Startwinkel
 
-  // VÖLLIG CHAOTISCHE DREHUNG – jetzt wirklich random!
-  const extraUmdrehungen = Math.floor(Math.random() * 7) + 5;     // 5–11 volle Umdrehungen
-  const extraZeit       = Math.random() * 2 + 4.5;                // 4.5–6.5 Sekunden
-  const baseRotation    = extraUmdrehungen * 360;
-  const sektorGrad      = 32.727;
-  const offset          = sektorGrad / 2;                        // Mitte des Sektors
-  const finalRotation   = baseRotation + (endZahl * sektorGrad) + offset + (Math.random() * 20 - 10); // +/–10° extra Chaos
+  const finalRotation = extraUmdrehungen * 360 + chaosWinkel + (endZahl * 32.727);
 
-  // Reset + völlig neue Animation
+  // Animation komplett zurücksetzen
   rad.style.animation = 'none';
-  rad.style.transform = 'rotate(0deg)';
+  rad.style.transform = `rotate(${chaosWinkel}deg)`;
   rad.offsetHeight;
 
   requestAnimationFrame(() => {
-    rad.style.animation = `spin ${extraZeit}s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards`;
+    rad.style.transition = `transform ${extraZeit}s cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
     rad.style.transform = `rotate(${finalRotation}deg)`;
   });
 
