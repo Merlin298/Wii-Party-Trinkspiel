@@ -327,15 +327,15 @@ function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
   updateTracker();
-  document.getElementById("resetButtonContainer").style.display = "block"; // Button sichtbar machen
+  document.getElementById("resetButtonContainer").style.display = "block"; // ← jetzt sichtbar
 }
 
-// Reset-Button selbst (klick öffnet Overlay)
+// Reset-Button öffnet das Overlay
 function resetTracker() {
   document.getElementById("resetOverlay").classList.remove("hidden");
 }
 
-// Ja → wirklich zurücksetzen
+// Ja → zurücksetzen
 function resetBestaetigt() {
   spieler.forEach(name => {
     trinkCounter[name] = { schluecke: 0, exen: 0 };
