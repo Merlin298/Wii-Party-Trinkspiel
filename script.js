@@ -283,7 +283,7 @@ function glückradZiehen(person) {
   // WICHTIG: Pfeil ist oben → 0° = Feld 10
   // Wir wollen, dass bei endZahl = 10 → Feld 10 oben ist
   const sector = 360 / 11; // ≈32.727°
-  const targetRotation = extraUmdrehungen * 360 + (10 - endZahl) * sector;
+  const targetRotation = extraUmdrehungen * 360 + (10 - endZahl) * sector + (sector/2);
 
   // Reset + neue Drehung
   rad.style.animation = 'none';
