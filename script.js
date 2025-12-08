@@ -53,7 +53,7 @@ function zeigeMeldung(html, dauer = 4000) {
   setTimeout(() => div.remove(), dauer);
 }
 
-// ==================== NEUE EVENT-LOGIK: Event drücken → Person wählen ====================
+// ==================== EVENT-LOGIK: Event drücken → Person wählen ====================
 
 // Hilfsfunktion: Overlay für Personenauswahl erstellen
 function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
@@ -74,7 +74,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   document.body.appendChild(overlay);
 }
 
-// Felder vor/zurück
+// Felder vor/zurück (fix: kein Abbrechen nötig, schließt automatisch)
 function felderTrinken() {
   erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
 }
@@ -94,8 +94,6 @@ function personFeldGewaehlt(person) {
         </button>`
       ).join("")}
     </div>
-    <button onclick="this.closest('div').remove()" 
-            style="margin-top:20px;padding:15px 30px;background:#333;">Abbrechen</button>
   `;
   document.body.appendChild(overlay);
 }
@@ -104,7 +102,7 @@ function felderBestaetigt(person, anzahl, btn) {
   trinkCounter[person].schluecke += anzahl;
   zeigeMeldung(`<b>${person}</b> trinkt <b>${anzahl} Schlücke</b>!`);
   updateTracker();
-  btn.closest("div").remove(); // Felder-Overlay schließen
+  btn.closest("div").remove(); // Automatisch schließen – direkt zurück zum Hauptbildschirm
 }
 
 // Hölle
@@ -119,20 +117,15 @@ function personHoelleGewaehlt(person) {
   updateTracker();
 }
 
-// Blauer Werfer (jetzt mit Buttons!)
+// Blauer Werfer (vereinfacht: direkt "Wen soll's treffen?")
 function blauerWerfer() {
-  erstellePersonenOverlay("Wer verteilt Exen? (Blauer Werfer)", "verteilerGewaehlt", []);
+  erstellePersonenOverlay("Wen soll's treffen? (Blauer Werfer)", "opferBlauGewaehlt");
 }
 
-function verteilerGewaehlt(verteiler) {
-  document.getElementById("personenOverlay").remove();
-  erstellePersonenOverlay(`Wer soll exen? (von ${verteiler})`, `opferGewaehlt('${verteiler}')`, [verteiler]);
-}
-
-function opferGewaehlt(verteiler, opfer) {
+function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
   trinkCounter[opfer].exen += 1;
-  zeigeMeldung(`<b>${verteiler}</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
+  zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
 }
 
@@ -148,7 +141,7 @@ function personRoterGewaehlt(person) {
   updateTracker();
 }
 
-// Minispiel (unverändert, da's schon gut läuft)
+// Minispiel (unverändert)
 function minispiel() {
   if (minispielPhase !== 0) return;
   minispielPhase = 1;
