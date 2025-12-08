@@ -276,16 +276,28 @@ function glückradZiehen(person) {
   radText.innerHTML = `${person} dreht das Glücksrad...`;
   endZahlDiv.style.display = "none";
 
-  const endZahl = Math.floor(Math.random() * 11);               // 0–10
-  const extraUmdrehungen = Math.floor(Math.random() * 8) + 5;   // 5–12 Umdrehungen
-  const extraZeit = Math.random() * 2 + 4.5;                    // 4.5–6.5 s
+  // 1. Zufällige Reihenfolge der Zahlen 0–10
+  const zahlen = [0,1,2,3,4,5,6,7,8,9,10];
+  for (let i = zahlen.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [zahlen[i], zahlen[j]] = [zahlen[j], zahlen[i]];
+  }
 
-  // WICHTIG: Pfeil ist oben → 0° = Feld 10
-  // Wir wollen, dass bei endZahl = 10 → Feld 10 oben ist
-  const sector = 360 / 11; // ≈32.727°
-  const targetRotation = extraUmdrehungen * 360 + (10 - endZahl) * sector + (sector/2);
+  // 2. Labels neu befüllen
+  document.querySelectorAll(".label").forEach((label, i) => {
+    label.textContent = zahlen[i];
+    label.style.setProperty("--i", i);
+  });
 
-  // Reset + neue Drehung
+  // 3. Zufällige Gewinnerzahl + Drehung
+  const endZahl = Math.floor(Math.random() * 11);
+  const endIndex = zahlen.indexOf(endZahl);
+
+  const extraUmdrehungen = Math.floor(Math.random() * 8) + 5;
+  const extraZeit = Math.random() * 2 + 4.5;
+  const sector = 360 / 11;
+  const targetRotation = extraUmdrehungen * 360 + (10 - endIndex) * sector + (sector / 2);
+
   rad.style.animation = 'none';
   rad.style.transform = 'rotate(0deg)';
   rad.offsetHeight;
