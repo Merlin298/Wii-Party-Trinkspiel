@@ -232,32 +232,37 @@ function personGewaehlt(person) {
   }, 2500);
 }
 
+// Verbesserte Funktion für das Glückrad (langsamer, leere Mitte, Endzahl poppt in der Mitte)
 function glückradZiehen(person) {
   const radOverlay = document.getElementById("glueckradOverlay");
   const rad = document.getElementById("glueckrad");
   const radText = document.getElementById("radText");
+  const endZahlDiv = document.getElementById("endZahl");
 
   radOverlay.style.display = "flex";
   radText.innerHTML = `${person} dreht das Glücksrad...`;
+  endZahlDiv.style.display = "none"; // Verstecke Endzahl am Start
 
   // Zufällige Endzahl 0-10
   const endZahl = Math.floor(Math.random() * 11);
-  // Random volle Umdrehungen (4-6) + Sektor-Offset (32.727° pro Sektor, umgedreht für Pfeil oben)
-  const fullSpins = 1440 + (Math.floor(Math.random() * 3) * 360); // 4-6 Umdrehungen
+  // Random volle Umdrehungen (5-7) + Sektor-Offset (umgedreht für Pfeil unten)
+  const fullSpins = 1800 + (Math.floor(Math.random() * 3) * 360); // 5-7 Umdrehungen
   const sektorGrad = 32.727;
-  const rotation = fullSpins + (10 - endZahl) * sektorGrad; // Umgekehrt, damit Pfeil auf Zahl zeigt
+  const rotation = fullSpins + (10 - endZahl) * sektorGrad; // Umgekehrt, Pfeil unten zeigt auf Zahl
 
   rad.style.setProperty('--rotation', rotation + 'deg');
-  rad.style.animation = 'spin 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+  rad.style.animation = 'spin 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards'; // 5s Dauer
 
   setTimeout(() => {
-    rad.style.transform = `rotate(${rotation}deg)`;
+    rad.style.transform = `rotate(${rotation}deg)`; // Fixiert
+    endZahlDiv.innerHTML = endZahl; // Endzahl poppt groß in der Mitte
+    endZahlDiv.style.display = "block";
     radText.innerHTML = `${person}<br><span class="rad-ergebnis">Muss ${endZahl} Schlücke trinken!</span>`;
     trinkCounter[person].schluecke += endZahl;
     updateTracker();
     setTimeout(() => {
       radOverlay.style.display = "none";
       minispielPhase = 0;
-    }, 2500);
-  }, 3000); // Drehzeit: 3 Sekunden
+    }, 3000);
+  }, 5000); // Gesamte Drehzeit: 5s
 }
