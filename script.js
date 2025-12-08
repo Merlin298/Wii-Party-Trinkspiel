@@ -1,6 +1,6 @@
 let spieler = [];
-let trinkCounter = {}; // jetzt {schluecke: 0, exen: 0} pro Spieler
-let aktuellerIndex = 0;
+let trinkCounter = {}; // {schluecke: 0, exen: 0} pro Spieler
+let aktuellerIndex = 0; // nicht mehr nötig, aber behalten für Kompatibilität
 let gefahrPlatz = 0;
 let minispielPhase = 0;
 
@@ -13,7 +13,7 @@ const kugeln = [
   "Zufall 0-10 Schlücke"
 ];
 
-// Setup (fix: korrekter Init für trinkCounter)
+// Setup (unverändert)
 function spielerHinzufuegen() {
   const input = document.getElementById("neuerSpieler");
   const name = input.value.trim();
@@ -35,34 +35,16 @@ function renderSetupListe() {
 function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
-  renderSpielerButtons();
-  updateTracker();
+  updateTracker(); // Tracker ohne Spieler-Auswahl, da Events jetzt unabhängig sind
 }
 
-// Spieler-Auswahl (fix: active wechselt korrekt)
-function setAktuellerSpieler(index) {
-  aktuellerIndex = index;
-  renderSpielerButtons();
-  updateTracker();
-}
-
-function renderSpielerButtons() {
-  document.getElementById("spielerButtons").innerHTML = spieler.map((s, i) =>
-    `<button class="spieler-btn ${i === aktuellerIndex ? 'active' : ''}" onclick="setAktuellerSpieler(${i})">
-      ${s}
-    </button>`
-  ).join("");
-}
-
-// Tracker (Schlücke + Exen separat)
+// Tracker (unverändert, zeigt alle)
 function updateTracker() {
   document.getElementById("trinkStand").innerHTML =
-    spieler.map((s, i) => `<div ${i === aktuellerIndex ? 'class="aktuell"' : ''}>
-      ${i === aktuellerIndex ? '➤ ' : ''}<b>${s}</b>: ${trinkCounter[s].schluecke} Schlücke, ${trinkCounter[s].exen} Exen
-    </div>`).join("");
+    spieler.map(s => `<div><b>${s}</b>: ${trinkCounter[s].schluecke} Schlücke, ${trinkCounter[s].exen} Exen</div>`).join("");
 }
 
-// Meldung
+// Meldung (unverändert)
 function zeigeMeldung(html, dauer = 4000) {
   const div = document.createElement("div");
   div.className = "meldung";
@@ -71,18 +53,42 @@ function zeigeMeldung(html, dauer = 4000) {
   setTimeout(() => div.remove(), dauer);
 }
 
-// Felder (Buttons mit Wii-Party-Werten, schließt nach Auswahl)
-function felderTrinken() {
-  const name = spieler[aktuellerIndex];
+// ==================== NEUE EVENT-LOGIK: Event drücken → Person wählen ====================
 
+// Hilfsfunktion: Overlay für Personenauswahl erstellen
+function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
+  const overlay = document.createElement("div");
+  overlay.id = "personenOverlay";
+  overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:30px;color:white;`;
+  overlay.innerHTML = `
+    <h2>${titel}</h2>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+      ${spieler.filter(s => !ausgeschlossene.includes(s)).map(s => 
+        `<button class="spieler-btn" style="padding:25px 40px;font-size:2rem;" onclick="${callback}('${s}')">${s}</button>`
+      ).join("")}
+    </div>
+    <button onclick="document.getElementById('personenOverlay').remove()" 
+            style="padding:15px 30px;background:#333;">Abbrechen</button>
+  `;
+  document.body.appendChild(overlay);
+}
+
+// Felder vor/zurück
+function felderTrinken() {
+  erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
+}
+
+function personFeldGewaehlt(person) {
+  document.getElementById("personenOverlay").remove();
   const overlay = document.createElement("div");
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;color:white;`;
   overlay.innerHTML = `
-    <h2>${name} – wie viele Felder?</h2>
+    <h2>${person} – wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
-      ${[4,5,6,7].map(n => 
-        `<button onclick="felderBestaetigt(${n}, this)" 
+      ${[1,2,3,4,5,6,7,18].map(n => 
+        `<button onclick="felderBestaetigt('${person}', ${n}, this)" 
                  style="padding:20px;font-size:2rem;background:#ff4757;border:none;border-radius:15px;">
           ${n}
         </button>`
@@ -94,43 +100,55 @@ function felderTrinken() {
   document.body.appendChild(overlay);
 }
 
-function felderBestaetigt(anzahl, btn) {
-  const name = spieler[aktuellerIndex];
-  trinkCounter[name].schluecke += anzahl;
-  zeigeMeldung(`<b>${name}</b> trinkt <b>${anzahl} Schlücke</b>!`);
+function felderBestaetigt(person, anzahl, btn) {
+  trinkCounter[person].schluecke += anzahl;
+  zeigeMeldung(`<b>${person}</b> trinkt <b>${anzahl} Schlücke</b>!`);
   updateTracker();
-  btn.closest("div").remove(); // Overlay sofort schließen
+  btn.closest("div").remove(); // Felder-Overlay schließen
 }
 
 // Hölle
 function hoelle() {
-  const name = spieler[aktuellerIndex];
-  trinkCounter[name].exen += 1;
-  zeigeMeldung(`<b>${name}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
+  erstellePersonenOverlay("Wer ist in die Hölle gefallen?", "personHoelleGewaehlt");
+}
+
+function personHoelleGewaehlt(person) {
+  document.getElementById("personenOverlay").remove();
+  trinkCounter[person].exen += 1;
+  zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
 }
 
-// Blauer Bimbo
+// Blauer Werfer (jetzt mit Buttons!)
 function blauerWerfer() {
-  const verteiler = spieler[aktuellerIndex];
-  const opfer = prompt(`${verteiler} darf Exen verteilen!\nAn wen?`, "");
-  const gefunden = spieler.find(s => s.toLowerCase() === opfer?.trim().toLowerCase());
-  if (gefunden) {
-    trinkCounter[gefunden].exen += 1;
-    zeigeMeldung(`<b>${verteiler}</b> → <b>${gefunden}</b> muss <b>EXEN!</b>`);
-    updateTracker();
-  }
+  erstellePersonenOverlay("Wer verteilt Exen? (Blauer Werfer)", "verteilerGewaehlt", []);
 }
 
-// Roter Bimbo
-function roterWerfer() {
-  const name = spieler[aktuellerIndex];
-  trinkCounter[name].exen += 1;
-  zeigeMeldung(`<b>${name}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
+function verteilerGewaehlt(verteiler) {
+  document.getElementById("personenOverlay").remove();
+  erstellePersonenOverlay(`Wer soll exen? (von ${verteiler})`, `opferGewaehlt('${verteiler}')`, [verteiler]);
+}
+
+function opferGewaehlt(verteiler, opfer) {
+  document.getElementById("personenOverlay").remove();
+  trinkCounter[opfer].exen += 1;
+  zeigeMeldung(`<b>${verteiler}</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
 }
 
-// Minispiel (fix: Reihenfolge Achtung! → Wer? → Kugel)
+// Roter Werfer
+function roterWerfer() {
+  erstellePersonenOverlay("Wer tritt auf roten Werfer?", "personRoterGewaehlt");
+}
+
+function personRoterGewaehlt(person) {
+  document.getElementById("personenOverlay").remove();
+  trinkCounter[person].exen += 1;
+  zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
+  updateTracker();
+}
+
+// Minispiel (unverändert, da's schon gut läuft)
 function minispiel() {
   if (minispielPhase !== 0) return;
   minispielPhase = 1;
@@ -159,7 +177,7 @@ function minispiel() {
       </div>
     `;
     document.body.appendChild(overlay);
-  }, 3500); // nach der Meldung
+  }, 3500);
 }
 
 function personGewaehlt(person) {
@@ -187,7 +205,6 @@ function personGewaehlt(person) {
     kugel.style.animation = "bounce 0.6s";
 
     const kugelInhalt = kugeln[Math.floor(Math.random() * kugeln.length)];
-    let schluecke = 0;
 
     if (kugelInhalt === "Exen verteilen") {
       kugel.innerHTML = "↔";
@@ -197,7 +214,7 @@ function personGewaehlt(person) {
     }
 
     if (kugelInhalt.includes("Zufall")) {
-      schluecke = Math.floor(Math.random() * 11);
+      const schluecke = Math.floor(Math.random() * 11);
       kugel.innerHTML = schluecke;
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">${schluecke} Schlücke!</span>`;
       trinkCounter[person].schluecke += schluecke;
@@ -209,16 +226,11 @@ function personGewaehlt(person) {
       kugel.innerHTML = "NICHTS";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
     } else {
-      schluecke = parseInt(kugelInhalt);
+      const schluecke = parseInt(kugelInhalt);
       kugel.innerHTML = schluecke;
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">${kugelInhalt}</span>`;
       trinkCounter[person].schluecke += schluecke;
     }
-
-   /* if(kugelInhalt == "Zufall 0-10 Schlücke"){
-      
-      
-    }*/
 
     updateTracker();
     setTimeout(() => { overlay.style.display = "none"; minispielPhase = 0; }, 3000);
