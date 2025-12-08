@@ -74,7 +74,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   document.body.appendChild(overlay);
 }
 
-// Felder vor/zurück (fix: kein Abbrechen im Felder-Overlay, Meldung "muss ... trinken" + auto-Schließen)
+// Felder vor/zurück (fix: feste ID für Overlay, schließt garantiert nach Auswahl, Meldung "muss ... trinken!")
 function felderTrinken() {
   erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
 }
@@ -82,13 +82,14 @@ function felderTrinken() {
 function personFeldGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   const overlay = document.createElement("div");
+  overlay.id = "felderOverlay"; // Feste ID für sicheres Schließen
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;color:white;`;
   overlay.innerHTML = `
     <h2>${person} – wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[1,2,3,4,5,6,7,18].map(n => 
-        `<button onclick="felderBestaetigt('${person}', ${n}, this)" 
+        `<button onclick="felderBestaetigt('${person}', ${n})" 
                  style="padding:20px;font-size:2rem;background:#ff4757;border:none;border-radius:15px;">
           ${n}
         </button>`
@@ -98,11 +99,11 @@ function personFeldGewaehlt(person) {
   document.body.appendChild(overlay);
 }
 
-function felderBestaetigt(person, anzahl, btn) {
+function felderBestaetigt(person, anzahl) {
   trinkCounter[person].schluecke += anzahl;
   zeigeMeldung(`<b>${person}</b> muss <b>${anzahl} Schlücke</b> trinken!`);
   updateTracker();
-  btn.closest("div").remove(); // Automatisch schließen – direkt zurück zum Hauptbildschirm
+  document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
 }
 
 // Hölle
