@@ -81,7 +81,7 @@ function felderTrinken() {
   overlay.innerHTML = `
     <h2>${name} – wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
-      ${[1,2,3,4,5,6,7,18].map(n => 
+      ${[4,5,6].map(n => 
         `<button onclick="felderBestaetigt(${n}, this)" 
                  style="padding:20px;font-size:2rem;background:#ff4757;border:none;border-radius:15px;">
           ${n}
