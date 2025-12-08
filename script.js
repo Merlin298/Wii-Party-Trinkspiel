@@ -208,11 +208,13 @@ function personGewaehlt(person) {
     }
 
     if (kugelInhalt.includes("Zufall")) {
-      const schluecke = Math.floor(Math.random() * 11);
-      kugel.innerHTML = schluecke;
-      text.innerHTML = `${person}<br><span class="kugel-ergebnis">${schluecke} Schlücke!</span>`;
-      trinkCounter[person].schluecke += schluecke;
-    } else if (kugelInhalt === "Exen") {
+      // Glückrad statt statischer Zahl!
+      overlay.style.display = "none"; // Kugel-Overlay weg
+      glückradZiehen(person);
+      return;
+    }
+
+    if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
       trinkCounter[person].exen += 1;
@@ -229,4 +231,34 @@ function personGewaehlt(person) {
     updateTracker();
     setTimeout(() => { overlay.style.display = "none"; minispielPhase = 0; }, 3000);
   }, 2500);
+}
+
+// Neue Funktion für das Glückrad
+function glückradZiehen(person) {
+  const radOverlay = document.getElementById("glueckradOverlay");
+  const rad = document.getElementById("glueckrad");
+  const radText = document.getElementById("radText");
+
+  radOverlay.style.display = "flex";
+  radText.innerHTML = `${person} dreht das Glücksrad...`;
+
+  // Zufällige Endzahl 0-10
+  const endZahl = Math.floor(Math.random() * 11);
+  // Zufällige Rotation (mehrere Umdrehungen + Offset basierend auf Zahl)
+  const rotation = 1440 + (endZahl * 36) + (Math.random() * 36); // 4 Umdrehungen + Sektor
+
+  rad.style.transform = `rotate(${rotation}deg)`;
+  rad.innerHTML = endZahl; // Zeigt die Zahl während des Drehens
+
+  setTimeout(() => {
+    rad.style.transform = `rotate(${rotation}deg)`; // Fixiert die Position
+    radText.innerHTML = `${person}<br><span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
+    trinkCounter[person].schluecke += endZahl;
+    updateTracker();
+    setTimeout(() => {
+      radOverlay.style.display = "none";
+      zeigeMeldung(`<b>${person}</b> muss <b>${endZahl} Schlücke</b> trinken! (Glücksrad)`);
+      minispielPhase = 0;
+    }, 2500);
+  }, 4000); // Drehzeit: 4 Sekunden
 }
