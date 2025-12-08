@@ -278,12 +278,21 @@ function glückradZiehen(person) {
 
   const endZahl = Math.floor(Math.random() * 11);
   const fullSpins = 1980 + Math.floor(Math.random() * 1080);
-  const rotation = fullSpins + endZahl * 32.727 + 16.3635;
+  const sektorGrad = 32.727;
+  const offset = sektorGrad / 2; // 16.3635° → Mitte des Sektors
+  const rotation = fullSpins + (endZahl * sektorGrad) + offset;
 
+  // WICHTIG: Animation komplett zurücksetzen
   rad.style.animation = 'none';
+  rad.offsetHeight; // Trigger reflow
+  rad.style.transform = 'rotate(0deg)';
   rad.offsetHeight;
-  rad.style.animation = 'spin 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards';
-  rad.style.setProperty('--rotation', rotation + 'deg');
+
+  // Jetzt neu starten
+  requestAnimationFrame(() => {
+    rad.style.animation = 'spin 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards';
+    rad.style.transform = `rotate(${rotation}deg)`;
+  });
 
   setTimeout(() => {
     endZahlDiv.innerHTML = endZahl;
