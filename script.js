@@ -321,3 +321,13 @@ function glückradZiehen(person) {
     }, 3000);
   }, extraZeit * 1000);
 }
+
+function resetTracker() {
+  if (confirm("Tracker wirklich zurücksetzen?\n(Namen bleiben erhalten)")) {
+    spieler.forEach(name => {
+      trinkCounter[name] = { schluecke: 0, exen: 0 };
+    });
+    updateTracker();
+    zeigeMeldung("Tracker wurde zurückgesetzt! Neues Spiel kann starten", 3000);
+  }
+}
