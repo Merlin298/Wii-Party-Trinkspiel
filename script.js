@@ -208,7 +208,6 @@ function personGewaehlt(person) {
     }
 
     if (kugelInhalt.includes("Zufall")) {
-      // Glückrad statt statischer Zahl!
       overlay.style.display = "none"; // Kugel-Overlay weg
       glückradZiehen(person);
       return;
@@ -233,7 +232,6 @@ function personGewaehlt(person) {
   }, 2500);
 }
 
-// Neue Funktion für das Glückrad
 function glückradZiehen(person) {
   const radOverlay = document.getElementById("glueckradOverlay");
   const rad = document.getElementById("glueckrad");
@@ -244,21 +242,22 @@ function glückradZiehen(person) {
 
   // Zufällige Endzahl 0-10
   const endZahl = Math.floor(Math.random() * 11);
-  // Zufällige Rotation (mehrere Umdrehungen + Offset basierend auf Zahl)
-  const rotation = 1440 + (endZahl * 36) + (Math.random() * 36); // 4 Umdrehungen + Sektor
+  // Random volle Umdrehungen (4-6) + Sektor-Offset (32.727° pro Sektor, umgedreht für Pfeil oben)
+  const fullSpins = 1440 + (Math.floor(Math.random() * 3) * 360); // 4-6 Umdrehungen
+  const sektorGrad = 32.727;
+  const rotation = fullSpins + (10 - endZahl) * sektorGrad; // Umgekehrt, damit Pfeil auf Zahl zeigt
 
-  rad.style.transform = `rotate(${rotation}deg)`;
-  rad.innerHTML = endZahl; // Zeigt die Zahl während des Drehens
+  rad.style.setProperty('--rotation', rotation + 'deg');
+  rad.style.animation = 'spin 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
 
   setTimeout(() => {
-    rad.style.transform = `rotate(${rotation}deg)`; // Fixiert die Position
-    radText.innerHTML = `${person}<br><span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
+    rad.style.transform = `rotate(${rotation}deg)`;
+    radText.innerHTML = `${person}<br><span class="rad-ergebnis">Muss ${endZahl} Schlücke trinken!</span>`;
     trinkCounter[person].schluecke += endZahl;
     updateTracker();
     setTimeout(() => {
       radOverlay.style.display = "none";
-      zeigeMeldung(`<b>${person}</b> muss <b>${endZahl} Schlücke</b> trinken! (Glücksrad)`);
       minispielPhase = 0;
     }, 2500);
-  }, 4000); // Drehzeit: 4 Sekunden
+  }, 3000); // Drehzeit: 3 Sekunden
 }
