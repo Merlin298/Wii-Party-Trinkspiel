@@ -277,21 +277,23 @@ function glückradZiehen(person) {
   endZahlDiv.style.display = "none";
 
   const endZahl = Math.floor(Math.random() * 11);
-  const fullSpins = 1980 + Math.floor(Math.random() * 1080);
-  const sektorGrad = 32.727;
-  const offset = sektorGrad / 2; // 16.3635° → Mitte des Sektors
-  const rotation = fullSpins + (endZahl * sektorGrad) + offset;
 
-  // WICHTIG: Animation komplett zurücksetzen
+  // VÖLLIG CHAOTISCHE DREHUNG – jetzt wirklich random!
+  const extraUmdrehungen = Math.floor(Math.random() * 7) + 5;     // 5–11 volle Umdrehungen
+  const extraZeit       = Math.random() * 2 + 4.5;                // 4.5–6.5 Sekunden
+  const baseRotation    = extraUmdrehungen * 360;
+  const sektorGrad      = 32.727;
+  const offset          = sektorGrad / 2;                        // Mitte des Sektors
+  const finalRotation   = baseRotation + (endZahl * sektorGrad) + offset + (Math.random() * 20 - 10); // +/–10° extra Chaos
+
+  // Reset + völlig neue Animation
   rad.style.animation = 'none';
-  rad.offsetHeight; // Trigger reflow
   rad.style.transform = 'rotate(0deg)';
   rad.offsetHeight;
 
-  // Jetzt neu starten
   requestAnimationFrame(() => {
-    rad.style.animation = 'spin 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards';
-    rad.style.transform = `rotate(${rotation}deg)`;
+    rad.style.animation = `spin ${extraZeit}s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards`;
+    rad.style.transform = `rotate(${finalRotation}deg)`;
   });
 
   setTimeout(() => {
@@ -306,5 +308,5 @@ function glückradZiehen(person) {
       radOverlay.style.display = "none";
       minispielPhase = 0;
     }, 3000);
-  }, 5500);
+  }, extraZeit * 1000);
 }
