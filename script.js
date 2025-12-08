@@ -74,7 +74,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   document.body.appendChild(overlay);
 }
 
-// Felder vor/zurück (fix: kein Abbrechen nötig, schließt automatisch)
+// Felder vor/zurück (fix: Abbrechen im Felder-Overlay hinzugefügt)
 function felderTrinken() {
   erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
 }
@@ -94,6 +94,8 @@ function personFeldGewaehlt(person) {
         </button>`
       ).join("")}
     </div>
+    <button onclick="this.closest('div').remove()" 
+            style="margin-top:20px;padding:15px 30px;background:#333;">Abbrechen</button>
   `;
   document.body.appendChild(overlay);
 }
@@ -117,7 +119,7 @@ function personHoelleGewaehlt(person) {
   updateTracker();
 }
 
-// Blauer Werfer (vereinfacht: direkt "Wen soll's treffen?")
+// Blauer Werfer (direkt "Wen soll's treffen?")
 function blauerWerfer() {
   erstellePersonenOverlay("Wen soll's treffen? (Blauer Werfer)", "opferBlauGewaehlt");
 }
