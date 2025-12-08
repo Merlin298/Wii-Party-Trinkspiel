@@ -322,12 +322,25 @@ function glückradZiehen(person) {
   }, extraZeit * 1000);
 }
 
+// Reset-Button wird erst nach Spielstart sichtbar
+function spielStarten() {
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("spiel").classList.remove("hidden");
+  updateTracker();
+  document.getElementById("resetButtonContainer").style.display = "block"; // Button sichtbar machen
+}
+
+// Reset-Button selbst (klick öffnet Overlay)
 function resetTracker() {
-  if (confirm("Tracker wirklich zurücksetzen?\n(Namen bleiben erhalten)")) {
-    spieler.forEach(name => {
-      trinkCounter[name] = { schluecke: 0, exen: 0 };
-    });
-    updateTracker();
-    zeigeMeldung("Tracker wurde zurückgesetzt! Neues Spiel kann starten", 3000);
-  }
+  document.getElementById("resetOverlay").classList.remove("hidden");
+}
+
+// Ja → wirklich zurücksetzen
+function resetBestaetigt() {
+  spieler.forEach(name => {
+    trinkCounter[name] = { schluecke: 0, exen: 0 };
+  });
+  updateTracker();
+  zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
+  document.getElementById("resetOverlay").classList.add("hidden");
 }
