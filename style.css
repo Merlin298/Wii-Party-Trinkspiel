@@ -163,7 +163,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 /* Pfeil jetzt nach UNTEN und sitzt perfekt auf dem Rand */
 #glueckradPfeil {
   position: absolute;
-  top: -45px;               /* oben am Rad */
+  top: -50px;               /* oben am Rad */
   left: 50%;
   transform: translateX(-50%) rotate(180deg);  /* 180° gedreht → zeigt nach unten */
   font-size: 5rem;
@@ -219,7 +219,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   transform: 
     rotate(calc(var(--i) * 32.727deg + 16.3635deg))
     translateY(-135px)
-    rotate(90deg);
 }
 
 #glueckrad::after {
