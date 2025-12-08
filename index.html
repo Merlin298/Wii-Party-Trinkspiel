@@ -53,10 +53,10 @@
 
   <script src="script.js"></script>
 
-    <!-- Glückrad-Animation (verbessert mit Sektoren) -->
+    <!-- Glückrad-Animation (umgedrehter Pfeil, leere Mitte am Start) -->
   <div id="glueckradOverlay" style="display:none;">
     <div id="glueckradContainer">
-      <div id="glueckradPfeil">▲</div> <!-- Pfeil oben -->
+      <div id="glueckradPfeil">▼</div> <!-- Pfeil umgedreht (nach unten) -->
       <div id="glueckrad">
         <div class="rad-labels">
           <div class="label" style="--i:0;">0</div>
@@ -73,8 +73,9 @@
         </div>
       </div>
       <div id="radText">Dreht sich...</div>
+      <div id="endZahl" style="display:none; font-size:5rem; color:#ff4757; font-weight:bold; text-shadow:3px 3px #000; margin-top:20px;">0</div>
     </div>
   </div>
-  
+   
 </body>
 </html
