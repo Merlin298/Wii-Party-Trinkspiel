@@ -277,19 +277,20 @@ function glückradZiehen(person) {
   endZahlDiv.style.display = "none";
 
   const endZahl = Math.floor(Math.random() * 11);
-  const fullSpins = 1980 + Math.floor(Math.random() * 1080); // 5.5 – 8.5 Umdrehungen
-  const sektorGrad = 32.727;
-  const rotation = fullSpins + endZahl * sektorGrad; // Pfeil oben → direkte Zahl
+  const fullSpins = 1980 + Math.floor(Math.random() * 1080);
+  const rotation = fullSpins + endZahl * 32.727 + 16.3635;
 
-  rad.style.setProperty('--rotation', rotation + 'deg');
+  rad.style.animation = 'none';
+  rad.offsetHeight;
   rad.style.animation = 'spin 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards';
+  rad.style.setProperty('--rotation', rotation + 'deg');
 
   setTimeout(() => {
     endZahlDiv.innerHTML = endZahl;
     endZahlDiv.style.display = "block";
     radText.innerHTML = `<span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
 
-    trinkCounter[person].schluecke += endZahl;  // ← jetzt wieder gezählt!
+    trinkCounter[person].schluecke += endZahl;
     updateTracker();
 
     setTimeout(() => {
