@@ -5,11 +5,11 @@ let gefahrPlatz = 0;
 let minispielPhase = 0;
 
 const kugeln = [
-  "4 Schlücke","4 Schlücke","4 Schlücke",
+  /*"4 Schlücke","4 Schlücke","4 Schlücke",
   "5 Schlücke","5 Schlücke",
   "Exen","Exen",
   "Exen verteilen",
-  "Nichts","Nichts",
+  "Nichts","Nichts",*/
   "Zufall 0-10 Schlücke"
 ];
 
