@@ -175,6 +175,7 @@ function minispiel() {
   }, 3500);
 }
 
+// 1. personGewaehlt – komplett ersetzen (fix: Exen werden gezählt + Phase wird immer zurückgesetzt)
 function personGewaehlt(person) {
   document.getElementById("minispielOverlay")?.remove();
   minispielPhase = 2;
@@ -201,7 +202,7 @@ function personGewaehlt(person) {
 
     const kugelInhalt = kugeln[Math.floor(Math.random() * kugeln.length)];
 
-    // ===== EXEN VERTEILEN – direkt nach der Kugel =====
+    // === EXEN VERTEILEN ===
     if (kugelInhalt === "Exen verteilen") {
       kugel.innerHTML = "↔";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN VERTEILEN!</span>`;
@@ -209,32 +210,31 @@ function personGewaehlt(person) {
       setTimeout(() => {
         overlay.style.display = "none";
 
-        // Bei nur 2 Spielern automatisch der andere
         if (spieler.length === 2) {
           const opfer = spieler.find(s => s !== person);
           trinkCounter[opfer].exen += 1;
           zeigeMeldung(`<b>${person}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
           updateTracker();
-          minispielPhase = 0;
         } else {
-          // Bei 3–4 Spielern: direkt Overlay zum Auswählen
           erstellePersonenOverlay(
             `${person} darf Exen verteilen!<br>Wen soll's treffen?`,
             "minispielExenVerteilen",
-            [person]  // eigene Person ausschließen
+            [person]
           );
         }
+        minispielPhase = 0; // ← wichtig!
       }, 2500);
       return;
     }
 
-    // === Rest unverändert (normale Kugeln + Zufall) ===
+    // === ZUFALL → Glücksrad ===
     if (kugelInhalt.includes("Zufall")) {
       overlay.style.display = "none";
       glückradZiehen(person);
       return;
     }
 
+    // === Normale Kugeln ===
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
@@ -250,24 +250,20 @@ function personGewaehlt(person) {
     }
 
     updateTracker();
-    setTimeout(() => { overlay.style.display = "none"; minispielPhase = 0; }, 3000);
+    setTimeout(() => {
+      overlay.style.display = "none";
+      minispielPhase = 0; // ← auch hier zurücksetzen!
+    }, 3000);
   }, 2500);
 }
 
-// Neue Hilfsfunktion für Exen verteilen aus Minispiel
+// 2. minispielExenVerteilen – komplett ersetzen (fix: Exen wird gezählt + Phase zurücksetzen)
 function minispielExenVerteilen(opfer) {
-  document.getElementById("personenOverlay").remove();
-  const verteiler = spieler.find(s => 
-    !document.querySelectorAll("#personenOverlay button").length // Trick: wer nicht im Overlay war
-  ); // besser: wir merken uns den Verteiler vorher – aber für jetzt reicht:
-  // einfach den letzten gezogenen merken (person ist noch verfügbar, da Closure)
-  // Deshalb kleiner Workaround:
-  const letztePerson = person; // person ist noch im Scope
-
+  document.getElementById("personenOverlay")?.remove();
   trinkCounter[opfer].exen += 1;
-  zeigeMeldung(`<b>${letztePerson}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
+  zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
-  minispielPhase = 0;
+  minispielPhase = 0; // ← garantiert zurücksetzen
 }
 
 function glückradZiehen(person) {
