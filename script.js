@@ -5,15 +5,16 @@ let gefahrPlatz = 0;
 let minispielPhase = 0;
 
 const kugeln = [
-  /*"4 Schlücke","4 Schlücke","4 Schlücke",
-  "5 Schlücke","5 Schlücke",
-  "Exen","Exen",
+  "3 Schlücke"
+  "4 Schlücke"
+  "5 Schlücke"
+  "Exen",
   "Exen verteilen",
-  "Nichts","Nichts",*/
+  "Nichts",
   "Zufall 0-10 Schlücke"
 ];
 
-// Setup (unverändert)
+// Setup
 function spielerHinzufuegen() {
   const input = document.getElementById("neuerSpieler");
   const name = input.value.trim();
@@ -38,13 +39,13 @@ function spielStarten() {
   updateTracker(); // Tracker ohne Spieler-Auswahl, da Events jetzt unabhängig sind
 }
 
-// Tracker (unverändert, zeigt alle)
+// Tracker
 function updateTracker() {
   document.getElementById("trinkStand").innerHTML =
     spieler.map(s => `<div><b>${s}</b>: ${trinkCounter[s].schluecke} Schlücke, ${trinkCounter[s].exen} Exen</div>`).join("");
 }
 
-// Meldung (unverändert)
+// Meldung
 function zeigeMeldung(html, dauer = 4000) {
   const div = document.createElement("div");
   div.className = "meldung";
