@@ -74,7 +74,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   document.body.appendChild(overlay);
 }
 
-// Felder vor/zurück (fix: Abbrechen im Felder-Overlay hinzugefügt)
+// Felder vor/zurück (fix: kein Abbrechen im Felder-Overlay, Meldung "muss ... trinken" + auto-Schließen)
 function felderTrinken() {
   erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
 }
@@ -94,15 +94,13 @@ function personFeldGewaehlt(person) {
         </button>`
       ).join("")}
     </div>
-    <button onclick="this.closest('div').remove()" 
-            style="margin-top:20px;padding:15px 30px;background:#333;">Abbrechen</button>
   `;
   document.body.appendChild(overlay);
 }
 
 function felderBestaetigt(person, anzahl, btn) {
   trinkCounter[person].schluecke += anzahl;
-  zeigeMeldung(`<b>${person}</b> trinkt <b>${anzahl} Schlücke</b>!`);
+  zeigeMeldung(`<b>${person}</b> muss <b>${anzahl} Schlücke</b> trinken!`);
   updateTracker();
   btn.closest("div").remove(); // Automatisch schließen – direkt zurück zum Hauptbildschirm
 }
@@ -223,7 +221,7 @@ function personGewaehlt(person) {
     } else {
       const schluecke = parseInt(kugelInhalt);
       kugel.innerHTML = schluecke;
-      text.innerHTML = `${person}<br><span class="kugel-ergebnis">${kugelInhalt}</span>`;
+      text.innerHTML = `${person}<br><span class="kugel-ergebnis">${schluecke} Schlücke!</span>`;
       trinkCounter[person].schluecke += schluecke;
     }
 
