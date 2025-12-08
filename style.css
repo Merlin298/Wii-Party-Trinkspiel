@@ -146,7 +146,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 #kugelOverlay[style*="flex"] { display: flex !important; }
 
-/* ==================== GLÜCKSRAD – FINALE VERSION ==================== */
+/* ==================== GLÜCKSRAD – 100 % PERFEKT ==================== */
 #glueckradOverlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.97);
@@ -160,11 +160,12 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   width: 340px;
 }
 
+/* Pfeil jetzt nach UNTEN und sitzt perfekt auf dem Rand */
 #glueckradPfeil {
   position: absolute;
-  top: -45px;
+  top: -45px;               /* oben am Rad */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotate(180deg);  /* 180° gedreht → zeigt nach unten */
   font-size: 5rem;
   color: #ff4757;
   text-shadow: 3px 3px #000;
@@ -172,17 +173,12 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   animation: arrow-blink 1s infinite alternate;
 }
 
-@keyframes arrow-blink {
-  0%   { opacity: 0.7; }
-  100% { opacity: 1; }
-}
-
 #glueckrad {
   width: 340px;
   height: 340px;
   border-radius: 50%;
   background: conic-gradient(
-    from 16.3635deg,        /* genau Mitte des ersten Sektors */
+    from 0deg,
     #ff6b6b 0deg 32.727deg,
     #4ecdc4 32.727deg 65.455deg,
     #45b7d1 65.455deg 98.182deg,
@@ -198,7 +194,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   position: relative;
   border: 12px solid #222;
   box-shadow: 0 0 80px rgba(255,71,87,0.6);
-  animation: none;                /* wird per JS neu gestartet */
+  animation: none;
   transform: rotate(0deg);
 }
 
@@ -208,6 +204,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   width: 100%; height: 100%;
 }
 
+/* Zahlen jetzt EXAKT mittig auf jedem Feld */
 .label {
   position: absolute;
   width: 100%; height: 100%;
@@ -218,7 +215,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   display: flex;
   align-items: center;
   justify-content: center;
-  /* perfekte Mitte jedes Sektors */
+  /* +16.3635° = halber Sektor → perfekt in der Mitte */
   transform: 
     rotate(calc(var(--i) * 32.727deg + 16.3635deg))
     translateY(-135px)
