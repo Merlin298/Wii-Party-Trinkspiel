@@ -5,12 +5,12 @@ let gefahrPlatz = 0;
 let minispielPhase = 0;
 
 const kugeln = [
-  /*"3 Schlücke",
+  "3 Schlücke",
   "4 Schlücke",
   "5 Schlücke",
   "Exen",
   "Exen verteilen",
-  "Nichts",*/
+  "Nichts",
   "Zufall 0-10 Schlücke"
 ];
 
@@ -89,7 +89,7 @@ function personFeldGewaehlt(person) {
   overlay.innerHTML = `
     <h2>${person} – wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
-      ${[1,2,3,4,5,6,7,18].map(n => 
+      ${[4,5,6,7].map(n => 
         `<button onclick="felderBestaetigt('${person}', ${n})" 
                  style="padding:20px;font-size:2rem;background:#ff4757;border:none;border-radius:15px;">
           ${n}
