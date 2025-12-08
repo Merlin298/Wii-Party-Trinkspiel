@@ -276,21 +276,23 @@ function glückradZiehen(person) {
   radText.innerHTML = `${person} dreht das Glücksrad...`;
   endZahlDiv.style.display = "none";
 
-  const endZahl = Math.floor(Math.random() * 11);               // 0–10 (wirklich random)
-  const extraUmdrehungen = Math.floor(Math.random() * 8) + 5;   // 5–12 volle Umdrehungen
-  const extraZeit = Math.random() * 2 + 4.5;                    // 4.5–6.5 Sekunden
-  const chaosWinkel = Math.random() * 360;                     // totaler Chaos-Startwinkel
+  const endZahl = Math.floor(Math.random() * 11);               // 0–10
+  const extraUmdrehungen = Math.floor(Math.random() * 8) + 5;   // 5–12 Umdrehungen
+  const extraZeit = Math.random() * 2 + 4.5;                    // 4.5–6.5 s
 
-  const finalRotation = extraUmdrehungen * 360 + chaosWinkel + (endZahl * 32.727);
+  // WICHTIG: Pfeil ist oben → 0° = Feld 10
+  // Wir wollen, dass bei endZahl = 10 → Feld 10 oben ist
+  const sector = 360 / 11; // ≈32.727°
+  const targetRotation = extraUmdrehungen * 360 + (10 - endZahl) * sector;
 
-  // Animation komplett zurücksetzen
+  // Reset + neue Drehung
   rad.style.animation = 'none';
-  rad.style.transform = `rotate(${chaosWinkel}deg)`;
+  rad.style.transform = 'rotate(0deg)';
   rad.offsetHeight;
 
   requestAnimationFrame(() => {
     rad.style.transition = `transform ${extraZeit}s cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
-    rad.style.transform = `rotate(${finalRotation}deg)`;
+    rad.style.transform = `rotate(${targetRotation}deg)`;
   });
 
   setTimeout(() => {
