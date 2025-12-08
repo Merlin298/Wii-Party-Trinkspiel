@@ -215,6 +215,11 @@ function personGewaehlt(person) {
       trinkCounter[person].schluecke += schluecke;
     }
 
+   /* if(kugelInhalt == "Zufall 0-10 Schlücke"){
+      
+      
+    }*/
+
     updateTracker();
     setTimeout(() => { overlay.style.display = "none"; minispielPhase = 0; }, 3000);
   }, 2500);
