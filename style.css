@@ -219,7 +219,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   transform: 
     rotate(calc(var(--i) * 32.727deg + 16.3635deg))
     translateY(-135px)
-    rotate(calc(-1 * (var(--i) * 32.727deg + 16.3635deg)));
+    rotate(90deg);
 }
 
 #glueckrad::after {
