@@ -270,7 +270,6 @@ function minispielExenVerteilen(opfer) {
   minispielPhase = 0;
 }
 
-// Verbesserte Funktion für das Glückrad (langsamer, leere Mitte, Endzahl poppt in der Mitte)
 function glückradZiehen(person) {
   const radOverlay = document.getElementById("glueckradOverlay");
   const rad = document.getElementById("glueckrad");
@@ -279,28 +278,27 @@ function glückradZiehen(person) {
 
   radOverlay.style.display = "flex";
   radText.innerHTML = `${person} dreht das Glücksrad...`;
-  endZahlDiv.style.display = "none"; // Verstecke Endzahl am Start
+  endZahlDiv.style.display = "none";
 
-  // Zufällige Endzahl 0-10
   const endZahl = Math.floor(Math.random() * 11);
-  // Random volle Umdrehungen (5-7) + Sektor-Offset (umgedreht für Pfeil unten)
-  const fullSpins = 1800 + (Math.floor(Math.random() * 3) * 360); // 5-7 Umdrehungen
+  const fullSpins = 1980 + Math.floor(Math.random() * 1080); // 5.5 – 8.5 Umdrehungen
   const sektorGrad = 32.727;
-  const rotation = fullSpins + (10 - endZahl) * sektorGrad; // Umgekehrt, Pfeil unten zeigt auf Zahl
+  const rotation = fullSpins + endZahl * sektorGrad; // Pfeil oben → direkte Zahl
 
   rad.style.setProperty('--rotation', rotation + 'deg');
-  rad.style.animation = 'spin 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards'; // 5s Dauer
+  rad.style.animation = 'spin 5.5s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards';
 
   setTimeout(() => {
-    rad.style.transform = `rotate(${rotation}deg)`; // Fixiert
-    endZahlDiv.innerHTML = endZahl; // Endzahl poppt groß in der Mitte
+    endZahlDiv.innerHTML = endZahl;
     endZahlDiv.style.display = "block";
-    radText.innerHTML = `${person}<br><span class="rad-ergebnis">Muss ${endZahl} Schlücke trinken!</span>`;
-    trinkCounter[person].schluecke += endZahl;
+    radText.innerHTML = `<span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
+
+    trinkCounter[person].schluecke += endZahl;  // ← jetzt wieder gezählt!
     updateTracker();
+
     setTimeout(() => {
       radOverlay.style.display = "none";
       minispielPhase = 0;
     }, 3000);
-  }, 5000); // Gesamte Drehzeit: 5s
+  }, 5500);
 }
