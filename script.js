@@ -1,6 +1,6 @@
 let spieler = [];
-let trinkCounter = {}; // {schluecke: 0, exen: 0} pro Spieler
-let aktuellerIndex = 0; // nicht mehr nötig, aber behalten für Kompatibilität
+let trinkCounter = {}; // schluecke: 0, exen: 0 pro Spieler
+let aktuellerIndex = 0;
 let gefahrPlatz = 0;
 let minispielPhase = 0;
 
@@ -54,8 +54,6 @@ function zeigeMeldung(html, dauer = 4000) {
   setTimeout(() => div.remove(), dauer);
 }
 
-// ==================== EVENT-LOGIK: Event drücken → Person wählen ====================
-
 // Hilfsfunktion: Overlay für Personenauswahl erstellen
 function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   const overlay = document.createElement("div");
@@ -75,7 +73,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   document.body.appendChild(overlay);
 }
 
-// Felder vor/zurück (fix: feste ID für Overlay, schließt garantiert nach Auswahl, Meldung "muss ... trinken!")
+// Felder vor/zurück
 function felderTrinken() {
   erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
 }
@@ -119,7 +117,7 @@ function personHoelleGewaehlt(person) {
   updateTracker();
 }
 
-// Blauer Werfer (direkt "Wen soll's treffen?")
+// Blauer Werfer
 function blauerWerfer() {
   erstellePersonenOverlay("Wen soll's treffen? (Blauer Werfer)", "opferBlauGewaehlt");
 }
@@ -143,7 +141,7 @@ function personRoterGewaehlt(person) {
   updateTracker();
 }
 
-// Minispiel (unverändert)
+// Minispiel
 function minispiel() {
   if (minispielPhase !== 0) return;
   minispielPhase = 1;
@@ -175,7 +173,6 @@ function minispiel() {
   }, 3500);
 }
 
-// 1. personGewaehlt – komplett ersetzen (fix: Exen werden gezählt + Phase wird immer zurückgesetzt)
 function personGewaehlt(person) {
   document.getElementById("minispielOverlay")?.remove();
   minispielPhase = 2;
@@ -202,7 +199,6 @@ function personGewaehlt(person) {
 
     const kugelInhalt = kugeln[Math.floor(Math.random() * kugeln.length)];
 
-    // === EXEN VERTEILEN ===
     if (kugelInhalt === "Exen verteilen") {
       kugel.innerHTML = "↔";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN VERTEILEN!</span>`;
@@ -222,19 +218,18 @@ function personGewaehlt(person) {
             [person]
           );
         }
-        minispielPhase = 0; // ← wichtig!
+        minispielPhase = 0;
       }, 2500);
       return;
     }
 
-    // === ZUFALL → Glücksrad ===
+    // Zufall
     if (kugelInhalt.includes("Zufall")) {
       overlay.style.display = "none";
       glückradZiehen(person);
       return;
     }
 
-    // === Normale Kugeln ===
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
@@ -252,18 +247,17 @@ function personGewaehlt(person) {
     updateTracker();
     setTimeout(() => {
       overlay.style.display = "none";
-      minispielPhase = 0; // ← auch hier zurücksetzen!
+      minispielPhase = 0;
     }, 3000);
   }, 2500);
 }
 
-// 2. minispielExenVerteilen – komplett ersetzen (fix: Exen wird gezählt + Phase zurücksetzen)
 function minispielExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
-  minispielPhase = 0; // ← garantiert zurücksetzen
+  minispielPhase = 0;
 }
 
 function glückradZiehen(person) {
@@ -276,20 +270,20 @@ function glückradZiehen(person) {
   radText.innerHTML = `${person} dreht das Glücksrad...`;
   endZahlDiv.style.display = "none";
 
-  // 1. Zufällige Reihenfolge der Zahlen 0–10
+  // Zufällige Reihenfolge der Zahlen 0–10
   const zahlen = [0,1,2,3,4,5,6,7,8,9,10];
   for (let i = zahlen.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [zahlen[i], zahlen[j]] = [zahlen[j], zahlen[i]];
   }
 
-  // 2. Labels neu befüllen
+  // Labels neu befüllen
   document.querySelectorAll(".label").forEach((label, i) => {
     label.textContent = zahlen[i];
     label.style.setProperty("--i", i);
   });
 
-  // 3. Zufällige Gewinnerzahl + Drehung
+  // Zufällige Gewinnerzahl + Drehung
   const endZahl = Math.floor(Math.random() * 11);
   const endIndex = zahlen.indexOf(endZahl);
 
@@ -327,7 +321,7 @@ function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
   updateTracker();
-  document.getElementById("resetButtonContainer").style.display = "block"; // ← jetzt sichtbar
+  document.getElementById("resetButtonContainer").style.display = "block";
 }
 
 // Reset-Button öffnet das Overlay
