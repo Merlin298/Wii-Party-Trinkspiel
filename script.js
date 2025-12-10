@@ -338,3 +338,90 @@ function resetBestaetigt() {
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
 }
+
+// ==================== DIAGRAMME ====================
+let chartAktuell = null;
+let chartGesamt = null;
+let gesamtCounter = {};           // Ewiger Stand
+let gesamtSichtbar = false;
+
+// Beim Spieler hinzufügen → auch im Gesamt anlegen
+const originalSpielerHinzufuegen = spielerHinzufuegen;
+function spielerHinzufuegen() {
+  originalSpielerHinzufuegen.apply(this, arguments);
+  const name = arguments[0] || document.getElementById("neuerSpieler").value.trim();
+  if (name && !gesamtCounter[name]) {
+    gesamtCounter[name] = { schluecke: 0, exen: 0 };
+  }
+}
+
+// Alle Trinkaktionen gehen jetzt über diese Funktion
+function addTrinken(person, schluecke = 0, exen = 0) {
+  trinkCounter[person].schluecke += schluecke;
+  trinkCounter[person].exen += exen;
+  gesamtCounter[person].schluecke += schluecke;
+  gesamtCounter[person].exen += exen;
+  updateTracker();
+  updateCharts();
+}
+
+// Diagramm-Funktion (für beide)
+function updateCharts() {
+  if (spieler.length === 0) return;
+
+  const labels = spieler;
+  const aktuellSchluecke = labels.map(n => trinkCounter[n]?.schluecke || 0);
+  const aktuellExen      = labels.map(n => (trinkCounter[n]?.exen || 0) * 10);
+  const gesamtSchluecke  = labels.map(n => gesamtCounter[n]?.schluecke || 0);
+  const gesamtExen       = labels.map(n => (gesamtCounter[n]?.exen || 0) * 10);
+
+  // Aktuelles Diagramm
+  const ctx1 = document.getElementById('chartAktuell').getContext('2d');
+  if (chartAktuell) chartAktuell.destroy();
+  chartAktuell = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Schlücke', data: aktuellSchluecke, backgroundColor: '#ffa502', borderRadius: 8 },
+        { label: 'Exen ×10', data: aktuellExen, backgroundColor: '#ff4757', borderRadius: 8 }
+      ]
+    },
+    options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } }
+  });
+
+  // Gesamt-Diagramm (wenn sichtbar)
+  if (gesamtSichtbar) {
+    const ctx2 = document.getElementById('chartGesamt').getContext('2d');
+    if (chartGesamt) chartGesamt.destroy();
+    chartGesamt = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'Schlücke', data: gesamtSchluecke, backgroundColor: '#00d2d3', borderRadius: 8 },
+          { label: 'Exen ×10', data: gesamtExen, backgroundColor: '#ff4757', borderRadius: 8 }
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } }
+    });
+  }
+}
+
+// Beim Reset: aktuelle Runde nullen + Gesamt-Diagramm zeigen
+const originalResetBestaetigt = resetBestaetigt;
+function resetBestaetigt() {
+  originalResetBestaetigt();
+  if (!gesamtSichtbar) {
+    document.getElementById("chartGesamtBox").style.display = "block";
+    gesamtSichtbar = true;
+  }
+  updateCharts();
+}
+
+// Beim Spielstart Charts starten
+const originalSpielStarten = spielStarten;
+function spielStarten() {
+  originalSpielStarten();
+  updateCharts();
+}
