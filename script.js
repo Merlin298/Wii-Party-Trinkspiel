@@ -99,7 +99,7 @@ function personFeldGewaehlt(person) {
 }
 
 function felderBestaetigt(person, anzahl) {
-  trinkCounter[person].schluecke += anzahl;
+  addTrinken(person, anzahl, 0);
   zeigeMeldung(`<b>${person}</b> muss <b>${anzahl} Schlücke</b> trinken!`);
   updateTracker();
   document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
@@ -112,7 +112,7 @@ function hoelle() {
 
 function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[person].exen += 1;
+  addTrinken(person, 0 ,1);
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
 }
@@ -124,7 +124,7 @@ function blauerWerfer() {
 
 function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[opfer].exen += 1;
+  addTrinken(opfer, 0 ,1);
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
 }
@@ -136,7 +136,7 @@ function roterWerfer() {
 
 function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[person].exen += 1;
+  addTrinken(person, 0, 1);
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateTracker();
 }
@@ -208,7 +208,7 @@ function personGewaehlt(person) {
 
         if (spieler.length === 2) {
           const opfer = spieler.find(s => s !== person);
-          trinkCounter[opfer].exen += 1;
+          addTrinken(opfer, 0, 1);
           zeigeMeldung(`<b>${person}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
           updateTracker();
         } else {
@@ -233,7 +233,7 @@ function personGewaehlt(person) {
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
-      trinkCounter[person].exen += 1;
+      addTrinken(person, 0 , 1);
     } else if (kugelInhalt === "Nichts") {
       kugel.innerHTML = "NICHTS";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
@@ -241,7 +241,7 @@ function personGewaehlt(person) {
       const schluecke = parseInt(kugelInhalt);
       kugel.innerHTML = schluecke;
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">${schluecke} Schlücke!</span>`;
-      trinkCounter[person].schluecke += schluecke;
+      addTrinken(person, schluecke, 0);
     }
 
     updateTracker();
@@ -254,7 +254,7 @@ function personGewaehlt(person) {
 
 function minispielExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
-  trinkCounter[opfer].exen += 1;
+  addTrinken(opfer, 0, 1);
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
   minispielPhase = 0;
@@ -306,7 +306,7 @@ function glückradZiehen(person) {
     endZahlDiv.style.display = "block";
     radText.innerHTML = `<span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
 
-    trinkCounter[person].schluecke += endZahl;
+    addTrinken(person, endZahl, 0);
     updateTracker();
 
     setTimeout(() => {
