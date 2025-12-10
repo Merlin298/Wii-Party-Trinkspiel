@@ -338,3 +338,93 @@ function resetBestaetigt() {
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
 }
+
+let chartAktuell = null;
+let chartGesamt = null;
+let gesamtCounter = {};           // neues Objekt für den Ewigen Stand
+let gesamtInitialized = false;    // wird true nach erstem Reset
+
+// Beim ersten Spieler hinzufügen → auch im Gesamt anlegen
+function spielerHinzufuegen() {
+  // ... dein alter Code ...
+
+  if (!gesamtCounter[name]) {
+    gesamtCounter[name] = { schluecke: 0, exen: 0 };
+  }
+}
+
+// Beim Trinken → auch in Gesamt addieren
+function addToBoth(person, schluecke = 0, exen = 0) {
+  trinkCounter[person].schluecke += schluecke;
+  trinkCounter[person].exen += exen;
+
+  gesamtCounter[person].schluecke += schluecke;
+  gesamtCounter[person].exen += exen;
+
+  updateBothCharts();
+}
+
+// Reset → aktuell nullen, Gesamt bleibt + Container zeigen
+function resetBestaetigt() {
+  spieler.forEach(name => {
+    trinkCounter[name] = { schluecke: 0, exen: 0 };
+  });
+  updateTracker();
+  zeigeMeldung("Neue Runde gestartet!", 3000);
+  document.getElementById("resetOverlay").classList.add("hidden");
+
+  // Gesamt-Chart erst jetzt anzeigen
+  if (!gesamtInitialized) {
+    document.getElementById("gesamtContainer").style.display = "block";
+    gesamtInitialized = true;
+  }
+
+  updateBothCharts();
+}
+
+// Beide Charts updaten
+function updateBothCharts() {
+  updateChart("chartAktuell", chartAktuell, trinkCounter);
+  updateChart("chartGesamt", chartGesamt, gesamtCounter);
+  chartAktuell = chartAktuell || new Chart(...); // wird beim ersten Mal erstellt
+  chartGesamt = chartGesamt || new Chart(...);
+}
+
+// Universelle Chart-Funktion
+function updateChart(canvasId, chartVar, dataSource) {
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  const labels = spieler;
+  const schluecke = spieler.map(n => dataSource[n]?.schluecke || 0);
+  const exen = spieler.map(n => (dataSource[n]?.exen || 0) * 10);
+
+  if (chartVar) chartVar.destroy();
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Schlücke',
+          data: schluecke,
+          backgroundColor: '#ffa502',
+          borderRadius: 10,
+        },
+        {
+          label: 'Exen ×10',
+          data: exen,
+          backgroundColor: '#ff4757',
+          borderRadius: 10,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: 'white', font: { size: 16 } } } },
+      scales: {
+        x: { ticks: { color: 'white', font: { size: 18, weight: 'bold' } } },
+        y: { beginAtZero: true, ticks: { color: 'white' } }
+      }
+    }
+  });
+}
