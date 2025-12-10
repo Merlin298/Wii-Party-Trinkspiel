@@ -99,7 +99,7 @@ function personFeldGewaehlt(person) {
 }
 
 function felderBestaetigt(person, anzahl) {
-  addTrinken(person, anzahl, 0);
+  trinkCounter[person].schluecke += anzahl;
   zeigeMeldung(`<b>${person}</b> muss <b>${anzahl} Schlücke</b> trinken!`);
   updateTracker();
   document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
@@ -112,7 +112,7 @@ function hoelle() {
 
 function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  addTrinken(person, 0 ,1);
+  trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
 }
@@ -124,7 +124,7 @@ function blauerWerfer() {
 
 function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
-  addTrinken(opfer, 0 ,1);
+  trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
 }
@@ -136,7 +136,7 @@ function roterWerfer() {
 
 function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  addTrinken(person, 0, 1);
+  trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateTracker();
 }
@@ -208,7 +208,7 @@ function personGewaehlt(person) {
 
         if (spieler.length === 2) {
           const opfer = spieler.find(s => s !== person);
-          addTrinken(opfer, 0, 1);
+          trinkCounter[opfer].exen += 1;
           zeigeMeldung(`<b>${person}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
           updateTracker();
         } else {
@@ -233,7 +233,7 @@ function personGewaehlt(person) {
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
-      addTrinken(person, 0 , 1);
+      trinkCounter[person].exen += 1;
     } else if (kugelInhalt === "Nichts") {
       kugel.innerHTML = "NICHTS";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
@@ -241,7 +241,7 @@ function personGewaehlt(person) {
       const schluecke = parseInt(kugelInhalt);
       kugel.innerHTML = schluecke;
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">${schluecke} Schlücke!</span>`;
-      addTrinken(person, schluecke, 0);
+      trinkCounter[person].schluecke += schluecke;
     }
 
     updateTracker();
@@ -254,7 +254,7 @@ function personGewaehlt(person) {
 
 function minispielExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
-  addTrinken(opfer, 0, 1);
+  trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
   minispielPhase = 0;
@@ -306,7 +306,7 @@ function glückradZiehen(person) {
     endZahlDiv.style.display = "block";
     radText.innerHTML = `<span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
 
-    addTrinken(person, endZahl, 0);
+    trinkCounter[person].schluecke += endZahl;
     updateTracker();
 
     setTimeout(() => {
@@ -337,91 +337,4 @@ function resetBestaetigt() {
   updateTracker();
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
-}
-
-// ==================== DIAGRAMME ====================
-let chartAktuell = null;
-let chartGesamt = null;
-let gesamtCounter = {};           // Ewiger Stand
-let gesamtSichtbar = false;
-
-// Beim Spieler hinzufügen → auch im Gesamt anlegen
-const originalSpielerHinzufuegen = spielerHinzufuegen;
-function spielerHinzufuegen() {
-  originalSpielerHinzufuegen.apply(this, arguments);
-  const name = arguments[0] || document.getElementById("neuerSpieler").value.trim();
-  if (name && !gesamtCounter[name]) {
-    gesamtCounter[name] = { schluecke: 0, exen: 0 };
-  }
-}
-
-// Alle Trinkaktionen gehen jetzt über diese Funktion
-function addTrinken(person, schluecke = 0, exen = 0) {
-  trinkCounter[person].schluecke += schluecke;
-  trinkCounter[person].exen += exen;
-  gesamtCounter[person].schluecke += schluecke;
-  gesamtCounter[person].exen += exen;
-  updateTracker();
-  updateCharts();
-}
-
-// Diagramm-Funktion (für beide)
-function updateCharts() {
-  if (spieler.length === 0) return;
-
-  const labels = spieler;
-  const aktuellSchluecke = labels.map(n => trinkCounter[n]?.schluecke || 0);
-  const aktuellExen      = labels.map(n => (trinkCounter[n]?.exen || 0) * 10);
-  const gesamtSchluecke  = labels.map(n => gesamtCounter[n]?.schluecke || 0);
-  const gesamtExen       = labels.map(n => (gesamtCounter[n]?.exen || 0) * 10);
-
-  // Aktuelles Diagramm
-  const ctx1 = document.getElementById('chartAktuell').getContext('2d');
-  if (chartAktuell) chartAktuell.destroy();
-  chartAktuell = new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [
-        { label: 'Schlücke', data: aktuellSchluecke, backgroundColor: '#ffa502', borderRadius: 8 },
-        { label: 'Exen ×10', data: aktuellExen, backgroundColor: '#ff4757', borderRadius: 8 }
-      ]
-    },
-    options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } }
-  });
-
-  // Gesamt-Diagramm (wenn sichtbar)
-  if (gesamtSichtbar) {
-    const ctx2 = document.getElementById('chartGesamt').getContext('2d');
-    if (chartGesamt) chartGesamt.destroy();
-    chartGesamt = new Chart(ctx2, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [
-          { label: 'Schlücke', data: gesamtSchluecke, backgroundColor: '#00d2d3', borderRadius: 8 },
-          { label: 'Exen ×10', data: gesamtExen, backgroundColor: '#ff4757', borderRadius: 8 }
-        ]
-      },
-      options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } }
-    });
-  }
-}
-
-// Beim Reset: aktuelle Runde nullen + Gesamt-Diagramm zeigen
-const originalResetBestaetigt = resetBestaetigt;
-function resetBestaetigt() {
-  originalResetBestaetigt();
-  if (!gesamtSichtbar) {
-    document.getElementById("chartGesamtBox").style.display = "block";
-    gesamtSichtbar = true;
-  }
-  updateCharts();
-}
-
-// Beim Spielstart Charts starten
-const originalSpielStarten = spielStarten;
-function spielStarten() {
-  originalSpielStarten();
-  updateCharts();
 }
