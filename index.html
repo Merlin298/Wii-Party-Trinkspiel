@@ -100,5 +100,20 @@
     </div>
   </div>
 
+    <!-- Chart.js laden (einmalig) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Diagramm: Aktuelle Runde -->
+  <div style="margin:40px auto 10px; max-width:90%; padding:20px; background:rgba(0,0,0,0.3); border-radius:20px;">
+    <h2 style="margin:0 0 15px; color:#ffa502; text-align:center;">Aktuelle Runde</h2>
+    <canvas id="chartAktuell" height="300"></canvas>
+  </div>
+  
+  <!-- Diagramm: Ewiger Gesamtstand (erscheint erst nach erstem Reset) -->
+  <div id="chartGesamtBox" style="display:none; margin:10px auto 40px; max-width:90%; padding:20px; background:rgba(0,0,0,0.4); border-radius:20px;">
+    <h2 style="margin:0 0 15px; color:#00d2d3; text-align:center;">Ewiger Gesamtstand</h2>
+    <canvas id="chartGesamt" height="300"></canvas>
+  </div>
+  
 </body>
 </html
