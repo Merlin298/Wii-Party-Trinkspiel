@@ -124,9 +124,7 @@ function blauerWerfer() {
 
 function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
-  showExenChoice(person);
-  zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
-  updateTracker();
+  showExenChoice(opfer);
 }
 
 // Roter Werfer
@@ -137,8 +135,6 @@ function roterWerfer() {
 function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   showExenChoice(person);
-  zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
-  updateTracker();
 }
 
 // Minispiel
@@ -233,7 +229,7 @@ function personGewaehlt(person) {
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
-      trinkCounter[person].exen += 1;
+      showExenChoice(person);
     } else if (kugelInhalt === "Nichts") {
       kugel.innerHTML = "NICHTS";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
@@ -256,7 +252,6 @@ function minispielExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
   showExenChoice(opfer);
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
-  updateTracker();
   minispielPhase = 0;
 }
 
