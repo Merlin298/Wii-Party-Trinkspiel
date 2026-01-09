@@ -1,118 +1,119 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wii Party Trinkspiel</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon-192.png" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
-  <meta name="theme-color" content="#1a1a1a" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wii Party Trinkspiel</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="theme-color" content="#1a1a1a" />
 </head>
 <body>
-  <div class="container">
-    <h1>🍻 Wii Party Trinkspiel 🍻</h1>
+<div class="container">
+<h1>🍻 Wii Party Trinkspiel 🍻</h1>
 
-      <!-- Reset-Button (nur im Spiel sichtbar) -->
-  <div id="resetButtonContainer" style="position:absolute; top:10px; right:10px; z-index:100; display:none;">
-    <button onclick="resetTracker()" 
-            style="padding:12px 20px; background:#ff4757; border:none; border-radius:12px; 
-                   color:white; font-weight:bold; font-size:1rem; box-shadow:0 4px #b33939;">
-      Reset Runde
-    </button>
-  </div>
-    
-    <!-- Setup -->
-    <div id="setup">
-      <input type="text" id="neuerSpieler" placeholder="Name eingeben" maxlength="15" />
-      <button onclick="spielerHinzufuegen()">+ Spieler</button>
-      <button onclick="spielStarten()" id="startBtn" disabled>Spiel starten!</button>
-      <p id="spielerAnzahl">0 / 4 Spieler</p>
-    </div>
+<!-- Reset-Button (nur im Spiel sichtbar) -->
+<div id="resetButtonContainer" style="position:absolute; top:10px; right:10px; z-index:100; display:none;">
+<button onclick="resetTracker()" 
+style="padding:12px 20px; background:#ff4757; border:none; border-radius:12px; 
+                  color:white; font-weight:bold; font-size:1rem; box-shadow:0 4px #b33939;">
+Reset Runde
+</button>
+</div>
 
-    <ul id="spielerListe"></ul>
+<!-- Setup -->
+<div id="setup">
+<input type="text" id="neuerSpieler" placeholder="Name eingeben" maxlength="15" />
+<button onclick="spielerHinzufuegen()">+ Spieler</button>
+<button onclick="spielStarten()" id="startBtn" disabled>Spiel starten!</button>
+<p id="spielerAnzahl">0 / 4 Spieler</p>
+</div>
 
-    <!-- Hauptspiel -->
-    <div id="spiel" class="hidden">
-      <div class="tracker" id="trinkStand"></div>
+<ul id="spielerListe"></ul>
 
-      <div class="buttons">
-        <button onclick="felderTrinken()">➤ Felder vor/zurück</button>
-        <button onclick="hoelle()">In die Hölle</button>
-        <button onclick="blauerWerfer()">Blauer Bimbo (verteilen)</button>
-        <button onclick="roterWerfer()">Roter Bimbo (selber)</button>
-        <button class="big" onclick="minispiel()">Minispiel – Kugel ziehen!</button>
-      </div>
-    </div>
-  </div>
+<!-- Hauptspiel -->
+<div id="spiel" class="hidden">
+<div class="tracker" id="trinkStand"></div>
 
-  <!-- Kugel-Animation -->
-  <div id="kugelOverlay" style="display:none;">
-    <div id="kugelContainer">
-      <div id="kugel">?</div>
-      <div id="kugelText">Zieh eine Kugel...</div>
-    </div>
-  </div>
+<div class="buttons">
+<button onclick="felderTrinken()">➤ Felder vor/zurück</button>
+<button onclick="hoelle()">In die Hölle</button>
+<button onclick="blauerWerfer()">Blauer Bimbo (verteilen)</button>
+<button onclick="roterWerfer()">Roter Bimbo (selber)</button>
+<button class="big" onclick="minispiel()">Minispiel – Kugel ziehen!</button>
+</div>
+</div>
+</div>
 
-  <script src="script.js"></script>
+<!-- Kugel-Animation -->
+<div id="kugelOverlay" style="display:none;">
+<div id="kugelContainer">
+<div id="kugel">?</div>
+<div id="kugelText">Zieh eine Kugel...</div>
+</div>
+</div>
 
-  <!-- Glücksrad final (mittig, Zahlen auf Feldern) -->
-  <div id="glueckradOverlay" style="display:none;">
-    <div id="glueckradContainer">
-      <div id="glueckradPfeil">▲</div>
-      <div id="glueckrad">
-        <div class="rad-labels">
-          <div class="label" style="--i:0">0</div>
-          <div class="label" style="--i:1">1</div>
-          <div class="label" style="--i:2">2</div>
-          <div class="label" style="--i:3">3</div>
-          <div class="label" style="--i:4">4</div>
-          <div class="label" style="--i:5">5</div>
-          <div class="label" style="--i:6">6</div>
-          <div class="label" style="--i:7">7</div>
-          <div class="label" style="--i:8">8</div>
-          <div class="label" style="--i:9">9</div>
-          <div class="label" style="--i:10">10</div>
-        </div>
-      </div>
-      <div id="radText">Dreht sich...</div>
-      <div id="endZahl" style="display:none;"></div>
-    </div>
-  </div>
+<script src="script.js"></script>
 
-    <!-- Reset-Bestätigung Overlay -->
-  <div id="resetOverlay" class="hidden" style="position:fixed; top:0; left:0; right:0; bottom:0; 
-       background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:99999;">
-    <div style="background:#222; padding:40px; border-radius:20px; text-align:center; max-width:90%;">
-      <h2 style="margin:0 0 20px 0; color:#ff4757;">Tracker zurücksetzen?</h2>
-      <p style="margin:15px 0; font-size:1.4rem;">Namen bleiben erhalten<br>Schlücke & Exen werden auf 0 gesetzt</p>
-      <div style="margin-top:30px;">
-        <button onclick="resetBestaetigt()" 
-                style="padding:15px 30px; margin:10px; background:#ff4757; border:none; border-radius:12px; color:white; font-size:1.3rem;">
-          Ja, zurücksetzen
-        </button>
-        <button onclick="document.getElementById('resetOverlay').classList.add('hidden')"
-                style="padding:15px 30px; margin:10px; background:#333; border:none; border-radius:12px; color:white; font-size:1.3rem;">
-          Abbrechen
-        </button>
-      </div>
-    </div>
+<!-- Glücksrad final (mittig, Zahlen auf Feldern) -->
+<div id="glueckradOverlay" style="display:none;">
+<div id="glueckradContainer">
+<div id="glueckradPfeil">▲</div>
+<div id="glueckrad">
+<div class="rad-labels">
+<div class="label" style="--i:0">0</div>
+<div class="label" style="--i:1">1</div>
+<div class="label" style="--i:2">2</div>
+<div class="label" style="--i:3">3</div>
+<div class="label" style="--i:4">4</div>
+<div class="label" style="--i:5">5</div>
+<div class="label" style="--i:6">6</div>
+<div class="label" style="--i:7">7</div>
+<div class="label" style="--i:8">8</div>
+<div class="label" style="--i:9">9</div>
+<div class="label" style="--i:10">10</div>
+</div>
+</div>
+<div id="radText">Dreht sich...</div>
+<div id="endZahl" style="display:none;"></div>
+</div>
+</div>
+
+<!-- Reset-Bestätigung Overlay -->
+<div id="resetOverlay" class="hidden" style="position:fixed; top:0; left:0; right:0; bottom:0; 
+      background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:99999;">
+<div style="background:#222; padding:40px; border-radius:20px; text-align:center; max-width:90%;">
+<h2 style="margin:0 0 20px 0; color:#ff4757;">Tracker zurücksetzen?</h2>
+<p style="margin:15px 0; font-size:1.4rem;">Namen bleiben erhalten<br>Schlücke & Exen werden auf 0 gesetzt</p>
+<div style="margin-top:30px;">
+<button onclick="resetBestaetigt()" 
+style="padding:15px 30px; margin:10px; background:#ff4757; border:none; border-radius:12px; color:white; font-size:1.3rem;">
+Ja, zurücksetzen
+</button>
+<button onclick="document.getElementById('resetOverlay').classList.add('hidden')"
+style="padding:15px 30px; margin:10px; background:#333; border:none; border-radius:12px; color:white; font-size:1.3rem;">
+Abbrechen
+</button>
+</div>
+</div>
+</div>
+
+    <!-- Chart.js laden (einmalig) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Diagramm: Aktuelle Runde -->
+  <div style="margin:40px auto 10px; max-width:90%; padding:20px; background:rgba(0,0,0,0.3); border-radius:20px;">
+    <h2 style="margin:0 0 15px; color:#ffa502; text-align:center;">Aktuelle Runde</h2>
+    <canvas id="chartAktuell" height="300"></canvas>
   </div>
   
-    <!-- ECHTES CASINO PLINKO -->
-  <div id="plinkoOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#0a0a0a; z-index:99999; overflow:hidden;">
-    <div style="text-align:center; padding:20px;">
-      <h2 style="color:#00d2d3; margin:0;">PLINKO – 100 Bälle</h2>
-      <p id="ballsLeft" style="color:white; font-size:1.5rem; margin:10px 0;">Bälle übrig: <b>100</b></p>
-      <button id="dropBallBtn" style="padding:15px 50px; font-size:2rem; background:#ff4757; border:none; border-radius:15px; color:white; cursor:pointer;">
-        DROP BALL
-      </button>
-      <p style="margin-top:20px; color:#ffa502;">Gesamt: <b id="totalDrinks">0</b> Schlücke</p>
-    </div>
-    <canvas id="plinkoCanvas" width="800" height="700"></canvas>
+  <!-- Diagramm: Ewiger Gesamtstand (erscheint erst nach erstem Reset) -->
+  <div id="chartGesamtBox" style="display:none; margin:10px auto 40px; max-width:90%; padding:20px; background:rgba(0,0,0,0.4); border-radius:20px;">
+    <h2 style="margin:0 0 15px; color:#00d2d3; text-align:center;">Ewiger Gesamtstand</h2>
+    <canvas id="chartGesamt" height="300"></canvas>
   </div>
-
   
 </body>
 </html
