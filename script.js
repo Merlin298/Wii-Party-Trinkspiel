@@ -112,7 +112,7 @@ function hoelle() {
 
 function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[person].exen += 1;
+  showExenChoice(person);
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
 }
@@ -124,7 +124,7 @@ function blauerWerfer() {
 
 function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[opfer].exen += 1;
+  showExenChoice(person);
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
 }
@@ -136,7 +136,7 @@ function roterWerfer() {
 
 function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[person].exen += 1;
+  showExenChoice(person);
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateTracker();
 }
@@ -254,7 +254,7 @@ function personGewaehlt(person) {
 
 function minispielExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
-  trinkCounter[opfer].exen += 1;
+  showExenChoice(opfer);
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
   minispielPhase = 0;
