@@ -99,6 +99,20 @@
       </div>
     </div>
   </div>
+  
+    <!-- ECHTES CASINO PLINKO -->
+  <div id="plinkoOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:#0a0a0a; z-index:99999; overflow:hidden;">
+    <div style="text-align:center; padding:20px;">
+      <h2 style="color:#00d2d3; margin:0;">PLINKO – 100 Bälle</h2>
+      <p id="ballsLeft" style="color:white; font-size:1.5rem; margin:10px 0;">Bälle übrig: <b>100</b></p>
+      <button id="dropBallBtn" style="padding:15px 50px; font-size:2rem; background:#ff4757; border:none; border-radius:15px; color:white; cursor:pointer;">
+        DROP BALL
+      </button>
+      <p style="margin-top:20px; color:#ffa502;">Gesamt: <b id="totalDrinks">0</b> Schlücke</p>
+    </div>
+    <canvas id="plinkoCanvas" width="800" height="700"></canvas>
+  </div>
 
+  
 </body>
 </html
