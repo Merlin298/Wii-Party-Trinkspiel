@@ -14,6 +14,8 @@ const kugeln = [
   "Zufall 0-10 Schlücke"
 ];
 
+console.log("script.js geladen – showExenChoice bereit");
+
 // Setup
 function spielerHinzufuegen() {
   const input = document.getElementById("neuerSpieler");
