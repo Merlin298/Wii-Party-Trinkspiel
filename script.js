@@ -115,8 +115,6 @@ function hoelle() {
 function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   showExenChoice(person);
-  zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
-  updateTracker();
 }
 
 // Blauer Werfer
