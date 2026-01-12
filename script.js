@@ -706,7 +706,7 @@ function animateAllBalls() {
   if (activeBalls.length > 0 || plinkoBallsLeft > 0) {
     requestAnimationFrame(animateAllBalls);
   }
-}
+}}
   
 function plinkoExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
