@@ -406,7 +406,7 @@ function flipCoin() {
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
-    }, 6000);
+    }, 3000);
   }, 4500);
 }
 
