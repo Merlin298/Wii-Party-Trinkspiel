@@ -99,7 +99,7 @@ function personFeldGewaehlt(person) {
 }
 
 function felderBestaetigt(person, anzahl) {
-  showDoubleOrNothing(person, anzahl);
+  showDoubleConfirm(person, anzahl);
   document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
 }
 
@@ -369,5 +369,30 @@ function flipCoin() {
       // Keine Schlücke addiert
     }
     updateTracker();
+    
+    setTimeout(() => {
+      document.getElementById("doubleOverlay").style.display = "none";
+    }, 4000);
+    
   }, 3000);
+}
+
+
+function showDoubleConfirm(person, anzahl) {
+  currentDoublePerson = person;
+  currentDoubleAnzahl = anzahl;
+  document.getElementById("confirmAnzahl").textContent = anzahl;
+  document.getElementById("doubleConfirmOverlay").style.display = "flex";
+}
+
+function confirmDouble() {
+  document.getElementById("doubleConfirmOverlay").style.display = "none";
+  showDoubleOrNothing(currentDoublePerson, currentDoubleAnzahl);
+}
+
+function cancelDouble() {
+  document.getElementById("doubleConfirmOverlay").style.display = "none";
+  trinkCounter[currentDoublePerson].schluecke += currentDoubleAnzahl;
+  updateTracker();
+  zeigeMeldung(`<b>${currentDoublePerson}</b> nimmt sicher <b>${currentDoubleAnzahl} Schlücke</b>!`);
 }
