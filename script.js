@@ -369,14 +369,20 @@ function cancelDouble() {
 
 function flipCoin() {
   const coin = document.getElementById("coin");
-  coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)"; // 6 volle Drehungen – deine Dauer
+  const resultArea = document.getElementById("doubleResult");
 
-  // Ergebnis-Text und finale Rotation ERST NACH der Drehung
+  // Ergebnis-Bereich sofort leeren (damit nichts steht während Drehung)
+  resultArea.innerHTML = "";
+
+  // Drehung STARTET SOFORT
+  coin.style.transition = "transform 4.5s ease-in-out";
+  coin.style.transform = "rotateY(2160deg)"; // Drehung läuft 4,5 Sekunden
+
+  // Ergebnis + finale Position + Text ERST NACH 4,5 Sekunden
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
 
-    // Jetzt erst die Münze auf das finale Ergebnis drehen + Text setzen
+    // Münze stoppt auf dem Ergebnis
     coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
 
     let schluecke = 0;
@@ -390,21 +396,21 @@ function flipCoin() {
       resultText = `NOTHING! 0 Schlücke`;
     }
 
-    // Ergebnis-Text wird erst JETZT gesetzt – nach der Drehung
-    document.getElementById("doubleResult").innerHTML = `<span style="${isDouble ? 'color:#ffd700;' : 'color:#ff4757;'}">${resultText}</span>`;
+    // Text wird erst JETZT gesetzt – nach Drehung
+    resultArea.innerHTML = `<span style="${isDouble ? 'color:#ffd700;' : 'color:#ff4757;'}">${resultText}</span>`;
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
 
-    // Normale Meldung kommt nach 6000 ms total (dein Timing)
+    // Deine normale Meldung nach 6 Sekunden total
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
 
-      // Overlay schließt sich 1 Sekunde nach Meldung
+      // Schließen nach 1 Sekunde
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
-    }, 6000); // dein Wert
+    }, 6000);
 
-  }, 4500); // Ergebnis + finale Rotation erst nach 4.5 Sekunden Drehung
+  }, 4500); // Ergebnis erst nach 4,5 Sekunden Drehung
 }
