@@ -99,9 +99,7 @@ function personFeldGewaehlt(person) {
 }
 
 function felderBestaetigt(person, anzahl) {
-  trinkCounter[person].schluecke += anzahl;
-  zeigeMeldung(`<b>${person}</b> muss <b>${anzahl} Schlücke</b> trinken!`);
-  updateTracker();
+  showDoubleOrNothing(person, anzahl);
   document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
 }
 
