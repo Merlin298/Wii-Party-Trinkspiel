@@ -563,27 +563,73 @@ function dropPlinkoBall() {
   const pegRadius = 7;
 
   const animateBall = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Pegs + Slots NEU zeichnen bei jedem Frame
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Pegs (kopiere aus startPlinko)
+  ctx.fillStyle = "#00d2d3";
+  pegsPerRow.forEach((count, row) => {
+    const y = startY + row * rowHeight;
+    const offset = (canvas.width - count * 55) / 2 + 27.5;
+    for (let i = 0; i < count; i++) {
+      ctx.beginPath();
+      ctx.arc(offset + i * 55, y, pegRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  // Slots (kopiere aus startPlinko)
+  const slotWidth = canvas.width / 17;
+  plinkoLabels.forEach((label, i) => {
+    const x = i * slotWidth;
+    let bgColor = "#555";
+    if (label.includes("Volles") || label.includes("Exen")) bgColor = "#444";
+    else if (label === "0") bgColor = "#333";
+    else if (parseFloat(label) >= 5) bgColor = "#ff4757";
+    else if (parseFloat(label) >= 2) bgColor = "#ffa502";
+  
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(x, canvas.height - 90, slotWidth, 90);
+  
+    ctx.fillStyle = "white";
+    ctx.font = label.length > 15 ? "bold 14px Arial" : "bold 20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(label, x + slotWidth / 2, canvas.height - 45);
+  });
+
+        // Linke & rechte Wand
+    if (x < 20) {
+      x = 20;
+      vx = -vx * bounce; // abprallen
+    }
+    if (x > canvas.width - 20) {
+      x = canvas.width - 20;
+      vx = -vx * bounce;
+    }
+    
+    // Ball zeichnen (wie vorher)
     vy += gravity;
     x += vx;
     y += vy;
-
-    // Peg-Kollision
-    const row = Math.floor((y - 100) / 42);
-    if (row >= 0 && row < 16) {
-      const count = row + 3;
-      const offset = (canvas.width - count * 55) / 2 + 27.5;
-      for (let i = 0; i < count; i++) {
-        const px = offset + i * 55;
-        const py = 100 + row * 42;
-        const dist = Math.hypot(x - px, y - py);
-        if (dist < pegRadius + 10) {
-          vx = (x - px) * 0.3 + (Math.random() - 0.5) * 3;
-          vy = -vy * bounce;
-        }
-      }
+  
+    // Kollisionen (wie vorher)
+    // ... dein Kollisions-Code ...
+  
+    ctx.fillStyle = "#ff4757";
+    ctx.beginPath();
+    ctx.arc(x, y, 14, 0, Math.PI * 2);
+    ctx.fill();
+  
+    // Landen-Logik (wie vorher)
+    if (y > canvas.height - 100 && vy > 0) {
+      // ... dein Landen-Code ...
     }
+  
+    requestAnimationFrame(animateBall);
+  };
 
     // Ball zeichnen
     ctx.fillStyle = "#ff4757";
@@ -596,6 +642,16 @@ function dropPlinkoBall() {
       const mult = plinkoMultipliers[slot] || 0;
       const drink = mult * 1;
       plinkoTotalDrinks += drink;
+
+          let extraText = "";
+    if (plinkoLabels[slot].includes("Exen verteilen")) {
+      if (!window.plinkoExenVerteilen) window.plinkoExenVerteilen = 0;
+      window.plinkoExenVerteilen += 1;
+      extraText = ` + <span style="color:#ff4757">${window.plinkoExenVerteilen} Exen verteilen</span>`;
+    } else if (plinkoLabels[slot].includes("Exen")) {
+      extraText = ` + <span style="color:#ff4757">+1 Exe</span>`;
+    }
+    document.getElementById("totalDrinks").innerHTML = plinkoTotalDrinks.toFixed(1) + extraText;
       
       if (plinkoBallsLeft === 0) {
         let msg = `<b>${currentExenPerson}</b> muss <b>${plinkoTotalDrinks.toFixed(1)} Schlücke</b> trinken! (Plinko)`;
