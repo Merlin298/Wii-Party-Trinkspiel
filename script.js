@@ -558,7 +558,7 @@ function dropPlinkoBall() {
   const newBall = {
     x: canvas.width / 2,
     y: 60,
-    vx: (Math.random() - 0.5) * 3,
+    vx: (Math.random() - 0.5) * 2,
     vy: 0,
     landed: false
   };
@@ -585,7 +585,7 @@ function animateAllBalls() {
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Pegs zeichnen
+  // Pegs
   const pegRows = 16;
   const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
   const pegRadius = 7;
@@ -602,7 +602,7 @@ function animateAllBalls() {
     }
   });
 
-  // Slots zeichnen
+  // Slots
   const slotWidth = canvas.width / 17;
   plinkoLabels.forEach((label, i) => {
     const x = i * slotWidth;
@@ -622,9 +622,8 @@ function animateAllBalls() {
   });
 
   const gravity = 0.4;
-  const bounce = 0.6;
+  const bounce = 0.25; // sanftes Abprallen
 
-  // Alle Bälle animieren
   activeBalls = activeBalls.filter(ball => {
     if (ball.landed) return true;
 
@@ -646,7 +645,7 @@ function animateAllBalls() {
         const py = startY + row * rowHeight;
         const dist = Math.hypot(ball.x - px, ball.y - py);
         if (dist < pegRadius + 12) {
-          ball.vx = (ball.x - px) * 0.3 + (Math.random() - 0.5) * 2;
+          ball.vx = (ball.x - px) * 0.2 + (Math.random() - 0.5) * 1;
           ball.vy = -ball.vy * bounce;
         }
       }
@@ -663,7 +662,7 @@ function animateAllBalls() {
       ball.landed = true;
       ball.y = canvas.height - 100;
       ball.vy = 0;
-      ball.vx *= 0.8;
+      ball.vx *= 0.7;
 
       const slot = Math.floor(ball.x / slotWidth);
       const mult = plinkoMultipliers[slot] || 0;
@@ -686,9 +685,11 @@ function animateAllBalls() {
 
       document.getElementById("totalDrinks").innerHTML = plinkoTotalDrinks.toFixed(1) + extraText;
 
-      // Jetzt plinkoBallsLeft reduzieren, Overlay erst schließen, wenn alle Bälle gelandet
+      // Ball-Landen: plinkoBallsLeft reduzieren
       plinkoBallsLeft--;
       document.getElementById("ballsLeft").textContent = plinkoBallsLeft;
+
+      // Overlay schließen erst, wenn alle Bälle gelandet
       if (plinkoBallsLeft === 0 && activeBalls.every(b => b.landed)) {
         setTimeout(() => {
           document.getElementById("plinkoOverlay").style.display = "none";
