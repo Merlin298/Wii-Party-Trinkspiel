@@ -348,36 +348,6 @@ function showDoubleOrNothing(person, anzahl) {
   flipCoin();
 }
 
-function flipCoin() {
-  const coin = document.getElementById("coin");
-  coin.style.transition = "transform 3s ease-in-out";
-  coin.style.transform = "rotateY(1800deg)"; // 5 volle Drehungen + 180°
-
-  setTimeout(() => {
-    const isDouble = Math.random() < 0.5;
-    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
-
-    if (isDouble) {
-      const doubleAnzahl = currentDoubleAnzahl * 2;
-      document.getElementById("doubleResult").innerHTML = `<span style="color:#ffd700;">DOUBLE! +${doubleAnzahl} Schlücke!</span>`;
-      trinkCounter[currentDoublePerson].schluecke += doubleAnzahl;
-      updateTracker();
-      // Optional: Konfetti-Effekt (wenn du confetti.js hast)
-      // confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-    } else {
-      document.getElementById("doubleResult").innerHTML = `<span style="color:#ff4757;">NOTHING! 0 Schlücke</span>`;
-      // Keine Schlücke addiert
-    }
-    updateTracker();
-    
-    setTimeout(() => {
-      document.getElementById("doubleOverlay").style.display = "none";
-    }, 4000);
-    
-  }, 3000);
-}
-
-
 function showDoubleConfirm(person, anzahl) {
   currentDoublePerson = person;
   currentDoubleAnzahl = anzahl;
@@ -395,4 +365,39 @@ function cancelDouble() {
   trinkCounter[currentDoublePerson].schluecke += currentDoubleAnzahl;
   updateTracker();
   zeigeMeldung(`<b>${currentDoublePerson}</b> nimmt sicher <b>${currentDoubleAnzahl} Schlücke</b>!`);
+}
+
+function flipCoin() {
+  const coin = document.getElementById("coin");
+  coin.style.transition = "transform 3s ease-in-out";
+  coin.style.transform = "rotateY(1800deg)"; // 5 volle Drehungen + 180°
+
+  setTimeout(() => {
+    const isDouble = Math.random() < 0.5;
+    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
+
+    let message = "";
+    let schluecke = 0;
+
+    if (isDouble) {
+      schluecke = currentDoubleAnzahl * 2;
+      message = `DOUBLE! +${schluecke} Schlücke!`;
+      document.getElementById("doubleResult").innerHTML = `<span style="color:#ffd700;">${message}</span>`;
+      trinkCounter[currentDoublePerson].schluecke += schluecke;
+    } else {
+      schluecke = 0;
+      message = `NOTHING! 0 Schlücke`;
+      document.getElementById("doubleResult").innerHTML = `<span style="color:#ff4757;">${message}</span>`;
+      // Keine Schlücke addiert
+    }
+
+    updateTracker();
+
+    // Wichtiger Teil: Die normale Meldung mit „Du musst X Schlücke trinken!“
+    setTimeout(() => {
+      zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
+      document.getElementById("doubleOverlay").style.display = "none";
+    }, 1500); // 1,5 Sekunden nach Ergebnis (damit man das Ergebnis kurz sieht)
+
+  }, 3000); // 3 Sekunden Drehung
 }
