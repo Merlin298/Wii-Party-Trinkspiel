@@ -511,7 +511,7 @@ function startPlinko(person) {
 
   // Pegs
   const pegRows = 16;
-  const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3); // bleibt gleich
+  const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
   const pegRadius = 7;
   const startY = 100;
   const rowHeight = 42;
@@ -519,14 +519,15 @@ function startPlinko(person) {
   ctx.fillStyle = "#00d2d3";
   pegsPerRow.forEach((count, row) => {
     const y = startY + row * rowHeight;
-    const spacing = canvas.width / (count + 1); // Abstand dynamisch
+    const spacing = canvas.width / (count + 1);
     for (let i = 0; i < count; i++) {
-    const x = spacing * (i + 1); // Peg x-Position
-    ctx.beginPath();
-    ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
-    ctx.fill();
-  }
-});
+      const x = spacing * (i + 1);
+      ctx.beginPath();
+      ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
 
   // Slots
   const slotWidth = canvas.width / 17;
