@@ -596,7 +596,28 @@ function dropPlinkoBall() {
       const mult = plinkoMultipliers[slot] || 0;
       const drink = mult * 1;
       plinkoTotalDrinks += drink;
-      document.getElementById("totalDrinks").textContent = plinkoTotalDrinks.toFixed(1);
+      
+      if (plinkoBallsLeft === 0) {
+        let msg = `<b>${currentExenPerson}</b> muss <b>${plinkoTotalDrinks.toFixed(1)} Schlücke</b> trinken! (Plinko)`;
+        if (window.plinkoExenVerteilen > 0) {
+          msg += ` + <b>${window.plinkoExenVerteilen} Exen verteilen</b>`;
+          // Personenauswahl erst nach Meldung
+          setTimeout(() => {
+            erstellePersonenOverlay(
+              `Plinko: ${window.plinkoExenVerteilen} Exen verteilen!<br>Wen soll's treffen?`,
+              "plinkoExenVerteilen",
+              [currentExenPerson]
+            );
+          }, 2000);
+        }
+        zeigeMeldung(msg, 5000);
+        // Overlay schließen nach 6 Sekunden (auch ohne Verteilen)
+        setTimeout(() => {
+          document.getElementById("plinkoOverlay").style.display = "none";
+        }, 6000);
+    }
+      
+    document.getElementById("totalDrinks").textContent = plinkoTotalDrinks.toFixed(1);
 
       // Sonder-Logik
       if (plinkoLabels[slot].includes("Exen verteilen")) {
