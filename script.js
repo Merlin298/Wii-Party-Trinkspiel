@@ -370,37 +370,36 @@ function cancelDouble() {
 function flipCoin() {
   const coin = document.getElementById("coin");
   coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)"; // 6 volle Drehungen + 180°
+  coin.style.transform = "rotateY(2160deg)"; // 6 volle Drehungen
 
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
-    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
+    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`; // ← hier das Backtick!
 
-    let message = "";
     let schluecke = 0;
+    let resultText = "";
 
     if (isDouble) {
       schluecke = currentDoubleAnzahl * 2;
-      message = `DOUBLE! +${schluecke} Schlücke!`;
-      document.getElementById("doubleResult").innerHTML = `<span style="color:#ffd700;">${message}</span>`;
+      resultText = `DOUBLE! +${schluecke} Schlücke!`;
+      document.getElementById("doubleResult").innerHTML = `<span style="color:#ffd700;">${resultText}</span>`;
       trinkCounter[currentDoublePerson].schluecke += schluecke;
     } else {
       schluecke = 0;
-      message = `NOTHING! 0 Schlücke`;
-      document.getElementById("doubleResult").innerHTML = `<span style="color:#ff4757;">${message}</span>`;
-      // Keine Schlücke addiert
+      resultText = `NOTHING! 0 Schlücke`;
+      document.getElementById("doubleResult").innerHTML = `<span style="color:#ff4757;">${resultText}</span>`;
     }
 
     updateTracker();
 
-     // Normale Meldung kommt erst 2 Sekunden NACH dem Ergebnis
+    // Normale Meldung kommt erst 2 Sekunden NACH dem Ergebnis
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
-      
-      // Overlay schließt sich erst 2 Sekunden nach der Meldung (oder nach 6 Sekunden total)
+
+      // Overlay schließt sich erst 2 Sekunden später
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 2000);
     }, 2000); // 2 Sekunden Verzug nach Ergebnis
-
-  }, 4500); // 4,5 Sekunden Drehung – bis Ergebnis sichtbar
+  }, 4500); // 4,5 Sekunden Drehung
+}
