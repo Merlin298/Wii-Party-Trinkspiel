@@ -370,11 +370,13 @@ function cancelDouble() {
 function flipCoin() {
   const coin = document.getElementById("coin");
   coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)"; // 6 volle Drehungen
+  coin.style.transform = "rotateY(2160deg)"; // 6 volle Drehungen – deine Dauer
 
-  // Ergebnis erst nach 700 ms (dein Timing)
+  // Ergebnis-Text und finale Rotation ERST NACH der Drehung
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
+
+    // Jetzt erst die Münze auf das finale Ergebnis drehen + Text setzen
     coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
 
     let schluecke = 0;
@@ -383,25 +385,26 @@ function flipCoin() {
     if (isDouble) {
       schluecke = currentDoubleAnzahl * 2;
       resultText = `DOUBLE! +${schluecke} Schlücke!`;
-      document.getElementById("doubleResult").innerHTML = `<span style="color:#ffd700;">${resultText}</span>`;
-      trinkCounter[currentDoublePerson].schluecke += schluecke;
     } else {
       schluecke = 0;
       resultText = `NOTHING! 0 Schlücke`;
-      document.getElementById("doubleResult").innerHTML = `<span style="color:#ff4757;">${resultText}</span>`;
     }
 
+    // Ergebnis-Text wird erst JETZT gesetzt – nach der Drehung
+    document.getElementById("doubleResult").innerHTML = `<span style="${isDouble ? 'color:#ffd700;' : 'color:#ff4757;'}">${resultText}</span>`;
+
+    trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
 
-    // Normale Meldung kommt nach 6 Sekunden total (wie bei dir)
+    // Normale Meldung kommt nach 6000 ms total (dein Timing)
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
 
-      // Overlay schließt sich 1 Sekunde nach der Meldung
+      // Overlay schließt sich 1 Sekunde nach Meldung
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
-    }, 6000 - 700); // 6s total - 700ms = Verzug nach Ergebnis
+    }, 6000); // dein Wert
 
-  }, 700); // Ergebnis erst nach 700 ms
+  }, 4500); // Ergebnis + finale Rotation erst nach 4.5 Sekunden Drehung
 }
