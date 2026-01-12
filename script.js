@@ -338,3 +338,38 @@ function resetBestaetigt() {
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
 }
+
+let currentDoublePerson = null;
+let currentDoubleAnzahl = 0;
+
+function showDoubleOrNothing(person, anzahl) {
+  currentDoublePerson = person;
+  currentDoubleAnzahl = anzahl;
+  document.getElementById("doubleOverlay").style.display = "flex";
+  document.getElementById("doubleResult").textContent = "";
+  flipCoin();
+}
+
+function flipCoin() {
+  const coin = document.getElementById("coin");
+  coin.style.transition = "transform 3s ease-in-out";
+  coin.style.transform = "rotateY(1800deg)"; // 5 volle Drehungen + 180°
+
+  setTimeout(() => {
+    const isDouble = Math.random() < 0.5;
+    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
+
+    if (isDouble) {
+      const doubleAnzahl = currentDoubleAnzahl * 2;
+      document.getElementById("doubleResult").innerHTML = `<span style="color:#ffd700;">DOUBLE! +${doubleAnzahl} Schlücke!</span>`;
+      trinkCounter[currentDoublePerson].schluecke += doubleAnzahl;
+      updateTracker();
+      // Optional: Konfetti-Effekt (wenn du confetti.js hast)
+      // confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    } else {
+      document.getElementById("doubleResult").innerHTML = `<span style="color:#ff4757;">NOTHING! 0 Schlücke</span>`;
+      // Keine Schlücke addiert
+    }
+    updateTracker();
+  }, 3000);
+}
