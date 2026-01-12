@@ -110,7 +110,7 @@ function hoelle() {
 
 function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[person].exen += 1;
+  showExenChoice(person);
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
 }
@@ -122,7 +122,7 @@ function blauerWerfer() {
 
 function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[opfer].exen += 1;
+  showExenChoice(person);
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
 }
@@ -134,7 +134,7 @@ function roterWerfer() {
 
 function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  trinkCounter[person].exen += 1;
+  showExenChoice(person);
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateTracker();
 }
@@ -231,7 +231,7 @@ function personGewaehlt(person) {
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
-      trinkCounter[person].exen += 1;
+      showExenChoice(person);
     } else if (kugelInhalt === "Nichts") {
       kugel.innerHTML = "NICHTS";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
@@ -455,4 +455,185 @@ function launchConfetti() {
   }
 
   draw();
+}
+
+let currentExenPerson = null;
+let plinkoBallsLeft = 10;
+let plinkoTotalDrinks = 0;
+
+const plinkoMultipliers = [0, 0, 0, 5, 3, 2, 1, 0, 0, 0, 1, 2, 3, 5, 0, 0, 0]; // 17 Slots
+const plinkoLabels = [
+  "Volles Getränk Exen verteilen", // Slot 0
+  "Volles Getränk Exen",           // Slot 1
+  "Exen",                          // Slot 2
+  "5×", "3×", "2×", "1×", "0×",    // Slot 3-7
+  "0",                             // Mitte Slot 8
+  "0×", "1×", "2×", "3×", "5×",    // Slot 9-13
+  "Exen",                          // Slot 14
+  "Volles Getränk Exen",           // Slot 15
+  "Volles Getränk Exen verteilen"  // Slot 16
+];
+
+function showExenChoice(person) {
+  currentExenPerson = person;
+  document.getElementById("exenChoiceOverlay").style.display = "flex";
+}
+
+function chooseDrink() {
+  document.getElementById("exenChoiceOverlay").style.display = "none";
+  trinkCounter[currentExenPerson].exen += 1;
+  updateTracker();
+  zeigeMeldung(`<b>${currentExenPerson}</b> trinkt direkt eine EXE!`);
+}
+
+function choosePlinko() {
+  document.getElementById("exenChoiceOverlay").style.display = "none";
+  startPlinko(currentExenPerson);
+}
+
+function startPlinko(person) {
+  currentExenPerson = person;
+  plinkoBallsLeft = 10;
+  plinkoTotalDrinks = 0;
+  document.getElementById("ballsLeft").textContent = "10";
+  document.getElementById("totalDrinks").textContent = "0";
+  document.getElementById("plinkoOverlay").style.display = "flex";
+
+  const canvas = document.getElementById("plinkoCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Hintergrund
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Pegs (16 Reihen)
+  const pegRows = 16;
+  const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
+  const pegRadius = 7;
+  const startY = 100;
+  const rowHeight = 42;
+
+  ctx.fillStyle = "#00d2d3";
+  pegsPerRow.forEach((count, row) => {
+    const y = startY + row * rowHeight;
+    const offset = (canvas.width - count * 55) / 2 + 27.5;
+    for (let i = 0; i < count; i++) {
+      ctx.beginPath();
+      ctx.arc(offset + i * 55, y, pegRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  // Slots unten
+  const slotWidth = canvas.width / 17;
+  plinkoLabels.forEach((label, i) => {
+    const x = i * slotWidth;
+    let bgColor = "#555";
+    if (label.includes("Volles") || label.includes("Exen")) bgColor = "#444";
+    else if (label === "0") bgColor = "#333";
+    else if (parseFloat(label) >= 5) bgColor = "#ff4757";
+    else if (parseFloat(label) >= 2) bgColor = "#ffa502";
+
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(x, canvas.height - 90, slotWidth, 90);
+
+    ctx.fillStyle = "white";
+    ctx.font = label.length > 15 ? "bold 14px Arial" : "bold 20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(label, x + slotWidth / 2, canvas.height - 45);
+  });
+
+  document.getElementById("dropBallBtn").onclick = dropPlinkoBall;
+}
+
+function dropPlinkoBall() {
+  if (plinkoBallsLeft <= 0) return;
+  plinkoBallsLeft--;
+  document.getElementById("ballsLeft").textContent = plinkoBallsLeft;
+
+  const canvas = document.getElementById("plinkoCanvas");
+  const ctx = canvas.getContext("2d");
+  let x = canvas.width / 2;
+  let y = 60;
+  let vx = (Math.random() - 0.5) * 4;
+  let vy = 0;
+  const gravity = 0.4;
+  const bounce = 0.8;
+  const pegRadius = 7;
+
+  const animateBall = () => {
+    ctx.clearRect(0, 0, canvas.width, 100);
+
+    vy += gravity;
+    x += vx;
+    y += vy;
+
+    // Peg-Kollision
+    const row = Math.floor((y - 100) / 42);
+    if (row >= 0 && row < 16) {
+      const count = row + 3;
+      const offset = (canvas.width - count * 55) / 2 + 27.5;
+      for (let i = 0; i < count; i++) {
+        const px = offset + i * 55;
+        const py = 100 + row * 42;
+        const dist = Math.hypot(x - px, y - py);
+        if (dist < pegRadius + 10) {
+          vx = (x - px) * 0.3 + (Math.random() - 0.5) * 3;
+          vy = -vy * bounce;
+        }
+      }
+    }
+
+    // Ball zeichnen
+    ctx.fillStyle = "#ff4757";
+    ctx.beginPath();
+    ctx.arc(x, y, 14, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (y > canvas.height - 100 && vy > 0) {
+      const slot = Math.floor(x / (canvas.width / 17));
+      const mult = plinkoMultipliers[slot] || 0;
+      const drink = mult * 1;
+      plinkoTotalDrinks += drink;
+      document.getElementById("totalDrinks").textContent = plinkoTotalDrinks.toFixed(1);
+
+      // Sonder-Logik
+      if (plinkoLabels[slot].includes("Exen verteilen")) {
+        // Am Ende alle verteilen – sammeln
+        if (!window.plinkoExenVerteilen) window.plinkoExenVerteilen = 0;
+        window.plinkoExenVerteilen += 1;
+      } else if (plinkoLabels[slot].includes("Exen")) {
+        trinkCounter[currentExenPerson].exen += 1;
+        updateTracker();
+      } else {
+        trinkCounter[currentExenPerson].schluecke += drink;
+        updateTracker();
+      }
+
+      if (plinkoBallsLeft === 0) {
+        // Exen verteilen am Ende
+        if (window.plinkoExenVerteilen > 0) {
+          setTimeout(() => {
+            erstellePersonenOverlay(`Plinko: ${window.plinkoExenVerteilen} Exen verteilen!<br>Wen soll's treffen?`, "plinkoExenVerteilen", [currentExenPerson]);
+          }, 1500);
+        } else {
+          zeigeMeldung(`<b>${currentExenPerson}</b> muss <b>${plinkoTotalDrinks.toFixed(1)} Schlücke</b> trinken! (Plinko)`);
+        }
+      }
+      return;
+    }
+
+    requestAnimationFrame(animateBall);
+  };
+  animateBall();
+}
+
+function plinkoExenVerteilen(opfer) {
+  document.getElementById("personenOverlay")?.remove();
+  trinkCounter[opfer].exen += window.plinkoExenVerteilen;
+  updateTracker();
+  zeigeMeldung(`Plinko: <b>${window.plinkoExenVerteilen} Exen</b> an <b>${opfer}</b> verteilt!`);
+  window.plinkoExenVerteilen = 0;
+  document.getElementById("plinkoOverlay").style.display = "none";
 }
