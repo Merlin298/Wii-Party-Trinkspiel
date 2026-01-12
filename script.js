@@ -377,12 +377,13 @@ function flipCoin() {
   // Drehung STARTET SOFORT
   coin.style.transition = "transform 4.5s ease-in-out";
   coin.style.transform = "rotateY(2160deg)"; // Drehung läuft 4,5 Sekunden
-  const isDouble = Math.random() < 0.5;
-  coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
-
   
   // Ergebnis + finale Position + Text ERST NACH 4,5 Sekunden
   setTimeout(() => {
+    const isDouble = Math.random() < 0.5;
+    
+    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
+    
     let schluecke = 0;
     let resultText = "";
 
