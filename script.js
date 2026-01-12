@@ -380,17 +380,13 @@ function flipCoin() {
   // 2️⃣ Reflow erzwingen (SEHR WICHTIG)
   coin.offsetHeight;
 
-  // 3️⃣ Jetzt Transition + Drehung starten
+    // 3️⃣ Jetzt Transition + Drehung starten
+  const isDouble = Math.random() < 0.5;
+  
   coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)";
-
+  coin.style.transform = `rotateY(${isDouble ? 2160 : 2340}deg)`;
   // 4️⃣ Ergebnis nach 4,5s
   setTimeout(() => {
-    const isDouble = Math.random() < 0.5;
-
-    coin.style.transition = "none";
-    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
-
     let schluecke = isDouble ? currentDoubleAnzahl * 2 : 0;
     let text = isDouble
       ? `DOUBLE! +${schluecke} Schlücke!`
