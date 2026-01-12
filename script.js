@@ -567,14 +567,24 @@ function dropPlinkoBall() {
 
   activeBalls.push(newBall);
 
+  // Starte Animation NUR, wenn sie nicht schon läuft
+  if (!window.plinkoAnimationRunning) {
+    window.plinkoAnimationRunning = true;
+    animateAllBalls();
+  }
+}
+
 function animateAllBalls() {
+  const canvas = document.getElementById("plinkoCanvas");
+  const ctx = canvas.getContext("2d");
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Hintergrund immer neu
+  // Hintergrund
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Pegs immer neu zeichnen
+  // Pegs neu zeichnen
   ctx.fillStyle = "#00d2d3";
   pegsPerRow.forEach((count, row) => {
     const py = startY + row * rowHeight;
@@ -586,7 +596,7 @@ function animateAllBalls() {
     }
   });
 
-  // Slots immer neu zeichnen
+  // Slots neu zeichnen
   const slotWidth = canvas.width / 17;
   plinkoLabels.forEach((label, i) => {
     const x = i * slotWidth;
@@ -607,14 +617,7 @@ function animateAllBalls() {
 
   // Alle Bälle animieren
   activeBalls = activeBalls.filter(ball => {
-    if (ball.landed) {
-      // Gelandeter Ball bleibt kurz sichtbar (z. B. 3 Sekunden)
-      ctx.fillStyle = "#ff4757";
-      ctx.beginPath();
-      ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
-      ctx.fill();
-      return true; // behalte ihn noch
-    }
+    if (ball.landed) return true;
 
     // Wände zuerst
     if (ball.x < 20) { ball.x = 20; ball.vx = -ball.vx * bounce; }
@@ -651,7 +654,7 @@ function animateAllBalls() {
       ball.landed = true;
       ball.y = canvas.height - 100;
       ball.vy = 0;
-      ball.vx *= 0.8; // ausrollen
+      ball.vx *= 0.8;
 
       const slot = Math.floor(ball.x / slotWidth);
       const mult = plinkoMultipliers[slot] || 0;
@@ -697,7 +700,7 @@ function animateAllBalls() {
         activeBalls = activeBalls.filter(b => b !== ball);
       }, 2000);
 
-      return true; // kurz behalten
+      return true;
     }
 
     return true;
@@ -705,8 +708,10 @@ function animateAllBalls() {
 
   if (activeBalls.length > 0 || plinkoBallsLeft > 0) {
     requestAnimationFrame(animateAllBalls);
+  } else {
+    window.plinkoAnimationRunning = false;
   }
-}}
+}
   
 function plinkoExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
