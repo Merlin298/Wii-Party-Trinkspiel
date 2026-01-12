@@ -399,7 +399,7 @@ function flipCoin() {
       // Overlay schließt sich erst 2 Sekunden später
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
-      }, 2000);
+      }, 1000);
     }, 7000); // 2 Sekunden Verzug nach Ergebnis
-  }, 500); // 4,5 Sekunden Drehung
+  }, 700); // 4,5 Sekunden Drehung
 }
