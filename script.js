@@ -594,25 +594,25 @@ function animateAllBalls() {
 
   // Pegs
   const pegRows = 16;
-  const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
+  const pegsPerRow = Array.from({ length: pegRows }, (_, i) => i + 3);
   const pegRadius = 7;
   const startY = 100;
   const rowHeight = 42;
+  const pegSpacing = 55; // fix
+  
   ctx.fillStyle = "#00d2d3";
+  
   pegsPerRow.forEach((count, row) => {
-  const y = startY + row * rowHeight;
-  const spacing = canvas.width / (count + 1);
+    const y = startY + row * rowHeight;
+    const offset = (canvas.width - (count - 1) * pegSpacing) / 2; // fix
+    for (let i = 0; i < count; i++) {
+      const x = offset + i * pegSpacing;
+      ctx.beginPath();
+      ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
 
-  for (let i = 0; i < count; i++) {
-    // 🔹 Hier einfügen: jede zweite Reihe leicht versetzen
-    const xOffset = row % 2 === 0 ? spacing / 2 : 0;
-    const x = spacing * (i + 1) - xOffset;
-
-    ctx.beginPath();
-    ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
-    ctx.fill();
-  }
-});
 
 
   // Slots
