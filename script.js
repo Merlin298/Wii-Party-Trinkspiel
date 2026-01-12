@@ -388,6 +388,7 @@ function flipCoin() {
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
 
+    coin.style.transition = "none";
     coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
 
     let schluecke = isDouble ? currentDoubleAnzahl * 2 : 0;
