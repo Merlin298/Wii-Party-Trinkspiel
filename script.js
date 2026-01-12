@@ -372,9 +372,10 @@ function flipCoin() {
   coin.style.transition = "transform 4.5s ease-in-out";
   coin.style.transform = "rotateY(2160deg)"; // 6 volle Drehungen
 
+  // Ergebnis ERST NACH der vollen Drehung setzen
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
-    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`; // ← hier das Backtick!
+    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
 
     let schluecke = 0;
     let resultText = "";
@@ -392,14 +393,15 @@ function flipCoin() {
 
     updateTracker();
 
-    // Normale Meldung kommt erst 2 Sekunden NACH dem Ergebnis
+    // Normale Meldung kommt 2 Sekunden NACH dem Ergebnis
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
 
-      // Overlay schließt sich erst 2 Sekunden später
+      // Overlay schließt sich 1 Sekunde nach der Meldung
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
-    }, 6000); // 2 Sekunden Verzug nach Ergebnis
-  }, 700); // 4,5 Sekunden Drehung
+    }, 2000); // 2 Sekunden Verzug nach Ergebnis
+
+  }, 4500); // Ergebnis erst nach 4,5 Sekunden Drehung
 }
