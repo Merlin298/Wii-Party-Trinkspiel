@@ -397,6 +397,10 @@ function flipCoin() {
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
 
+    if (isDouble) {
+      launchConfetti();  // ← HIER einfügen: Konfetti nur bei Double!
+    }
+
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
       setTimeout(() => {
@@ -406,4 +410,49 @@ function flipCoin() {
   }, 4500);
 }
 
+// Konfetti-Funktion (bei Double aufrufen)
+function launchConfetti() {
+  const canvas = document.getElementById("confettiCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
+  const particles = [];
+  const colors = ["#ffd700", "#ffaa00", "#006400", "#ff4757", "#00d2d3", "#ffa502"];
+
+  for (let i = 0; i < 150; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 2,
+      d: Math.random() * 150 + 50,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 5,
+      tiltAngle: 0,
+      tiltAngleIncremental: Math.random() * 0.07 + 0.05
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.tiltAngle += p.tiltAngleIncremental;
+      p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+      p.tilt = Math.sin(p.tiltAngle) * 12;
+
+      if (p.y > canvas.height) particles.splice(i, 1);
+
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+      ctx.stroke();
+    });
+
+    if (particles.length > 0) requestAnimationFrame(draw);
+    else canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  draw();
+}
