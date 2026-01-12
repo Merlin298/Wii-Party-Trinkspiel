@@ -510,23 +510,24 @@ function startPlinko(person) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Pegs
+  // Pegs
   const pegRows = 16;
   const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
   const pegRadius = 7;
   const startY = 100;
   const rowHeight = 42;
-
   ctx.fillStyle = "#00d2d3";
+  
   pegsPerRow.forEach((count, row) => {
     const y = startY + row * rowHeight;
-    const spacing = canvas.width / (count + 1);
+    const offset = (canvas.width - count * 55) / 2 + 27.5; // feste Berechnung
     for (let i = 0; i < count; i++) {
-      const x = spacing * (i + 1);
       ctx.beginPath();
-      ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
+      ctx.arc(offset + i * 55, y, pegRadius, 0, Math.PI * 2);
       ctx.fill();
     }
   });
+
 
 
   // Slots
