@@ -605,15 +605,15 @@ function animateAllBalls() {
     ctx.fillText(label, x + slotWidth / 2, canvas.height - 45);
   });
 
-  // Alle Bälle animieren & zeichnen
+  // Alle Bälle animieren
   activeBalls = activeBalls.filter(ball => {
     if (ball.landed) {
-      // Gelandeter Ball bleibt kurz sichtbar (z. B. 2 Sekunden)
+      // Gelandeter Ball bleibt kurz sichtbar (z. B. 3 Sekunden)
       ctx.fillStyle = "#ff4757";
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
       ctx.fill();
-      return true; // behalte ihn noch kurz
+      return true; // behalte ihn noch
     }
 
     // Wände zuerst
@@ -692,7 +692,7 @@ function animateAllBalls() {
         }, 6000);
       }
 
-      // Ball nach 2 Sekunden entfernen (kurz sichtbar lassen)
+      // Ball nach 2 Sekunden entfernen
       setTimeout(() => {
         activeBalls = activeBalls.filter(b => b !== ball);
       }, 2000);
@@ -706,9 +706,6 @@ function animateAllBalls() {
   if (activeBalls.length > 0 || plinkoBallsLeft > 0) {
     requestAnimationFrame(animateAllBalls);
   }
-}
-
-animateAllBalls();
 }
   
 function plinkoExenVerteilen(opfer) {
