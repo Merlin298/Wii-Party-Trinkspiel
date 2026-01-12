@@ -369,40 +369,40 @@ function cancelDouble() {
 
 function flipCoin() {
   const coin = document.getElementById("coin");
-  const resultArea = document.getElementById("doubleResult");
+  const result = document.getElementById("doubleResult");
 
-  // Sofort leeren – damit während Drehung nichts steht
-  resultArea.innerHTML = "";
+  // Sofort leeren – während Drehung nichts anzeigen
+  result.innerHTML = "";
 
-  // Drehung STARTET SOFORT (kein Timeout!)
+  // Drehung SOFORT starten (kein Timeout!)
   coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)"; // Drehung läuft 4,5 Sekunden
+  coin.style.transform = "rotateY(2160deg)"; // startet direkt, dauert 4,5 s
 
-  // Ergebnis + finale Stopp-Position + Text ERST NACH 4,5 Sekunden
+  // Ergebnis + Text + Stopp ERST NACH 4,5 Sekunden
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
 
-    // Münze auf Ergebnis stoppen
+    // Münze stoppen
     coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
 
     let schluecke = 0;
-    let resultText = "";
+    let text = "";
 
     if (isDouble) {
       schluecke = currentDoubleAnzahl * 2;
-      resultText = `DOUBLE! +${schluecke} Schlücke!`;
+      text = `DOUBLE! +${schluecke} Schlücke!`;
     } else {
       schluecke = 0;
-      resultText = `NOTHING! 0 Schlücke`;
+      text = `NOTHING! 0 Schlücke`;
     }
 
-    // Text wird erst JETZT gesetzt – nach Drehung
-    resultArea.innerHTML = `<span style="${isDouble ? 'color:#ffd700;' : 'color:#ff4757;'}">${resultText}</span>`;
+    // Text wird erst JETZT gesetzt
+    result.innerHTML = `<span style="color:${isDouble ? '#ffd700' : '#ff4757'}">${text}</span>`;
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
 
-    // Deine normale Meldung nach 6 Sekunden total
+    // Normale Meldung nach 6 Sekunden total
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
 
@@ -412,5 +412,5 @@ function flipCoin() {
       }, 1000);
     }, 6000);
 
-  }, 4500); // Ergebnis + Text erst nach 4,5 Sekunden
+  }, 4500); // ← nur das Ergebnis wartet 4,5 s
 }
