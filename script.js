@@ -550,12 +550,10 @@ function startPlinko(person) {
 }
 
 function dropPlinkoBall() {
-  if (plinkoBallsLeft <= 0) return;
-  plinkoBallsLeft--;
-  document.getElementById("ballsLeft").textContent = plinkoBallsLeft;
-
   const canvas = document.getElementById("plinkoCanvas");
-  const ctx = canvas.getContext("2d");
+
+  // Maximal 10 Bälle aktiv
+  if (activeBalls.length >= 10) return;
 
   const newBall = {
     x: canvas.width / 2,
@@ -567,11 +565,14 @@ function dropPlinkoBall() {
 
   activeBalls.push(newBall);
 
-  // Starte Animation NUR, wenn sie nicht schon läuft
+  // Starte Animation, falls sie nicht läuft
   if (!window.plinkoAnimationRunning) {
     window.plinkoAnimationRunning = true;
     animateAllBalls();
   }
+
+  // Update Anzeige: noch zu dropende Bälle
+  document.getElementById("ballsLeft").textContent = 10 - activeBalls.length;
 }
 
 function animateAllBalls() {
@@ -580,23 +581,28 @@ function animateAllBalls() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Hintergrund
+  // Hintergrund zeichnen
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Pegs neu zeichnen
+  // Pegs zeichnen
+  const pegRows = 16;
+  const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
+  const pegRadius = 7;
+  const startY = 100;
+  const rowHeight = 42;
   ctx.fillStyle = "#00d2d3";
   pegsPerRow.forEach((count, row) => {
-    const py = startY + row * rowHeight;
+    const y = startY + row * rowHeight;
     const offset = (canvas.width - count * 55) / 2 + 27.5;
     for (let i = 0; i < count; i++) {
       ctx.beginPath();
-      ctx.arc(offset + i * 55, py, pegRadius, 0, Math.PI * 2);
+      ctx.arc(offset + i * 55, y, pegRadius, 0, Math.PI * 2);
       ctx.fill();
     }
   });
 
-  // Slots neu zeichnen
+  // Slots zeichnen
   const slotWidth = canvas.width / 17;
   plinkoLabels.forEach((label, i) => {
     const x = i * slotWidth;
@@ -615,11 +621,14 @@ function animateAllBalls() {
     ctx.fillText(label, x + slotWidth / 2, canvas.height - 45);
   });
 
+  const gravity = 0.4;
+  const bounce = 0.6;
+
   // Alle Bälle animieren
   activeBalls = activeBalls.filter(ball => {
     if (ball.landed) return true;
 
-    // Wände zuerst
+    // Wände
     if (ball.x < 20) { ball.x = 20; ball.vx = -ball.vx * bounce; }
     if (ball.x > canvas.width - 20) { ball.x = canvas.width - 20; ball.vx = -ball.vx * bounce; }
 
@@ -677,25 +686,16 @@ function animateAllBalls() {
 
       document.getElementById("totalDrinks").innerHTML = plinkoTotalDrinks.toFixed(1) + extraText;
 
-      if (plinkoBallsLeft === 0) {
-        let msg = `<b>${currentExenPerson}</b> muss <b>${plinkoTotalDrinks.toFixed(1)} Schlücke</b> trinken! (Plinko)`;
-        if (window.plinkoExenVerteilen > 0) {
-          msg += ` + <b>${window.plinkoExenVerteilen} Exen verteilen</b>`;
-          setTimeout(() => {
-            erstellePersonenOverlay(
-              `Plinko: ${window.plinkoExenVerteilen} Exen verteilen!<br>Wen soll's treffen?`,
-              "plinkoExenVerteilen",
-              [currentExenPerson]
-            );
-          }, 2000);
-        }
-        zeigeMeldung(msg, 5000);
+      // Jetzt plinkoBallsLeft reduzieren, Overlay erst schließen, wenn alle Bälle gelandet
+      plinkoBallsLeft--;
+      document.getElementById("ballsLeft").textContent = plinkoBallsLeft;
+      if (plinkoBallsLeft === 0 && activeBalls.every(b => b.landed)) {
         setTimeout(() => {
           document.getElementById("plinkoOverlay").style.display = "none";
-        }, 6000);
+        }, 1000);
       }
 
-      // Ball nach 2 Sekunden entfernen
+      // Ball nach 2 Sekunden aus activeBalls entfernen
       setTimeout(() => {
         activeBalls = activeBalls.filter(b => b !== ball);
       }, 2000);
@@ -712,6 +712,7 @@ function animateAllBalls() {
     window.plinkoAnimationRunning = false;
   }
 }
+
   
 function plinkoExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
