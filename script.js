@@ -371,46 +371,41 @@ function flipCoin() {
   const coin = document.getElementById("coin");
   const result = document.getElementById("doubleResult");
 
-  // Sofort leeren – während Drehung nichts anzeigen
   result.innerHTML = "";
 
-  // Drehung SOFORT starten (kein Timeout!)
-  coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)"; // startet direkt, dauert 4,5 s
+  // 1️⃣ Transition kurz ausschalten & Reset
+  coin.style.transition = "none";
+  coin.style.transform = "rotateY(0deg)";
 
-  // Ergebnis + Text + Stopp ERST NACH 4,5 Sekunden
+  // 2️⃣ Reflow erzwingen (SEHR WICHTIG)
+  coin.offsetHeight;
+
+  // 3️⃣ Jetzt Transition + Drehung starten
+  coin.style.transition = "transform 4.5s ease-in-out";
+  coin.style.transform = "rotateY(2160deg)";
+
+  // 4️⃣ Ergebnis nach 4,5s
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
 
-    // Münze stoppen
     coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
 
-    let schluecke = 0;
-    let text = "";
+    let schluecke = isDouble ? currentDoubleAnzahl * 2 : 0;
+    let text = isDouble
+      ? `DOUBLE! +${schluecke} Schlücke!`
+      : `NOTHING! 0 Schlücke`;
 
-    if (isDouble) {
-      schluecke = currentDoubleAnzahl * 2;
-      text = `DOUBLE! +${schluecke} Schlücke!`;
-    } else {
-      schluecke = 0;
-      text = `NOTHING! 0 Schlücke`;
-    }
-
-    // Text wird erst JETZT gesetzt
     result.innerHTML = `<span style="color:${isDouble ? '#ffd700' : '#ff4757'}">${text}</span>`;
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
 
-    // Normale Meldung nach 6 Sekunden total
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
-
-      // Schließen nach 1 Sekunde
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
     }, 6000);
-
-  }, 4500); // ← nur das Ergebnis wartet 4,5 s
+  }, 4500);
 }
+
