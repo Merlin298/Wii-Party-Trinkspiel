@@ -99,6 +99,25 @@
       </div>
     </div>
   </div>
+  
+    <!-- Double or Nothing Overlay -->
+  <div id="doubleOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:9999; display:flex; align-items:center; justify-content:center;">
+    <div style="text-align:center; color:white; max-width:90%;">
+      <h2 style="color:#ffa502; margin-bottom:30px;">Double or Nothing?</h2>
+      <div id="coinContainer" style="perspective:1000px; width:220px; height:220px; margin:0 auto;">
+        <div id="coin" style="width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform 3s ease-in-out;">
+          <div class="front" style="position:absolute; width:100%; height:100%; background:linear-gradient(135deg, #ffd700, #ffaa00); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.8rem; font-weight:bold; color:#006400; backface-visibility:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.8);">
+            DOUBLE
+          </div>
+          <div class="back" style="position:absolute; width:100%; height:100%; background:linear-gradient(135deg, #444, #222); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.8rem; font-weight:bold; color:#ff4757; transform:rotateY(180deg); backface-visibility:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.8);">
+            NOTHING
+          </div>
+        </div>
+      </div>
+      <p id="doubleResult" style="font-size:3rem; margin-top:40px; min-height:80px; font-weight:bold;"></p>
+    </div>
+  </div>
 
+  
 </body>
 </html
