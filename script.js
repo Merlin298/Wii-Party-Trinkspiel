@@ -371,10 +371,10 @@ function flipCoin() {
   const coin = document.getElementById("coin");
   const resultArea = document.getElementById("doubleResult");
 
-  // Ergebnis-Bereich sofort leeren – damit während Drehung nichts steht
+  // WICHTIG: Text sofort leeren – damit während Drehung nichts steht
   resultArea.innerHTML = "";
 
-  // Drehung STARTET SOFORT (kein Timeout!)
+  // Drehung STARTET SOFORT
   coin.style.transition = "transform 4.5s ease-in-out";
   coin.style.transform = "rotateY(2160deg)"; // Drehung läuft 4,5 Sekunden
 
@@ -396,13 +396,13 @@ function flipCoin() {
       resultText = `NOTHING! 0 Schlücke`;
     }
 
-    // Text erst JETZT setzen – nach Drehung
+    // Text wird erst JETZT gesetzt – nach Drehung
     resultArea.innerHTML = `<span style="${isDouble ? 'color:#ffd700;' : 'color:#ff4757;'}">${resultText}</span>`;
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
 
-    // Normale Meldung nach 6 Sekunden total (dein Timing)
+    // Deine normale Meldung nach 6 Sekunden total
     setTimeout(() => {
       zeigeMeldung(`<b>${currentDoublePerson}</b> muss <b>${schluecke} Schlücke</b> trinken!`);
 
@@ -412,5 +412,5 @@ function flipCoin() {
       }, 1000);
     }, 6000);
 
-  }, 4500); // Ergebnis-Text erst nach 4,5 Sekunden
+  }, 4500); // ← hier die 4.5 Sekunden – alles darunter passiert erst dann
 }
