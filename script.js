@@ -598,7 +598,7 @@ function animateAllBalls() {
   const pegRadius = 7;
   const startY = 100;
   const rowHeight = 42;
-  const pegSpacing = 55; // fix
+  const pegSpacing = 50; // fix
   
   ctx.fillStyle = "#00d2d3";
   
