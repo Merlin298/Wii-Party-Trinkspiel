@@ -493,6 +493,8 @@ function choosePlinko() {
 }
 
 function startPlinko(person) {
+  const pegSpacing = 47;
+  
   currentExenPerson = person;
   plinkoBallsLeft = 10;
   plinkoTotalDrinks = 0;
@@ -510,8 +512,6 @@ function startPlinko(person) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Pegs
-  // Pegs
-  // Pegs
   const pegRows = 16;
   const pegsPerRow = Array.from({ length: pegRows }, (_, i) => i + 3);
   const pegRadius = 7;
@@ -522,9 +522,9 @@ function startPlinko(person) {
   
   pegsPerRow.forEach((count, row) => {
     const y = startY + row * rowHeight;
-    const offset = (canvas.width - (count - 1) * 55) / 2; // feste Breite, optisch Dreieck
+    const offset = (canvas.width - (count - 1) * pegSpacing) / 2; // feste Breite, optisch Dreieck
     for (let i = 0; i < count; i++) {
-      const x = offset + i * 55;
+      const x = offset + i * pegSpacing;
       ctx.beginPath();
       ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
       ctx.fill();
