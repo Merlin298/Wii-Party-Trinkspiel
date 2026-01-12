@@ -402,7 +402,7 @@ function flipCoin() {
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
-    }, 1000);
+    }, 1200);
   }, 4500);
 }
 
