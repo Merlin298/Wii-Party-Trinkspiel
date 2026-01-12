@@ -709,6 +709,7 @@ function animateAllBalls() {
 }
 
 animateAllBalls();
+}
   
 function plinkoExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
