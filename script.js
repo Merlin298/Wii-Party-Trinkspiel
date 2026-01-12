@@ -511,19 +511,22 @@ function startPlinko(person) {
 
   // Pegs
   // Pegs
+  // Pegs
   const pegRows = 16;
-  const pegsPerRow = Array.from({length: pegRows}, (_, i) => i + 3);
+  const pegsPerRow = Array.from({ length: pegRows }, (_, i) => i + 3);
   const pegRadius = 7;
   const startY = 100;
   const rowHeight = 42;
+  
   ctx.fillStyle = "#00d2d3";
   
   pegsPerRow.forEach((count, row) => {
     const y = startY + row * rowHeight;
-    const offset = (canvas.width - count * 55) / 2 + 27.5; // feste Berechnung
+    const offset = (canvas.width - (count - 1) * 55) / 2; // feste Breite, optisch Dreieck
     for (let i = 0; i < count; i++) {
+      const x = offset + i * 55;
       ctx.beginPath();
-      ctx.arc(offset + i * 55, y, pegRadius, 0, Math.PI * 2);
+      ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
       ctx.fill();
     }
   });
