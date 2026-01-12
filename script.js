@@ -371,14 +371,14 @@ function flipCoin() {
   const coin = document.getElementById("coin");
   const resultArea = document.getElementById("doubleResult");
 
-  // WICHTIG: Text sofort leeren – damit während Drehung nichts steht
+  // Sofort leeren – damit während Drehung nichts steht
   resultArea.innerHTML = "";
 
-  // Drehung STARTET SOFORT
+  // Drehung STARTET SOFORT (kein Timeout!)
   coin.style.transition = "transform 4.5s ease-in-out";
   coin.style.transform = "rotateY(2160deg)"; // Drehung läuft 4,5 Sekunden
 
-  // Ergebnis + Text + finale Stopp-Position ERST NACH 4,5 Sekunden
+  // Ergebnis + finale Stopp-Position + Text ERST NACH 4,5 Sekunden
   setTimeout(() => {
     const isDouble = Math.random() < 0.5;
 
@@ -412,5 +412,5 @@ function flipCoin() {
       }, 1000);
     }, 6000);
 
-  }, 4500); // ← hier die 4.5 Sekunden – alles darunter passiert erst dann
+  }, 4500); // Ergebnis + Text erst nach 4,5 Sekunden
 }
