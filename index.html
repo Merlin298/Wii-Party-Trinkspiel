@@ -149,15 +149,14 @@
     </div>
   </div>
   
-  <!-- Plinko Overlay (groß, echt Casino-Look) -->
-  <div id="plinkoOverlay" style="display:none; position:fixed; inset:0; background:#0a0a0a; z-index:99999; flex-direction:column; align-items:center; justify-content:center;">
-    <h2 style="color:#00d2d3; margin:20px 0;">PLINKO – 10 Bälle</h2>
-    <p style="color:white; font-size:1.5rem;">Bälle übrig: <b id="ballsLeft">10</b></p>
-    <button id="dropBallBtn" style="padding:15px 50px; font-size:2rem; background:#ff4757; border:none; border-radius:15px; color:white; cursor:pointer; margin:20px 0;">
+  <div id="plinkoOverlay" style="display:none; position:fixed; inset:0; background:#0a0a0a; z-index:99999; flex-direction:column; align-items:center; justify-content:flex-start; padding-top:20px; overflow-y:auto;">
+    <h2 style="color:#00d2d3; margin:30px 0 10px; font-size:2.5rem;">PLINKO – 10 Bälle</h2>
+    <p style="color:white; font-size:1.6rem; margin:10px 0;">Bälle übrig: <b id="ballsLeft">10</b></p>
+    <button id="dropBallBtn" style="padding:18px 60px; font-size:2.2rem; background:#ff4757; border:none; border-radius:15px; color:white; cursor:pointer; margin:30px 0; box-shadow:0 6px #b33939;">
       DROP BALL
     </button>
-    <canvas id="plinkoCanvas" width="900" height="800" style="border:2px solid #00d2d3; border-radius:10px; background:#111;"></canvas>
-    <p style="color:#ffa502; font-size:2rem; margin-top:20px;">Gesamt: <b id="totalDrinks">0</b> Schlücke</p>
+    <canvas id="plinkoCanvas" width="900" height="900" style="border:3px solid #00d2d3; border-radius:12px; background:#111; max-width:95vw;"></canvas>
+    <p style="color:#ffa502; font-size:2.2rem; margin:30px 0;">Gesamt: <b id="totalDrinks">0</b> Schlücke</p>
   </div>
   
 </body>
