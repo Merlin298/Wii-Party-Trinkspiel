@@ -367,29 +367,28 @@ function cancelDouble() {
   zeigeMeldung(`<b>${currentDoublePerson}</b> nimmt sicher <b>${currentDoubleAnzahl} Schlücke</b>!`);
 }
 
+let currentRotation = 0;
+
 function flipCoin() {
   const coin = document.getElementById("coin");
   const result = document.getElementById("doubleResult");
 
   result.innerHTML = "";
 
-  // 1️⃣ Transition kurz ausschalten & Reset
-  coin.style.transition = "none";
-  coin.style.transform = "rotateY(0deg)";
-
-  // 2️⃣ Reflow erzwingen (SEHR WICHTIG)
-  coin.offsetHeight;
-
-  // 3️⃣ Jetzt Transition + Drehung starten
+  // Transition aktivieren
   coin.style.transition = "transform 4.5s ease-in-out";
-  coin.style.transform = "rotateY(2160deg)";
 
-  // 4️⃣ Ergebnis nach 4,5s
+  // Zufall
+  const isDouble = Math.random() < 0.5;
+
+  // Immer vorwärts drehen
+  const spins = 6; // volle Umdrehungen
+  const endRotation = currentRotation + spins * 360 + (isDouble ? 0 : 180);
+
+  coin.style.transform = `rotateY(${endRotation}deg)`;
+
+  // Ergebnis nach 4,5 s anzeigen
   setTimeout(() => {
-    const isDouble = Math.random() < 0.5;
-
-    coin.style.transform = `rotateY(${isDouble ? 0 : 180}deg)`;
-
     let schluecke = isDouble ? currentDoubleAnzahl * 2 : 0;
     let text = isDouble
       ? `DOUBLE! +${schluecke} Schlücke!`
@@ -407,5 +406,8 @@ function flipCoin() {
       }, 1000);
     }, 6000);
   }, 4500);
+
+  // Rotation merken
+  currentRotation = endRotation;
 }
 
