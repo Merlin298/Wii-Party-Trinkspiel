@@ -400,6 +400,6 @@ function flipCoin() {
       setTimeout(() => {
         document.getElementById("doubleOverlay").style.display = "none";
       }, 1000);
-    }, 7000); // 2 Sekunden Verzug nach Ergebnis
+    }, 8000); // 2 Sekunden Verzug nach Ergebnis
   }, 700); // 4,5 Sekunden Drehung
 }
