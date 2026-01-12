@@ -596,14 +596,20 @@ function animateAllBalls() {
   const rowHeight = 42;
   ctx.fillStyle = "#00d2d3";
   pegsPerRow.forEach((count, row) => {
-    const y = startY + row * rowHeight;
-    const offset = (canvas.width - count * 55) / 2 + 27.5;
-    for (let i = 0; i < count; i++) {
-      ctx.beginPath();
-      ctx.arc(offset + i * 55, y, pegRadius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  });
+  const y = startY + row * rowHeight;
+  const spacing = canvas.width / (count + 1);
+
+  for (let i = 0; i < count; i++) {
+    // 🔹 Hier einfügen: jede zweite Reihe leicht versetzen
+    const xOffset = row % 2 === 0 ? spacing / 2 : 0;
+    const x = spacing * (i + 1) - xOffset;
+
+    ctx.beginPath();
+    ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+});
+
 
   // Slots
   const slotWidth = canvas.width / 17;
