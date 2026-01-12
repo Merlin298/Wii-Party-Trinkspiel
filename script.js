@@ -563,7 +563,7 @@ function dropPlinkoBall() {
   const pegRadius = 7;
 
   const animateBall = () => {
-    ctx.clearRect(0, 0, canvas.width, 100);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     vy += gravity;
     x += vx;
