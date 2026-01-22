@@ -113,6 +113,7 @@ function personHoelleGewaehlt(person) {
   trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
+  updateLeaderboard();
 }
 
 // Blauer Werfer
@@ -125,6 +126,7 @@ function opferBlauGewaehlt(opfer) {
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
+  updateLeaderboard();
 }
 
 // Roter Werfer
@@ -137,6 +139,7 @@ function personRoterGewaehlt(person) {
   trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateTracker();
+  updateLeaderboard();
 }
 
 // Minispiel
@@ -209,6 +212,7 @@ function personGewaehlt(person) {
           trinkCounter[opfer].exen += 1;
           zeigeMeldung(`<b>${person}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
           updateTracker();
+          updateLeaderboard();
         } else {
           erstellePersonenOverlay(
             `${person} darf Exen verteilen!<br>Wen soll's treffen?`,
@@ -255,6 +259,7 @@ function minispielExenVerteilen(opfer) {
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateTracker();
+  updateLeaderboard();
   minispielPhase = 0;
 }
 
@@ -306,6 +311,7 @@ function glückradZiehen(person) {
 
     trinkCounter[person].schluecke += endZahl;
     updateTracker();
+    updateLeaderboard();
 
     setTimeout(() => {
       radOverlay.style.display = "none";
@@ -319,6 +325,7 @@ function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
   updateTracker();
+  updateLeaderboard();
   document.getElementById("resetButtonContainer").style.display = "block";
 }
 
@@ -333,6 +340,7 @@ function resetBestaetigt() {
     trinkCounter[name] = { schluecke: 0, exen: 0 };
   });
   updateTracker();
+  updateLeaderboard();
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
 }
@@ -396,6 +404,7 @@ function flipCoin() {
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateTracker();
+    updateLeaderboard();
 
     if (isDouble) {
       launchConfetti();  // ← HIER einfügen: Konfetti nur bei Double!
@@ -455,4 +464,50 @@ function launchConfetti() {
   }
 
   draw();
+}
+
+function updateLeaderboard() {
+  const hasPoints = spieler.some(s => 
+    (trinkCounter[s].schluecke || 0) + (trinkCounter[s].exen || 0) * 8 > 0
+  );
+
+  let rankedPlayers;
+
+  if (!hasPoints) {
+    // Am Anfang: einfach Eingabereihenfolge
+    rankedPlayers = spieler.map(name => ({
+      name,
+      schluecke: 0,
+      exen: 0,
+      points: 0
+    }));
+  } else {
+    // Sortiert nach Punkten
+    rankedPlayers = spieler.map(name => {
+      const schluecke = trinkCounter[name].schluecke || 0;
+      const exen = trinkCounter[name].exen || 0;
+      const points = schluecke + exen * 8;
+      return { name, schluecke, exen, points };
+    }).sort((a, b) => b.points - a.points);
+  }
+
+  const tbody = document.getElementById("leaderboardBody");
+  tbody.innerHTML = "";
+
+  rankedPlayers.forEach((player, index) => {
+    const row = document.createElement("tr");
+    if (index === 0 && player.points > 0) {
+      row.className = "rank-1";
+    }
+
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${player.name}</td>
+      <td>${player.schluecke}</td>
+      <td>${player.exen}</td>
+      <td>${player.points}</td>
+    `;
+
+    tbody.appendChild(row);
+  });
 }
