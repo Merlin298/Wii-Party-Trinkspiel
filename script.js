@@ -84,7 +84,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   </div>
   ${!titel.includes("Exen verteilen") ? `
     <button onclick="document.getElementById('personenOverlay').remove()"
-            style="padding:15px 30px; background:#444; border:none; border-radius:15px; color:white; font-size:1.4rem; margin-top:20px; cursor:pointer;">
+        style="padding:15px 30px; background:#333; border:none; border-radius:15px; color:white; font-size:1.4rem; margin-top:20px; cursor:pointer; line-height:1.2; padding-top:10px; display:flex; align-items:center; justify-content:center;">
       Abbrechen
     </button>
   ` : ''}
@@ -107,10 +107,10 @@ function personFeldGewaehlt(person) {
     <h2>${person} – wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[4,5,6,7].map(n => 
-        `<button onclick="felderBestaetigt('${person}', ${n})" 
-                 style="padding:20px;font-size:2rem;background:#ff4757;border:none;border-radius:15px;">
-          ${n}
-        </button>`
+        `<button onclick="felderBestaetigt('${person}', ${n})"
+            style="padding:20px; font-size:2rem; background:#ff4757; border:none; border-radius:15px; line-height:1.2; padding-top:14px; display:flex; align-items:center; justify-content:center; min-width:80px;">
+            ${n}
+         </button>`
       ).join("")}
     </div>
   `;
