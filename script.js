@@ -44,11 +44,6 @@ function spielStarten() {
   
   updateLeaderboard();
   
-  // Namen-Liste oben verstecken
-  const liste = document.getElementById("spielerListe");
-  if (liste) {
-    liste.remove();
-
   document.getElementById("resetButtonContainer").style.display = "block";
 }
 
