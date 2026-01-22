@@ -18,8 +18,8 @@ h1 { font-size: 3rem; margin: 10px; text-shadow: 3px 3px #000; }
 .container { max-width: 500px; margin: 0 auto; }
 input { padding: 12px; width: 60%; font-size: 1.2rem; border-radius: 10px; border: none; }
 button {
-  height: 40px;
-  line-height: 40px;
+  height: 60px;
+  line-height: 60px;
   padding: 0 20px;                      /* Größe der Button */
   margin: 8px;                             /* Abstand zwischen den Button */
   font-size: 1.2rem;                       /* Schriftgröße */
