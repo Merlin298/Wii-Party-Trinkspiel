@@ -372,6 +372,7 @@ function cancelDouble() {
   document.getElementById("doubleConfirmOverlay").style.display = "none";
   trinkCounter[currentDoublePerson].schluecke += currentDoubleAnzahl;
   updateTracker();
+  updateLeaderboard();
   zeigeMeldung(`<b>${currentDoublePerson}</b> nimmt sicher <b>${currentDoubleAnzahl} Schlücke</b>!`);
 }
 
@@ -479,7 +480,6 @@ function updateLeaderboard() {
       name,
       schluecke: 0,
       exen: 0,
-      points: 0
     }));
   } else {
     // Sortiert nach Punkten
@@ -505,7 +505,6 @@ function updateLeaderboard() {
       <td>${player.name}</td>
       <td>${player.schluecke}</td>
       <td>${player.exen}</td>
-      <td>${player.points}</td>
     `;
 
     tbody.appendChild(row);
