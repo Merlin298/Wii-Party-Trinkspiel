@@ -321,9 +321,9 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   transition: all 0.3s;
 }
 
-#leaderboard tr:hover {
+/*#leaderboard tr:hover {
   background: rgba(255,165,0,0.15);
-}
+}*/
 
 #leaderboard .rank-1 {
   background: linear-gradient(90deg, #ffd700, #ffaa00);
@@ -337,7 +337,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   font-size: 1.6rem;
 }
 
-#leaderboard .rank-1::before {
+/*#leaderboard .rank-1::before {
   content: "👑 ";
   font-size: 1.8rem;
-}
+}*/
