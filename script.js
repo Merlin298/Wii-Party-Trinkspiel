@@ -34,11 +34,25 @@ function renderSetupListe() {
 }
 
 function spielStarten() {
+  if (spieler.length < 2) {
+    zeigeMeldung("Mindestens 2 Spieler!", 1000);
+    return;
+  }
+  
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
+  
   updateLeaderboard();
+  
+  // Namen-Liste oben verstecken
+  const liste = document.getElementById("spielerListe");
+  if (liste) {
+    liste.style.display = "none";
+    // Alternative: Klasse hinzufügen (sicherer gegen CSS)
+    liste.classList.add("hidden");
+  }
+
   document.getElementById("resetButtonContainer").style.display = "block";
-  document.getElementById("spielerListe").classList.add("hidden");
 }
 
 // Tracker
