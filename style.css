@@ -18,9 +18,9 @@ h1 { font-size: 3rem; margin: 10px; text-shadow: 3px 3px #000; }
 .container { max-width: 500px; margin: 0 auto; }
 input { padding: 12px; width: 60%; font-size: 1.2rem; border-radius: 10px; border: none; }
 button {
-  padding: 12px 20px;
+  padding: 18px 30px;
   margin: 8px;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   background: #ff4757;
   color: white;
   border: none;
