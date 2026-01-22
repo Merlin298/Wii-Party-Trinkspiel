@@ -84,7 +84,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   </div>
   ${!titel.includes("Exen verteilen") ? `
     <button onclick="document.getElementById('personenOverlay').remove()"
-        style="padding:15px 30px; background:#333; border:none; border-radius:15px; color:white; font-size:1.4rem; margin-top:20px; cursor:pointer; line-height:1.2; padding-top:10px; display:flex; align-items:center; justify-content:center;">
+        style="padding:15px 30px; background:#333; border:none; border-radius:15px; color:white; font-size:1.4rem; margin-top:20px; cursor:pointer; line-height:1.2; padding-top:15px; display:flex; align-items:center; justify-content:center;">
       Abbrechen
     </button>
   ` : ''}
