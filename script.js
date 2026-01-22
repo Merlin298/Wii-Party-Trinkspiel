@@ -322,14 +322,6 @@ function glückradZiehen(person) {
   }, extraZeit * 1000);
 }
 
-// Reset-Button wird erst nach Spielstart sichtbar
-function spielStarten() {
-  document.getElementById("setup").classList.add("hidden");
-  document.getElementById("spiel").classList.remove("hidden");
-  updateLeaderboard();
-  document.getElementById("resetButtonContainer").style.display = "block";
-}
-
 // Reset-Button öffnet das Overlay
 function resetTracker() {
   document.getElementById("resetOverlay").classList.remove("hidden");
