@@ -5,12 +5,12 @@ let gefahrPlatz = 0;
 let minispielPhase = 0;
 
 const kugeln = [
-  /*"3 Schlücke",
+  "3 Schlücke",
   "4 Schlücke",
   "5 Schlücke",
   "Exen",
   "Exen verteilen",
-  "Nichts",*/
+  "Nichts",
   "Zufall 0-10 Schlücke"
 ];
 
@@ -36,7 +36,7 @@ function renderSetupListe() {
 function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
-  updateTracker();
+  updateLeaderboard();
 }
 
 // Tracker
@@ -112,7 +112,6 @@ function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
-  updateTracker();
   updateLeaderboard();
 }
 
@@ -125,7 +124,6 @@ function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
-  updateTracker();
   updateLeaderboard();
 }
 
@@ -138,7 +136,6 @@ function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
-  updateTracker();
   updateLeaderboard();
 }
 
@@ -211,7 +208,6 @@ function personGewaehlt(person) {
           const opfer = spieler.find(s => s !== person);
           trinkCounter[opfer].exen += 1;
           zeigeMeldung(`<b>${person}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
-          updateTracker();
           updateLeaderboard();
         } else {
           erstellePersonenOverlay(
@@ -258,7 +254,6 @@ function minispielExenVerteilen(opfer) {
   document.getElementById("personenOverlay")?.remove();
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
-  updateTracker();
   updateLeaderboard();
   minispielPhase = 0;
 }
@@ -310,7 +305,6 @@ function glückradZiehen(person) {
     radText.innerHTML = `<span class="rad-ergebnis">${endZahl} Schlücke!</span>`;
 
     trinkCounter[person].schluecke += endZahl;
-    updateTracker();
     updateLeaderboard();
 
     setTimeout(() => {
@@ -324,7 +318,6 @@ function glückradZiehen(person) {
 function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
-  updateTracker();
   updateLeaderboard();
   document.getElementById("resetButtonContainer").style.display = "block";
 }
@@ -339,7 +332,6 @@ function resetBestaetigt() {
   spieler.forEach(name => {
     trinkCounter[name] = { schluecke: 0, exen: 0 };
   });
-  updateTracker();
   updateLeaderboard();
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
@@ -371,7 +363,6 @@ function confirmDouble() {
 function cancelDouble() {
   document.getElementById("doubleConfirmOverlay").style.display = "none";
   trinkCounter[currentDoublePerson].schluecke += currentDoubleAnzahl;
-  updateTracker();
   updateLeaderboard();
   zeigeMeldung(`<b>${currentDoublePerson}</b> nimmt sicher <b>${currentDoubleAnzahl} Schlücke</b>!`);
 }
@@ -404,11 +395,10 @@ function flipCoin() {
     result.innerHTML = `<span style="color:${isDouble ? '#ffd700' : '#ff4757'}">${text}</span>`;
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
-    updateTracker();
     updateLeaderboard();
 
     if (isDouble) {
-      launchConfetti();  // ← HIER einfügen: Konfetti nur bei Double!
+      launchConfetti();
     }
 
     setTimeout(() => {
