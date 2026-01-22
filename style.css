@@ -183,8 +183,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   box-shadow: 0 2px #000;
 }
 
-.spieler-btn.active { background: #ffa502 !important; color: black; border-color: #ff6b35; transform: scale(1.1); }
-
 #kugelOverlay { 
   display: none; 
   position: fixed;
