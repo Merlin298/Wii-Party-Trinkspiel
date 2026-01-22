@@ -45,7 +45,7 @@ button:active {
 
 button.big {height: 80px;
             line-height: 80px;
-            padding: 30px;
+            /*padding: 30px;*/
             font-size: 1.7rem;
             background: #ffa502;
            }
