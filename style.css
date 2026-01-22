@@ -205,7 +205,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   width: 100%; height: 100%;
 }
 
-/* Zahlen jetzt EXAKT mittig auf jedem Feld */
 .label {
   position: absolute;
   width: 100%; height: 100%;
@@ -216,7 +215,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   display: flex;
   align-items: center;
   justify-content: center;
-  /* +16.3635° = halber Sektor → perfekt in der Mitte */
   transform: 
     rotate(calc(var(--i) * 32.727deg + 16.3635deg))
     translateY(-135px)
