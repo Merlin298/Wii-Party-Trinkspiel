@@ -161,17 +161,22 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   width: 340px;
 }
 
-/* Pfeil jetzt nach UNTEN und sitzt perfekt auf dem Rand */
 #glueckradPfeil {
   position: absolute;
-  top: -50px;               /* oben am Rad */
+  top: -60px;               
   left: 50%;
-  transform: translateX(-50%) rotate(180deg);  /* 180° gedreht → zeigt nach unten */
-  font-size: 5rem;
+  transform: translateX(-50%) rotate(180deg);  
+  font-size: 5.5rem;
   color: #ff4757;
-  text-shadow: 3px 3px #000;
+  text-shadow: 4px 4px #000;
   z-index: 10;
-  animation: arrow-blink 1s infinite alternate;
+  pointer-events: none;
+  animation: arrow-blink 1.2s infinite alternate;
+}
+
+@keyframes arrow-blink {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
 }
 
 #glueckrad {
