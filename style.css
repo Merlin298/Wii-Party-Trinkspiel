@@ -154,23 +154,31 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 .spieler-wahl { margin: 20px 0; }
 #spielerButtons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 15px 0; }
 .spieler-btn {
-  min-width: 180px;
-  padding: 18px 24px;
-  font-size: 1.6rem;
+  min-width: 200px;
+  height: 80px;              /* 🔥 macht den Button deutlich dicker */
+
+  display: flex;             /* 🔥 sorgt für echtes Zentrieren */
+  align-items: center;       /* vertikal mittig */
+  justify-content: center;   /* horizontal mittig */
+
+  padding: 0 28px;           /* kein vertikales Padding mehr */
+  font-size: 1.7rem;
   font-family: 'Luckiest Guy', cursive;
   letter-spacing: 1px;
+  line-height: 1;            /* wichtig für vertikale Mitte */
 
-  background: linear-gradient(135deg, #444, #222);
+  background: linear-gradient(180deg, #555, #222);
   color: white;
 
   border: none;
-  border-radius: 18px;
+  border-radius: 22px;
 
-  box-shadow: 0 6px #111;
+  box-shadow: 0 7px #111;
   cursor: pointer;
 
   transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
 }
+
 
 .spieler-btn:hover {
   transform: translateY(-3px);
