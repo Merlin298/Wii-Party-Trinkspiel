@@ -36,7 +36,7 @@ function renderSetupListe() {
 function spielStarten() {
   document.getElementById("setup").classList.add("hidden");
   document.getElementById("spiel").classList.remove("hidden");
-  updateTracker(); // Tracker ohne Spieler-Auswahl, da Events jetzt unabhängig sind
+  updateTracker();
 }
 
 // Tracker
@@ -46,7 +46,7 @@ function updateTracker() {
 }
 
 // Meldung
-function zeigeMeldung(html, dauer = 3000) {
+function zeigeMeldung(html, dauer = 4000) {
   const div = document.createElement("div");
   div.className = "meldung";
   div.innerHTML = html;
@@ -81,11 +81,11 @@ function felderTrinken() {
 function personFeldGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   const overlay = document.createElement("div");
-  overlay.id = "felderOverlay";
+  overlay.id = "felderOverlay"; // Feste ID für sicheres Schließen
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;color:white;`;
   overlay.innerHTML = `
-    <h2>${person} – Wie viele Felder?</h2>
+    <h2>${person} – wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[4,5,6,7].map(n => 
         `<button onclick="felderBestaetigt('${person}', ${n})" 
@@ -100,7 +100,7 @@ function personFeldGewaehlt(person) {
 
 function felderBestaetigt(person, anzahl) {
   showDoubleConfirm(person, anzahl);
-  document.getElementById("felderOverlay").remove();
+  document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
 }
 
 // Hölle
@@ -110,7 +110,7 @@ function hoelle() {
 
 function personHoelleGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  showExenChoice(person);
+  trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateTracker();
 }
@@ -122,7 +122,7 @@ function blauerWerfer() {
 
 function opferBlauGewaehlt(opfer) {
   document.getElementById("personenOverlay").remove();
-  showExenChoice(person);
+  trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateTracker();
 }
@@ -134,7 +134,7 @@ function roterWerfer() {
 
 function personRoterGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
-  showExenChoice(person);
+  trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateTracker();
 }
@@ -231,7 +231,7 @@ function personGewaehlt(person) {
     if (kugelInhalt === "Exen") {
       kugel.innerHTML = "EXEN";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
-      showExenChoice(person);
+      trinkCounter[person].exen += 1;
     } else if (kugelInhalt === "Nichts") {
       kugel.innerHTML = "NICHTS";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
@@ -398,7 +398,7 @@ function flipCoin() {
     updateTracker();
 
     if (isDouble) {
-      launchConfetti();  // Konfetti nur bei Double
+      launchConfetti();  // ← HIER einfügen: Konfetti nur bei Double!
     }
 
     setTimeout(() => {
@@ -410,7 +410,7 @@ function flipCoin() {
   }, 4500);
 }
 
-// Konfetti-Funktion
+// Konfetti-Funktion (bei Double aufrufen)
 function launchConfetti() {
   const canvas = document.getElementById("confettiCanvas");
   const ctx = canvas.getContext("2d");
@@ -455,284 +455,4 @@ function launchConfetti() {
   }
 
   draw();
-}
-
-let currentExenPerson = null;
-let plinkoBallsLeft = 10;
-let plinkoTotalDrinks = 0;
-let activeBalls = []; 
-
-const plinkoMultipliers = [0, 0, 0, 5, 3, 2, 1, 0, 0, 0, 1, 2, 3, 5, 0, 0, 0]; // 17 Slots
-const plinkoLabels = [
-  "Volles Getränk Exen verteilen", // Slot 0
-  "Volles Getränk Exen", // Slot 1
-  "Exen", // Slot 2
-  "5×", "3×", "2×", "1×", "0×", // Slot 3-7
-  "0", // Mitte Slot 8
-  "0×", "1×", "2×", "3×", "5×", // Slot 9-13
-  "Exen", // Slot 14
-  "Volles Getränk Exen", // Slot 15
-  "Volles Getränk Exen verteilen" // Slot 16
-];
-
-function showExenChoice(person) {
-  currentExenPerson = person;
-  document.getElementById("exenChoiceOverlay").style.display = "flex";
-}
-
-function chooseDrink() {
-  document.getElementById("exenChoiceOverlay").style.display = "none";
-  trinkCounter[currentExenPerson].exen += 1;
-  updateTracker();
-  zeigeMeldung(`<b>${currentExenPerson}</b> muss EXEN!`);
-}
-
-function choosePlinko() {
-  document.getElementById("exenChoiceOverlay").style.display = "none";
-  startPlinko(currentExenPerson);
-}
-
-function startPlinko(person) {
-  const pegSpacing = 47;
-  
-  currentExenPerson = person;
-  plinkoBallsLeft = 10;
-  plinkoTotalDrinks = 0;
-  window.plinkoExenVerteilen = 0; // Reset für Verteilen
-  document.getElementById("ballsLeft").textContent = "10";
-  document.getElementById("totalDrinks").innerHTML = "0";
-  document.getElementById("plinkoOverlay").style.display = "flex";
-
-  const canvas = document.getElementById("plinkoCanvas");
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Initiales Zeichnen (Hintergrund + Pegs + Slots)
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Pegs
-  const pegRows = 16;
-  const pegsPerRow = Array.from({ length: pegRows }, (_, i) => i + 3);
-  const pegRadius = 7;
-  const startY = 100;
-  const rowHeight = 42;
-  
-  ctx.fillStyle = "#00d2d3";
-  
-  pegsPerRow.forEach((count, row) => {
-    const y = startY + row * rowHeight;
-    const offset = (canvas.width - (count - 1) * pegSpacing) / 2; // feste Breite, optisch Dreieck
-    for (let i = 0; i < count; i++) {
-      const x = offset + i * pegSpacing;
-      ctx.beginPath();
-      ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  });
-
-
-
-  // Slots
-  const slotWidth = canvas.width / 17;
-  plinkoLabels.forEach((label, i) => {
-    const x = i * slotWidth;
-    let bgColor = "#555";
-    if (label.includes("Volles") || label.includes("Exen")) bgColor = "#444";
-    else if (label === "0") bgColor = "#333";
-    else if (parseFloat(label) >= 5) bgColor = "#ff4757";
-    else if (parseFloat(label) >= 2) bgColor = "#ffa502";
-
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(x, canvas.height - 90, slotWidth, 90);
-
-    ctx.fillStyle = "white";
-    ctx.font = label.length > 15 ? "bold 14px Arial" : "bold 20px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText(label, x + slotWidth / 2, canvas.height - 45);
-  });
-
-  activeBalls = [];
-  document.getElementById("dropBallBtn").onclick = dropPlinkoBall;
-}
-
-function dropPlinkoBall() {
-  const canvas = document.getElementById("plinkoCanvas");
-
-  // Maximal 10 Bälle aktiv
-  if (activeBalls.length >= 10) return;
-
-  const newBall = {
-    x: canvas.width / 2,
-    y: 60,
-    vx: (Math.random() - 0.5) * 2,
-    vy: 0,
-    landed: false
-  };
-
-  activeBalls.push(newBall);
-
-  // Starte Animation, falls sie nicht läuft
-  if (!window.plinkoAnimationRunning) {
-    window.plinkoAnimationRunning = true;
-    animateAllBalls();
-  }
-
-  // Update Anzeige: noch zu dropende Bälle
-  document.getElementById("ballsLeft").textContent = 10 - activeBalls.length;
-}
-
-function animateAllBalls() {
-  const canvas = document.getElementById("plinkoCanvas");
-  const ctx = canvas.getContext("2d");
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Hintergrund zeichnen
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Pegs
-  const pegRows = 16;
-  const pegsPerRow = Array.from({ length: pegRows }, (_, i) => i + 3);
-  const pegRadius = 7;
-  const startY = 100;
-  const rowHeight = 42;
-  const pegSpacing = 47; // fix
-  
-  ctx.fillStyle = "#00d2d3";
-  
-  pegsPerRow.forEach((count, row) => {
-    const y = startY + row * rowHeight;
-    const offset = (canvas.width - (count - 1) * pegSpacing) / 2; // fix
-    for (let i = 0; i < count; i++) {
-      const x = offset + i * pegSpacing;
-      ctx.beginPath();
-      ctx.arc(x, y, pegRadius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  });
-
-
-
-  // Slots
-  const slotWidth = canvas.width / 17;
-  plinkoLabels.forEach((label, i) => {
-    const x = i * slotWidth;
-    let bgColor = "#555";
-    if (label.includes("Volles") || label.includes("Exen")) bgColor = "#444";
-    else if (label === "0") bgColor = "#333";
-    else if (parseFloat(label) >= 5) bgColor = "#ff4757";
-    else if (parseFloat(label) >= 2) bgColor = "#ffa502";
-
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(x, canvas.height - 90, slotWidth, 90);
-
-    ctx.fillStyle = "white";
-    ctx.font = label.length > 15 ? "bold 14px Arial" : "bold 20px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText(label, x + slotWidth / 2, canvas.height - 45);
-  });
-
-  const gravity = 0.4;
-  const bounce = 0.25; // sanftes Abprallen
-
-  activeBalls = activeBalls.filter(ball => {
-    if (ball.landed) return true;
-
-    // Wände
-    if (ball.x < 20) { ball.x = 20; ball.vx = -ball.vx * bounce; }
-    if (ball.x > canvas.width - 20) { ball.x = canvas.width - 20; ball.vx = -ball.vx * bounce; }
-
-    ball.vy += gravity;
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-
-    // Peg-Kollisionen
-    const row = Math.floor((ball.y - startY) / rowHeight);
-    if (row >= 0 && row < 16) {
-      const count = pegsPerRow[row];
-      const offset = (canvas.width - count * 55) / 2 + 27.5;
-      for (let i = 0; i < count; i++) {
-        const px = offset + i * 55;
-        const py = startY + row * rowHeight;
-        const dist = Math.hypot(ball.x - px, ball.y - py);
-        if (dist < pegRadius + 12) {
-          ball.vx = (ball.x - px) * 0.2 + (Math.random() - 0.5) * 1;
-          ball.vy = -ball.vy * bounce;
-        }
-      }
-    }
-
-    // Ball zeichnen
-    ctx.fillStyle = "#ff4757";
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Landen
-    if (ball.y > canvas.height - 100 && ball.vy > 0) {
-      ball.landed = true;
-      ball.y = canvas.height - 100;
-      ball.vy = 0;
-      ball.vx *= 0.7;
-
-      const slot = Math.floor(ball.x / slotWidth);
-      const mult = plinkoMultipliers[slot] || 0;
-      const drink = mult * 1;
-      plinkoTotalDrinks += drink;
-
-      let extraText = "";
-      if (plinkoLabels[slot].includes("Exen verteilen")) {
-        if (!window.plinkoExenVerteilen) window.plinkoExenVerteilen = 0;
-        window.plinkoExenVerteilen += 1;
-        extraText = ` + <span style="color:#ff4757">${window.plinkoExenVerteilen} Exen verteilen</span>`;
-      } else if (plinkoLabels[slot].includes("Exen")) {
-        extraText = ` + <span style="color:#ff4757">+1 Exe</span>`;
-        trinkCounter[currentExenPerson].exen += 1;
-        updateTracker();
-      } else {
-        trinkCounter[currentExenPerson].schluecke += drink;
-        updateTracker();
-      }
-
-      document.getElementById("totalDrinks").innerHTML = plinkoTotalDrinks.toFixed(1) + extraText;
-
-      // Ball-Landen: plinkoBallsLeft reduzieren
-      plinkoBallsLeft--;
-      document.getElementById("ballsLeft").textContent = plinkoBallsLeft;
-
-      // Overlay schließen erst, wenn alle Bälle gelandet
-      if (plinkoBallsLeft === 0 && activeBalls.every(b => b.landed)) {
-        setTimeout(() => {
-          document.getElementById("plinkoOverlay").style.display = "none";
-        }, 1000);
-      }
-
-      // Ball nach 2 Sekunden aus activeBalls entfernen
-      setTimeout(() => {
-        activeBalls = activeBalls.filter(b => b !== ball);
-      }, 2000);
-
-      return true;
-    }
-
-    return true;
-  });
-
-  if (activeBalls.length > 0 || plinkoBallsLeft > 0) {
-    requestAnimationFrame(animateAllBalls);
-  } else {
-    window.plinkoAnimationRunning = false;
-  }
-}
-
-  
-function plinkoExenVerteilen(opfer) {
-  document.getElementById("personenOverlay")?.remove();
-  trinkCounter[opfer].exen += window.plinkoExenVerteilen;
-  updateTracker();
-  zeigeMeldung(`Plinko: <b>${window.plinkoExenVerteilen} Exen</b> an <b>${opfer}</b> verteilt!`);
-  window.plinkoExenVerteilen = 0;
-  document.getElementById("plinkoOverlay").style.display = "none";
 }
