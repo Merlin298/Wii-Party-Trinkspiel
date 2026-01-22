@@ -46,7 +46,7 @@ function updateTracker() {
 }
 
 // Meldung
-function zeigeMeldung(html, dauer = 4000) {
+function zeigeMeldung(html, dauer = 2750) {
   const div = document.createElement("div");
   div.className = "meldung";
   div.innerHTML = html;
