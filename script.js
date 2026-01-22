@@ -242,7 +242,7 @@ function personGewaehlt(person) {
       trinkCounter[person].schluecke += schluecke;
     }
 
-    updateTracker();
+    updateLeaderboard();
     setTimeout(() => {
       overlay.style.display = "none";
       minispielPhase = 0;
