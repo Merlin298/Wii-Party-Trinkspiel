@@ -34,7 +34,6 @@ function renderSetupListe() {
 }
 
 function spielStarten() {
-  document.getElementById("spielerListe").remove();  // Komplett löschen statt verstecken
   if (spieler.length < 2) {
     zeigeMeldung("Mindestens 2 Spieler!", 1000);
     return;
