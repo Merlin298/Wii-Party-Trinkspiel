@@ -18,9 +18,9 @@ h1 { font-size: 3rem; margin: 10px; text-shadow: 3px 3px #000; }
 .container { max-width: 500px; margin: 0 auto; }
 input { padding: 12px; width: 60%; font-size: 1.2rem; border-radius: 10px; border: none; }
 button {
-  height: 50px;
-  line-height: 50px;
-  padding: 0 20px;                      /* Größe der Button */
+  height: 50px;                            /* feste Höhe der Button*/
+  line-height: 50px;                       /* Text vertikal zentrieren */
+  padding: 0 20px;                         /* Größe der Button */
   margin: 8px;                             /* Abstand zwischen den Button */
   font-size: 1.2rem;                       /* Schriftgröße */
   background: #ff4757;
