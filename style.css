@@ -18,16 +18,16 @@ h1 { font-size: 3rem; margin: 10px; text-shadow: 3px 3px #000; }
 .container { max-width: 500px; margin: 0 auto; }
 input { padding: 12px; width: 60%; font-size: 1.2rem; border-radius: 10px; border: none; }
 button {
-  padding: 12px 20px;
-  margin: 8px;
-  font-size: 1.2rem;
+  padding: 12px 20px;                      /* Größe der Button */
+  margin: 8px;                             /* Abstand zwischen den Button */
+  font-size: 1.2rem;                       /* Schriftgröße */
   background: #ff4757;
   color: white;
   border: none;
-  border-radius: 15px;
+  border-radius: 15px;                     /* Button werden runder */
   cursor: pointer;
-  box-shadow: 0 4px #b33939;
-  min-width: 220px;
+  box-shadow: 0 4px #b33939;               /* Stärke des Schattens */      
+  min-width: 220px;                        /* MIndestbreite */
   transition: all 0.2s;
 }
 
