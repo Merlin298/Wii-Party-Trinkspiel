@@ -139,13 +139,18 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 .spieler-btn.active { background: #ffa502 !important; color: black; border-color: #ff6b35; transform: scale(1.1); }
 
 #kugelOverlay { 
-  display: none !important; 
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+  display: none; 
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0; 
   background: rgba(0,0,0,0.97); 
-  align-items: center; justify-content: center; 
+  align-items: center;
+  justify-content: center; 
   z-index: 9999; 
 }
-#kugelOverlay[style*="flex"] { display: flex !important; }
+
+#kugelOverlay[style*="flex"] {
+  display: flex;
+}
 
 /* ==================== GLÜCKSRAD ==================== */
 #glueckradOverlay {
