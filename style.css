@@ -41,8 +41,8 @@ button:active {
                 box-shadow: 0 0 #b33939;
               }
 
-button.big { padding: 20px;
-            font-size: 1.5rem;
+button.big { padding: 40px;
+            font-size: 1.7rem;
             background: #ffa502;
            }
 
