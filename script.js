@@ -76,15 +76,19 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:30px;color:white;`;
   overlay.innerHTML = `
-    <h2>${titel}</h2>
-    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
-      ${spieler.filter(s => !ausgeschlossene.includes(s)).map(s => 
-        `<button class="spieler-btn" style="padding:25px 40px;font-size:2rem;" onclick="${callback}('${s}')">${s}</button>`
-      ).join("")}
-    </div>
-    <button onclick="document.getElementById('personenOverlay').remove()" 
-            style="padding:15px 30px;background:#333;">Abbrechen</button>
-  `;
+  <h2>${titel}</h2>
+  <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:90%;">
+    ${spieler.filter(s => !ausgeschlossene.includes(s)).map(s =>
+      `<button class="spieler-btn" style="padding:20px 35px; font-size:1.6rem; min-width:180px; height:70px; line-height:70px; background:#333; border:3px solid #555; border-radius:15px; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 6px #222; transition:all 0.2s;" onclick="${callback}('${s}')">${s}</button>`
+    ).join("")}
+  </div>
+  ${!titel.includes("Exen verteilen") ? `
+    <button onclick="document.getElementById('personenOverlay').remove()"
+            style="padding:15px 30px; background:#444; border:none; border-radius:15px; color:white; font-size:1.4rem; margin-top:20px; cursor:pointer;">
+      Abbrechen
+    </button>
+  ` : ''}
+`;
   document.body.appendChild(overlay);
 }
 
