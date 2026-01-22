@@ -27,7 +27,7 @@ button {
   border-radius: 15px;                     /* Button werden runder */
   cursor: pointer;
   box-shadow: 0 4px #b33939;               /* Stärke des Schattens */      
-  min-width: 220px;                        /* MIndestbreite */
+  min-width: 120px;                        /* MIndestbreite */
   transition: all 0.2s;
 }
 
