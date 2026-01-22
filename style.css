@@ -154,8 +154,35 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 .spieler-wahl { margin: 20px 0; }
 #spielerButtons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 15px 0; }
 .spieler-btn {
-  padding: 15px 20px; font-size: 1.3rem; background: #333; border: 3px solid #555; border-radius: 15px;
+  min-width: 180px;
+  padding: 18px 24px;
+  font-size: 1.6rem;
+  font-family: 'Luckiest Guy', cursive;
+  letter-spacing: 1px;
+
+  background: linear-gradient(135deg, #444, #222);
+  color: white;
+
+  border: none;
+  border-radius: 18px;
+
+  box-shadow: 0 6px #111;
+  cursor: pointer;
+
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
 }
+
+.spieler-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px #000;
+  background: linear-gradient(135deg, #555, #333);
+}
+
+.spieler-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px #000;
+}
+
 .spieler-btn.active { background: #ffa502 !important; color: black; border-color: #ff6b35; transform: scale(1.1); }
 
 #kugelOverlay { 
