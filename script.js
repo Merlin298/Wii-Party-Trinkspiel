@@ -46,7 +46,7 @@ function updateTracker() {
 }
 
 // Meldung
-function zeigeMeldung(html, dauer = 4000) {
+function zeigeMeldung(html, dauer = 3000) {
   const div = document.createElement("div");
   div.className = "meldung";
   div.innerHTML = html;
@@ -81,11 +81,11 @@ function felderTrinken() {
 function personFeldGewaehlt(person) {
   document.getElementById("personenOverlay").remove();
   const overlay = document.createElement("div");
-  overlay.id = "felderOverlay"; // Feste ID für sicheres Schließen
+  overlay.id = "felderOverlay";
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;color:white;`;
   overlay.innerHTML = `
-    <h2>${person} – wie viele Felder?</h2>
+    <h2>${person} – Wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[4,5,6,7].map(n => 
         `<button onclick="felderBestaetigt('${person}', ${n})" 
@@ -100,7 +100,7 @@ function personFeldGewaehlt(person) {
 
 function felderBestaetigt(person, anzahl) {
   showDoubleConfirm(person, anzahl);
-  document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
+  document.getElementById("felderOverlay").remove();
 }
 
 // Hölle
@@ -373,19 +373,19 @@ function flipCoin() {
 
   result.innerHTML = "";
 
-  // 1️⃣ Transition kurz ausschalten & Reset
+  // Transition kurz ausschalten & Reset
   coin.style.transition = "none";
   coin.style.transform = "rotateY(0deg)";
 
-  // 2️⃣ Reflow erzwingen (SEHR WICHTIG)
+  // Reflow erzwingen (SEHR WICHTIG)
   coin.offsetHeight;
 
-    // 3️⃣ Jetzt Transition + Drehung starten
+    // Jetzt Transition + Drehung starten
   const isDouble = Math.random() < 0.5;
   
   coin.style.transition = "transform 4.5s ease-in-out";
   coin.style.transform = `rotateY(${isDouble ? 2160 : 2340}deg)`;
-  // 4️⃣ Ergebnis nach 4,5s
+  // Ergebnis nach 4,5s
   setTimeout(() => {
     let schluecke = isDouble ? currentDoubleAnzahl * 2 : 0;
     let text = isDouble
@@ -398,7 +398,7 @@ function flipCoin() {
     updateTracker();
 
     if (isDouble) {
-      launchConfetti();  // ← HIER einfügen: Konfetti nur bei Double!
+      launchConfetti();  // Konfetti nur bei Double
     }
 
     setTimeout(() => {
@@ -410,7 +410,7 @@ function flipCoin() {
   }, 4500);
 }
 
-// Konfetti-Funktion (bei Double aufrufen)
+// Konfetti-Funktion
 function launchConfetti() {
   const canvas = document.getElementById("confettiCanvas");
   const ctx = canvas.getContext("2d");
@@ -460,7 +460,7 @@ function launchConfetti() {
 let currentExenPerson = null;
 let plinkoBallsLeft = 10;
 let plinkoTotalDrinks = 0;
-let activeBalls = []; // Array für alle aktiven Bälle
+let activeBalls = []; 
 
 const plinkoMultipliers = [0, 0, 0, 5, 3, 2, 1, 0, 0, 0, 1, 2, 3, 5, 0, 0, 0]; // 17 Slots
 const plinkoLabels = [
@@ -484,7 +484,7 @@ function chooseDrink() {
   document.getElementById("exenChoiceOverlay").style.display = "none";
   trinkCounter[currentExenPerson].exen += 1;
   updateTracker();
-  zeigeMeldung(`<b>${currentExenPerson}</b> trinkt direkt eine EXE!`);
+  zeigeMeldung(`<b>${currentExenPerson}</b> muss EXEN!`);
 }
 
 function choosePlinko() {
