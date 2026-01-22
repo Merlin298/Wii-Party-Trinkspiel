@@ -27,9 +27,24 @@ button {
   border-radius: 15px;
   cursor: pointer;
   box-shadow: 0 4px #b33939;
+  min-width: 220px;
+  transition: all 0.2s;
 }
-button:active { transform: translateY(4px); box-shadow: 0 0 #b33939; }
-button.big { padding: 20px; font-size: 1.5rem; background: #ffa502; }
+
+button:hover { 
+                transform: translateY(-4px);
+                box-shadow: 0 12px #b33939;
+          
+
+button:active {
+                transform: translateY(4px);
+                box-shadow: 0 0 #b33939;
+              }
+
+button.big { padding: 20px;
+            font-size: 1.5rem;
+            background: #ffa502;
+           }
 
 ul { list-style: none; padding: 0; }
 li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10px; font-size: 1.3rem; }
