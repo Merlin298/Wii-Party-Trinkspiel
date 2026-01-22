@@ -200,7 +200,7 @@ function personGewaehlt(person) {
   const kugel = document.getElementById("kugel");
   const text = document.getElementById("kugelText");
 
-  overlay.style.display = "flex";
+  overlay.classList.add("active");
   text.innerHTML = `${person} zieht eine Kugel...`;
   kugel.innerHTML = "?";
   kugel.style.animation = "roll 2s infinite linear";
@@ -217,7 +217,7 @@ function personGewaehlt(person) {
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN VERTEILEN!</span>`;
 
       setTimeout(() => {
-        overlay.style.display = "none";
+        overlay.classList.remove("active");
 
         if (spieler.length === 2) {
           const opfer = spieler.find(s => s !== person);
@@ -238,7 +238,7 @@ function personGewaehlt(person) {
 
     // Zufall
     if (kugelInhalt.includes("Zufall")) {
-      overlay.style.display = "none";
+      overlay.classList.remove("active");
       glückradZiehen(person);
       return;
     }
@@ -259,7 +259,7 @@ function personGewaehlt(person) {
 
     updateLeaderboard();
     setTimeout(() => {
-      overlay.style.display = "none";
+      overlay.classList.remove("active");
       minispielPhase = 0;
     }, 3000);
   }, 2500);
