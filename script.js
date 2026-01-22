@@ -38,7 +38,7 @@ function spielStarten() {
   document.getElementById("spiel").classList.remove("hidden");
   updateLeaderboard();
   document.getElementById("resetButtonContainer").style.display = "block";
-  document.getElementById("spielerListe").style.display = "none";
+  document.getElementById("spielerListe").classList.add("hidden");
 }
 
 // Tracker
