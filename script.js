@@ -47,10 +47,7 @@ function spielStarten() {
   // Namen-Liste oben verstecken
   const liste = document.getElementById("spielerListe");
   if (liste) {
-    liste.style.display = "none";
-    // Alternative: Klasse hinzufügen (sicherer gegen CSS)
-    liste.classList.add("hidden");
-  }
+    liste.remove();
 
   document.getElementById("resetButtonContainer").style.display = "block";
 }
