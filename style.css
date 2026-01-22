@@ -12,6 +12,8 @@ body {
   box-sizing: border-box;
 }
 
+#spielerListe.hidden { display: none !important; }
+
 h1 { font-size: 3rem; margin: 10px; text-shadow: 3px 3px #000; }
 .disclaimer { font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px; }
 
