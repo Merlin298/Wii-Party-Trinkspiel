@@ -43,7 +43,9 @@ button:active {
                 box-shadow: 0 0 #b33939;
               }
 
-button.big { padding: 30px;
+button.big {height: 80px;
+            line-height: 80px;
+            padding: 30px;
             font-size: 1.7rem;
             background: #ffa502;
            }
