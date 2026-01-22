@@ -147,7 +147,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 #kugelOverlay[style*="flex"] { display: flex !important; }
 
-/* ==================== GLÜCKSRAD – 100 % PERFEKT ==================== */
+/* ==================== GLÜCKSRAD ==================== */
 #glueckradOverlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.97);
@@ -163,8 +163,8 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 #glueckradPfeil {
   position: absolute;
-  top: -60px;               
-  left: 50%;
+  top: -62px;               
+  left: calc(50% + 3px);
   transform: translateX(-50%) rotate(180deg);  
   font-size: 5.5rem;
   color: #ff4757;
