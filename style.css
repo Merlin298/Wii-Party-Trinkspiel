@@ -164,7 +164,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 #glueckradPfeil {
   position: absolute;
   top: -62px;               
-  left: calc(50% + 3px);
+  left: calc(50% + 13px);
   transform: translateX(-50%) rotate(180deg);  
   font-size: 5.5rem;
   color: #ff4757;
