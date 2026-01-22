@@ -366,3 +366,48 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 #spielerListe.hidden {
   display: none !important;
 }
+
+
+
+/* Double-Confirm Buttons nebeneinander */
+.double-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+/* Gemeinsamer Button-Style */
+.double-buttons button {
+  padding: 18px 32px;
+  font-size: 1.4rem;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Luckiest Guy', cursive;
+  letter-spacing: 1px;
+  box-shadow: 0 6px rgba(0,0,0,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.double-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px rgba(0,0,0,0.4);
+}
+
+.double-buttons button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px rgba(0,0,0,0.4);
+}
+
+/* Ja-Button */
+.double-yes {
+  background: linear-gradient(135deg, #ffe259, #ffa502);
+  color: #000;
+}
+
+/* Nein-Button */
+.double-no {
+  background: linear-gradient(135deg, #ff6b6b, #ff4757);
+  color: #fff;
+}
