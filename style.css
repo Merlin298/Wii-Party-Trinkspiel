@@ -386,6 +386,8 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   overflow: visible;            /* lange Wörter werden nicht abgeschnitten */
   text-overflow: clip;     /* bei sehr langen Texten ... am Ende (ellipsis)*/
   padding: 12px 8px;           /* etwas mehr horizontaler Padding für volle Wörter */
+  border-top-left-radius: 15px;   /* oben links runder */
+  border-top-right-radius: 15px;  /* oben rechts runder */
 }
 
 #leaderboard th:nth-child(1), #leaderboard td:nth-child(1) { width: 10%; } /* Platz */
@@ -404,6 +406,8 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   font-weight: bold;
   transform: scale(1.03);
   box-shadow: 0 4px 15px rgba(255,215,0,0.5);
+  border-top-left-radius: 15px;   /* oben links runder */
+  border-top-right-radius: 15px;  /* oben rechts runder */
 }
 
 #leaderboard .rank-1 td:first-child {
