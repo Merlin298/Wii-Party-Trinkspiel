@@ -481,6 +481,7 @@ function updateLeaderboard() {
       name,
       schluecke: 0,
       exen: 0,
+      punkte: 0
     }));
   } else {
     // Sortiert nach Punkten
@@ -506,6 +507,7 @@ function updateLeaderboard() {
       <td>${player.name}</td>
       <td>${player.schluecke}</td>
       <td>${player.exen}</td>
+      <td>${player.points}</td>
     `;
 
     tbody.appendChild(row);
