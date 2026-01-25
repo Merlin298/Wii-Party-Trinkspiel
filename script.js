@@ -178,7 +178,7 @@ function minispiel() {
     overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
       display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:30px;color:white;`;
     overlay.innerHTML = `
-      <h2>Wer ist ${gefahrPlatz}. geworden?</h2>
+      <h2> style="font-size: 3rem; margin-bottom: 30px;">Wer ist ${gefahrPlatz}. geworden?</h2>
       <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;max-width:90%;">
         ${spieler.map(s => 
           `<button class="spieler-btn" style="padding:25px 40px;font-size:2rem;" onclick="personGewaehlt('${s}')">${s}</button>`
