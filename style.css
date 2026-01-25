@@ -21,7 +21,7 @@ button {
   height: 50px;                            /* feste Höhe der Button*/
   line-height: 50px;                       /* Text vertikal zentrieren */
   padding: 0 20px;                         /* Größe der Button */
-  margin: 15px 8px;                             /* Abstand zwischen den Button */
+  margin: 12px 8px;                         /* Abstand zwischen den Button (oben/unten dann rechts/links)*/
   font-size: 1.2rem;                       /* Schriftgröße */
   background: #ff4757;
   color: white;
