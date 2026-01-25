@@ -330,7 +330,7 @@ function glückradZiehen(person) {
       radOverlay.style.display = "none";
       minispielPhase = 0;
     }, 3000);
-  }//, extraZeit * 1000);
+  }, extraZeit * 1000);
 }
 
 // Reset-Button öffnet das Overlay
