@@ -413,29 +413,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   font-size: 1.6rem;
 }
 
-/* Header (erste Zeile) – nur außen runde Ecken */
-#leaderboard table thead tr:first-child th:first-child {
-  border-top-left-radius: 20px;   /* oben links runde Ecke */
-}
-
-#leaderboard table thead tr:first-child th:last-child {
-  border-top-right-radius: 20px;  /* oben rechts runde Ecke */
-}
-
-/* Footer (Punkte-Hinweis-Zeile, falls du sie hast) – nur außen runde Ecken */
-#leaderboard table tbody tr:last-child td:first-child {
-  border-bottom-left-radius: 20px;  /* unten links */
-}
-
-#leaderboard table tbody tr:last-child td:last-child {
-  border-bottom-right-radius: 20px; /* unten rechts */
-}
-
-/* Entferne oder setze border-radius auf 0 für mittlere Zellen */
-#leaderboard th, #leaderboard td {
-  border-radius: 0 !important;  /* verhindert Rundung mittig */
-}
-
 
 
 #spielerListe {
