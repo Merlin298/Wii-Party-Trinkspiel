@@ -487,7 +487,7 @@ function updateLeaderboard() {
     rankedPlayers = spieler.map(name => {
       const schluecke = trinkCounter[name].schluecke || 0;
       const exen = trinkCounter[name].exen || 0;
-      const points = schluecke + exen * 8;
+      const points = schluecke + exen * 10;
       return { name, schluecke, exen, points };
     }).sort((a, b) => b.points - a.points);
   }
