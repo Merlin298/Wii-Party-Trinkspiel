@@ -361,7 +361,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 #leaderboard table {
   width: 100%;
   max-width: 100%;
-  table-layout: fixed;
+  table-layout: auto;
   border-collapse: collapse;
   font-size: 1.4rem;
 }
@@ -380,7 +380,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   color: #fff;
   font-size: 1.3rem;           /* etwas kleiner als Body, damit's nicht zu dominant ist */
   font-weight: bold;
-  border-radius: 30px;
   text-align: center;          /* Text mittig */
   white-space: nowrap;         /* Text bricht nicht um */
   overflow: hidden;            /* lange Wörter werden nicht abgeschnitten */
