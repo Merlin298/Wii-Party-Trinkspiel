@@ -104,7 +104,7 @@ function personFeldGewaehlt(person) {
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;color:white;`;
   overlay.innerHTML = `
-    <h2>${person} – wie viele Felder?</h2>
+    <h2 style="font-size: 3rem; margin-bottom: 30px;">${person} – Wie viele Felder?</h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[4,5,6,7].map(n => 
         `<button onclick="felderBestaetigt('${person}', ${n})"
