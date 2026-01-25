@@ -325,8 +325,9 @@ function glückradZiehen(person) {
 
     trinkCounter[person].schluecke += endZahl;
     updateLeaderboard();
-
+    console.log("Glücksrad gestartet – extraZeit:", extraZeit);
     setTimeout(() => {
+      console.log("Versuche Glücksrad zu schließen – aktueller display:", radOverlay.style.display);
       radOverlay.style.display = "none";
       minispielPhase = 0;
     }, 3000);
