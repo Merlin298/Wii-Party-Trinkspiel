@@ -489,7 +489,7 @@ function updateLeaderboard() {
       const schluecke = trinkCounter[name].schluecke || 0;
       const exen = trinkCounter[name].exen || 0;
       const points = schluecke + exen * 10;
-      return { name, schluecke, exen, points };
+      return { name, schluecke, exen, punkte };
     }).sort((a, b) => b.points - a.points);
   }
 
@@ -507,7 +507,7 @@ function updateLeaderboard() {
       <td>${player.name}</td>
       <td>${player.schluecke}</td>
       <td>${player.exen}</td>
-      <td>${player.points}</td>
+      <td>${player.punkte}</td>
     `;
 
     tbody.appendChild(row);
