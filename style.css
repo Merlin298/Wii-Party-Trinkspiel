@@ -413,9 +413,9 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 #punkteHinweis {
-  color: #fff !important;          /* ← das ist die Zeile: exakt weiß wie oben */
+  color: rgba(255,255,255,1);          
   margin-top: 10px;
-  margin-bottom: 0;
+  margin-bottom: 10px;
   font-size: 1.3rem;
   text-align: center;
   opacity: 1;                     /* opacity 1 statt 0.8 – volle Deckkraft */
