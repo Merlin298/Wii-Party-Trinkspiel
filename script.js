@@ -108,7 +108,7 @@ function personFeldGewaehlt(person) {
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:80%;">
       ${[4,5,6,7].map(n => 
         `<button onclick="felderBestaetigt('${person}', ${n})"
-            style="padding:35px; font-size:2.5rem; background:#ff4757; border:none; border-radius:15px; line-height:1.2; padding-top:23px; display:flex; align-items:center; justify-content:center; min-width:80px;">
+            style="padding:35px; font-size:2.5rem; background:#ff4757; border:none; border-radius:30px; line-height:1.2; padding-top:30px; display:flex; align-items:center; justify-content:center; min-width:80px;">
             ${n}
          </button>`
       ).join("")}
