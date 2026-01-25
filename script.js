@@ -325,9 +325,8 @@ function glückradZiehen(person) {
 
     trinkCounter[person].schluecke += endZahl;
     updateLeaderboard();
-    console.log("Glücksrad gestartet – extraZeit:", extraZeit);
+    
     setTimeout(() => {
-      console.log("Versuche Glücksrad zu schließen – aktueller display:", radOverlay.style.display);
       radOverlay.style.display = "none";
       minispielPhase = 0;
     }, 3000);
@@ -489,9 +488,9 @@ function updateLeaderboard() {
     rankedPlayers = spieler.map(name => {
       const schluecke = trinkCounter[name].schluecke || 0;
       const exen = trinkCounter[name].exen || 0;
-      const points = schluecke + exen * 10;
+      const punkte = schluecke + exen * 10;
       return { name, schluecke, exen, punkte };
-    }).sort((a, b) => b.points - a.points);
+    }).sort((a, b) => b.punkte - a.punkte);
   }
 
   const tbody = document.getElementById("leaderboardBody");
@@ -499,7 +498,7 @@ function updateLeaderboard() {
 
   rankedPlayers.forEach((player, index) => {
     const row = document.createElement("tr");
-    if (index === 0 && player.points > 0) {
+    if (index === 0 && player.punkte > 0) {
       row.className = "rank-1";
     }
 
