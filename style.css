@@ -392,9 +392,19 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 #leaderboard th:nth-child(1), #leaderboard td:nth-child(1) { width: 10%; } /* Platz */
 #leaderboard th:nth-child(2), #leaderboard td:nth-child(2) { width: 35%; } /* Name – mehr Platz */
-#leaderboard th:nth-child(3), #leaderboard td:nth-child(3) { width: 18%; } /* Schlücke */
-#leaderboard th:nth-child(4), #leaderboard td:nth-child(4) { width: 18%; } /* Exen */
+#leaderboard th:nth-child(3), #leaderboard td:nth-child(3) { width: 20%; } /* Schlücke */
+#leaderboard th:nth-child(4), #leaderboard td:nth-child(4) { width: 16%; } /* Exen */
 #leaderboard th:nth-child(5), #leaderboard td:nth-child(5) { width: 19%; } /* Punkte */
+
+
+#leaderboard table thead tr:first-child th:first-child {
+  border-top-left-radius: 20px;   /* noch runder – passe 20px an deine Vorliebe an */
+}
+
+#leaderboard table thead tr:first-child th:last-child {
+  border-top-right-radius: 20px;
+}
+
 
 #leaderboard tr {
   transition: all 0.3s;
@@ -406,8 +416,6 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   font-weight: bold;
   transform: scale(1.03);
   box-shadow: 0 4px 15px rgba(255,215,0,0.5);
-  border-top-left-radius: 15px;   /* oben links runder */
-  border-top-right-radius: 15px;  /* oben rechts runder */
 }
 
 #leaderboard .rank-1 td:first-child {
