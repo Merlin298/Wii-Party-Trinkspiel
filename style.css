@@ -348,7 +348,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 /* Leaderboard / Rangliste */
 #leaderboard {
-  margin: 15px 0;
+  margin: 30px 0;
   padding: 15px;
   background: rgba(0,0,0,0.4);
   border-radius: 15px;
@@ -359,14 +359,19 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 #leaderboard table {
   width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 1.4rem;
 }
 
 #leaderboard th, #leaderboard td {
   padding: 12px;
-  text-align: left;
+  ext-align: center;
   border-bottom: 1px solid rgba(255,255,255,0.15);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #leaderboard th {
@@ -374,6 +379,12 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   color: #fff;
   font-size: 1.5rem;
 }
+
+#leaderboard th:nth-child(1), #leaderboard td:nth-child(1) { width: 10%; } /* Platz */
+#leaderboard th:nth-child(2), #leaderboard td:nth-child(2) { width: 35%; } /* Name – mehr Platz */
+#leaderboard th:nth-child(3), #leaderboard td:nth-child(3) { width: 18%; } /* Schlücke */
+#leaderboard th:nth-child(4), #leaderboard td:nth-child(4) { width: 18%; } /* Exen */
+#leaderboard th:nth-child(5), #leaderboard td:nth-child(5) { width: 19%; } /* Punkte */
 
 #leaderboard tr {
   transition: all 0.3s;
