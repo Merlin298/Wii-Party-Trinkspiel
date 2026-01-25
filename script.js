@@ -94,7 +94,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
 
 // Felder vor/zurück
 function felderTrinken() {
-  erstellePersonenOverlay("Wer ist vor/zurückgesprungen?", "personFeldGewaehlt");
+  erstellePersonenOverlay("Wer ist vor/zurück gesprungen?", "personFeldGewaehlt");
 }
 
 function personFeldGewaehlt(person) {
