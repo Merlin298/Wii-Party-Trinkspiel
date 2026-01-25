@@ -79,7 +79,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   <h2 style="font-size: 3rem; margin-bottom: 30px; text-shadow: 3px 3px #000;">${titel}</h2>
   <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:90%;">
     ${spieler.filter(s => !ausgeschlossene.includes(s)).map(s =>
-     `<button class="spieler-btn" style="padding:25px 40px; font-size:2rem; background:#333; color:white; border:none; border-radius:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 8px 12px -6px rgba(0,0,0,0.8), inset 0 -2px 4px -2px rgba(255,255,255,0.15);" onclick="${callback}('${s}')">${s}</button>`
+    `<button class="spieler-btn" style="padding:25px 40px; font-size:2rem; background:#333; color:white; border:none; border-radius:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 -8px 12px -6px rgba(0,0,0,0.8), inset 0 2px 4px -2px rgba(255,255,255,0.15);" onclick="${callback}('${s}')">${s}</button>`
     ).join("")}
   </div>
     ${!titel.includes("Exen verteilen") ? `
