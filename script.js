@@ -470,7 +470,7 @@ function launchConfetti() {
 
 function updateLeaderboard() {
   const hasPoints = spieler.some(s => 
-    (trinkCounter[s].schluecke || 0) + (trinkCounter[s].exen || 0) * 8 > 0
+    (trinkCounter[s].schluecke || 0) + (trinkCounter[s].exen || 0) * 10 > 0
   );
 
   let rankedPlayers;
