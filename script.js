@@ -183,7 +183,7 @@ function minispiel() {
         ${spieler.map(s => 
           `<button class="spieler-btn" style="padding:25px 40px;font-size:2rem; border-radius:30px;" onclick="personGewaehlt('${s}')">${s}</button>`
         ).join("")}
-        ${spieler.length < 4 ? `<button class="spieler-btn" style="padding:25px 40px; font-size:2rem; background:#333; color:white; border:none; border-radius:30px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 -8px 12px -6px rgba(0,0,0,0.8), inset 0 2px 4px -2px rgba(255,255,255,0.15);" onclick="personGewaehlt('BOT')">BOT</button>`
+        ${spieler.length < 4 ? `<button class="spieler-btn" style="padding:25px 40px; font-size:2rem; background:#333; color:white; border:none; border-radius:30px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 -8px 12px -6px #0008, inset 0 8px 12px -6px #fff4;" onclick="personGewaehlt('BOT')">BOT</button>`
           : ""}
       </div>
     `;
