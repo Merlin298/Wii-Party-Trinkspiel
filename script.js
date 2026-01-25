@@ -76,7 +76,7 @@ function erstellePersonenOverlay(titel, callback, ausgeschlossene = []) {
   overlay.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:30px;color:white;`;
   overlay.innerHTML = `
-  <h2>${titel}</h2>
+  <h2 style="font-size: 3rem; margin-bottom: 30px; text-shadow: 3px 3px #000;">${titel}</h2>
   <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:90%;">
     ${spieler.filter(s => !ausgeschlossene.includes(s)).map(s =>
       `<button class="spieler-btn" style="padding:20px 35px; font-size:1.6rem; min-width:180px; height:70px; line-height:70px; background:#333; border:3px solid #555; border-radius:15px; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 6px #222; transition:all 0.2s;" onclick="${callback}('${s}')">${s}</button>`
