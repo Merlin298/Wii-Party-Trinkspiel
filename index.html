@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wii Party Trinkspiel</title>
+
+  <!-- Styles & Icons -->
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon-192.png" />
@@ -12,19 +14,22 @@
 </head>
 <body>
   <div class="container">
+
+    <!-- Header / Titel -->
     <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: nowrap; margin-bottom: 18px;">
       <h1 style="font-size: 3.5rem; margin: 0; text-shadow: 3px 3px #000; white-space: nowrap;">
         🍻 Wii Party Trinkspiel 🍻
       </h1>
     </div>
 
+    <!-- Untertitel / aktuelles Spiel -->
     <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: nowrap; margin-bottom: 18px;">
       <h1 style="font-size: 1.5rem; margin: 0; text-shadow: 3px 3px #000; white-space: nowrap;">
-       🏝️ Insel der Abenteuer 🏝️
+        🏝️ Insel der Abenteuer 🏝️
       </h1>
     </div>
       
-  <!-- Reset-Button -->
+    <!-- Reset-Button -->
     <div id="resetButtonContainer" style="position: absolute; top: 10px; right: 10px; z-index: 100; display: none;">
       <button onclick="resetTracker()"
               style="padding: 12px 20px; background: #ff4757; border: none; border-radius: 12px;
@@ -34,7 +39,7 @@
       </button>
     </div>
     
-    <!-- Setup -->
+    <!-- Spieler-Setup -->
     <div id="setup">
       <input type="text" id="neuerSpieler" placeholder="Name eingeben" maxlength="15" />
       <button onclick="spielerHinzufuegen()">+ Spieler</button>
@@ -42,10 +47,13 @@
       <p id="spielerAnzahl">0 / 4 Spieler</p>
     </div>
 
+    <!-- Liste der Spieler -->
     <ul id="spielerListe"></ul>
 
-    <!-- Hauptspiel -->
+    <!-- Hauptspiel-Bereich -->
     <div id="spiel" class="hidden">
+      
+      <!-- Leaderboard -->
       <div id="leaderboard">
         <table>
           <thead>
@@ -64,6 +72,7 @@
         </p>
       </div>
 
+      <!-- Spiel-Buttons -->
       <div class="buttons">
         <button onclick="felderTrinken()">⏩Felder vor/zurück gesprungen⏪</button>
         <button onclick="hoelle()">🌋In die Hölle🔥</button>
@@ -82,9 +91,10 @@
     </div>
   </div>
 
+  <!-- Script für Spiellogik -->
   <script src="script.js"></script>
 
-  <!-- Glücksrad final (mittig, Zahlen auf Feldern) -->
+  <!-- Glücksrad Overlay -->
   <div id="glueckradOverlay" style="display:none;">
     <div id="glueckradContainer">
       <div id="glueckradPfeil">▲</div>
@@ -108,7 +118,7 @@
     </div>
   </div>
 
-    <!-- Reset-Bestätigung Overlay -->
+  <!-- Reset-Bestätigungs-Overlay -->
   <div id="resetOverlay" class="hidden" style="position:fixed; top:0; left:0; right:0; bottom:0; 
        background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:99999;">
     <div style="background:#222; padding:40px; border-radius:20px; text-align:center; max-width:90%;">
@@ -127,7 +137,7 @@
     </div>
   </div>
 
-    <!-- Double or Nothing Bestätigungs-Overlay -->
+  <!-- Double or Nothing Bestätigung -->
   <div id="doubleConfirmOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
     <div style="background:#222; padding:40px; border-radius:20px; text-align:center; max-width:90%;">
       <h2 style="color:#ffa502; margin-bottom:20px;">Double or Nothing? (Exen rettet nicht)</h2>
@@ -138,7 +148,6 @@
         <button onclick="confirmDouble()" class="double-yes">
           Ja, riskieren!
         </button>
-      
         <button onclick="cancelDouble()" class="double-no">
           Nein, sicher nehmen
         </button>
@@ -146,7 +155,7 @@
     </div>
   </div>
   
-    <!-- Double or Nothing Overlay -->
+  <!-- Double or Nothing Overlay -->
   <div id="doubleOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
     <div style="text-align:center; color:white; max-width:90%;">
       <h2 style="color:#ffa502; margin-bottom:30px;">Double or Nothing?</h2>
@@ -164,9 +173,8 @@
     </div>
   </div>
 
-    <!-- Konfetti-Canvas -->
+  <!-- Konfetti-Canvas -->
   <canvas id="confettiCanvas" style="position:fixed; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:10000;"></canvas>
 
-  
 </body>
-</html
+</html>
