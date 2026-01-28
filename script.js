@@ -1,8 +1,52 @@
 let spieler = [];
-let trinkCounter = {}; // schluecke: 0, exen: 0 pro Spieler
+let trinkCounter = {};
 let aktuellerIndex = 0;
 let gefahrPlatz = 0;
 let minispielPhase = 0;
+
+function loadFromStorage() {
+  const savedSpieler = localStorage.getItem('wiiPartySpieler');
+  const savedCounter = localStorage.getItem('wiiPartyCounter');
+
+  if (savedSpieler) {
+    spieler = JSON.parse(savedSpieler);
+    document.getElementById("spielerAnzahl").textContent = `${spieler.length} / 4 Spieler`;
+    renderSetupListe();
+  }
+
+  if (savedCounter) {
+    trinkCounter = JSON.parse(savedCounter);
+  }
+}
+
+window.addEventListener('load', () => {
+  loadFromStorage();
+
+  // Setup immer erstmal sichtbar machen (wichtig!)
+  document.getElementById("setup").classList.remove("hidden");
+  document.getElementById("spiel").classList.add("hidden");
+  document.getElementById("resetButtonContainer").style.display = "none";
+
+  // Liste + Anzahl IMMER rendern – das ist der Schlüssel
+  renderSetupListe();
+  document.getElementById("spielerAnzahl").textContent = `${spieler.length} / 4 Spieler`;
+
+  // Nur wenn wirklich ein Spiel läuft (Punkte > 0) → ins Spiel springen
+  const hasSavedGame = spieler.length >= 2 && Object.values(trinkCounter).some(c => (c.schluecke || 0) > 0 || (c.exen || 0) > 0);
+  if (hasSavedGame) {
+    document.getElementById("setup").classList.add("hidden");
+    document.getElementById("spiel").classList.remove("hidden");
+    document.getElementById("resetButtonContainer").style.display = "block";
+    updateLeaderboard();
+
+    const liste = document.getElementById("spielerListe");
+    if (liste) {
+      liste.style.display = "none";
+      liste.classList.add("hidden");
+    }
+  }
+  // Sonst: Setup bleibt sichtbar + Liste ist da
+});
 
 const kugeln = [
   "3 Schlücke",
@@ -25,11 +69,17 @@ function spielerHinzufuegen() {
     document.getElementById("spielerAnzahl").textContent = `${spieler.length} / 4 Spieler`;
     renderSetupListe();
   }
+  localStorage.setItem('wiiPartySpieler', JSON.stringify(spieler));
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 }
 
 function renderSetupListe() {
-  document.getElementById("spielerListe").innerHTML =
-    spieler.map(s => `<li>${s}</li>`).join("");
+  if (spieler.length === 0) {
+    document.getElementById("spielerListe").innerHTML = "<li>Noch keine Spieler hinzugefügt</li>";
+  } else {
+    document.getElementById("spielerListe").innerHTML =
+      spieler.map(s => `<li>${s}</li>`).join("");
+  }
   document.getElementById("startBtn").disabled = spieler.length < 2;
 }
 
@@ -44,7 +94,6 @@ function spielStarten() {
   
   updateLeaderboard();
   
-  // Namen-Liste oben verstecken
   const liste = document.getElementById("spielerListe");
   if (liste) {
     liste.style.display = "none";
@@ -119,7 +168,7 @@ function personFeldGewaehlt(person) {
 
 function felderBestaetigt(person, anzahl) {
   showDoubleConfirm(person, anzahl);
-  document.getElementById("felderOverlay").remove(); // Garantiert schließen – direkt zurück zum Hauptbildschirm
+  document.getElementById("felderOverlay").remove();
 }
 
 // Hölle
@@ -132,6 +181,7 @@ function personHoelleGewaehlt(person) {
   trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> fällt in die HÖLLE → <b>EXEN!</b>`);
   updateLeaderboard();
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 }
 
 // Blauer Werfer
@@ -144,6 +194,7 @@ function opferBlauGewaehlt(opfer) {
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>${opfer}</b> muss <b>EXEN!</b> (Blauer Werfer)`);
   updateLeaderboard();
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 }
 
 // Roter Werfer
@@ -156,6 +207,7 @@ function personRoterGewaehlt(person) {
   trinkCounter[person].exen += 1;
   zeigeMeldung(`<b>${person}</b> tritt auf roten Werfer → <b>SELBER EXEN!</b>`);
   updateLeaderboard();
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 }
 
 // Minispiel
@@ -229,6 +281,7 @@ function personGewaehlt(person) {
           trinkCounter[opfer].exen += 1;
           zeigeMeldung(`<b>${person}</b> verteilt → <b>${opfer}</b> muss <b>EXEN!</b>`);
           updateLeaderboard();
+          localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
         } else {
           erstellePersonenOverlay(
             `${person} darf Exen verteilen!<br>Wen soll's treffen?`,
@@ -263,6 +316,7 @@ function personGewaehlt(person) {
     }
 
     updateLeaderboard();
+    localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
     setTimeout(() => {
       overlay.style.display = "none";
       minispielPhase = 0;
@@ -275,6 +329,7 @@ function minispielExenVerteilen(opfer) {
   trinkCounter[opfer].exen += 1;
   zeigeMeldung(`<b>Verteiler</b> → <b>${opfer}</b> muss <b>EXEN!</b>`);
   updateLeaderboard();
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
   minispielPhase = 0;
 }
 
@@ -341,13 +396,34 @@ function resetTracker() {
 
 // Ja → zurücksetzen
 function resetBestaetigt() {
+
+  // 🔥 Liste wieder sichtbar machen
+  const liste = document.getElementById("spielerListe");
+  liste.style.display = "block";
+  liste.classList.remove("hidden");
+
+  // Counter reset
   spieler.forEach(name => {
     trinkCounter[name] = { schluecke: 0, exen: 0 };
   });
+
+  localStorage.setItem('wiiPartySpieler', JSON.stringify(spieler));
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
+
+  // UI zurück ins Setup
+  document.getElementById("spiel").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
+  document.getElementById("resetButtonContainer").style.display = "none";
+
+  renderSetupListe();
+  document.getElementById("spielerAnzahl").textContent =
+    `${spieler.length} / 4 Spieler`;
+
   updateLeaderboard();
   zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
 }
+
 
 let currentDoublePerson = null;
 let currentDoubleAnzahl = 0;
@@ -376,6 +452,7 @@ function cancelDouble() {
   document.getElementById("doubleConfirmOverlay").style.display = "none";
   trinkCounter[currentDoublePerson].schluecke += currentDoubleAnzahl;
   updateLeaderboard();
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
   zeigeMeldung(`<b>${currentDoublePerson}</b> nimmt sicher <b>${currentDoubleAnzahl} Schlücke</b>!`);
 }
 
@@ -408,6 +485,7 @@ function flipCoin() {
 
     trinkCounter[currentDoublePerson].schluecke += schluecke;
     updateLeaderboard();
+    localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 
     if (isDouble) {
       launchConfetti();
