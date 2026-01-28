@@ -293,7 +293,7 @@ function personGewaehlt(person) {
     const kugelInhalt = kugeln[Math.floor(Math.random() * kugeln.length)];
 
     if (kugelInhalt === "Exen verteilen") {
-      kugel.innerHTML = "↔";
+      kugel.innerHTML = "↔️";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN VERTEILEN!</span>`;
 
       setTimeout(() => {
@@ -325,11 +325,11 @@ function personGewaehlt(person) {
     }
 
     if (kugelInhalt === "Exen") {
-      kugel.innerHTML = "EXEN";
+      kugel.innerHTML = "💀";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">EXEN!</span>`;
       trinkCounter[person].exen += 1;
     } else if (kugelInhalt === "Nichts") {
-      kugel.innerHTML = "NICHTS";
+      kugel.innerHTML = "🍀";
       text.innerHTML = `${person}<br><span class="kugel-ergebnis">NICHTS!</span>`;
     } else {
       const schluecke = parseInt(kugelInhalt);
