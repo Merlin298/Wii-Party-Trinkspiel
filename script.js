@@ -22,16 +22,13 @@ function loadFromStorage() {
 window.addEventListener('load', () => {
   loadFromStorage();
 
-  // Setup immer erstmal sichtbar machen (wichtig!)
   document.getElementById("setup").classList.remove("hidden");
   document.getElementById("spiel").classList.add("hidden");
   document.getElementById("resetButtonContainer").style.display = "none";
 
-  // Liste + Anzahl IMMER rendern – das ist der Schlüssel
   renderSetupListe();
   document.getElementById("spielerAnzahl").textContent = `${spieler.length} / 4 Spieler`;
 
-  // Nur wenn wirklich ein Spiel läuft (Punkte > 0) → ins Spiel springen
   const hasSavedGame = spieler.length >= 2 && Object.values(trinkCounter).some(c => (c.schluecke || 0) > 0 || (c.exen || 0) > 0);
   if (hasSavedGame) {
     document.getElementById("setup").classList.add("hidden");
@@ -45,7 +42,6 @@ window.addEventListener('load', () => {
       liste.classList.add("hidden");
     }
   }
-  // Sonst: Setup bleibt sichtbar + Liste ist da
 });
 
 const kugeln = [
@@ -73,15 +69,42 @@ function spielerHinzufuegen() {
   localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 }
 
+function spielerEntfernen(index) {
+  const name = spieler[index];
+
+  spieler.splice(index, 1);
+  delete trinkCounter[name];
+
+  localStorage.setItem('wiiPartySpieler', JSON.stringify(spieler));
+  localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
+
+  renderSetupListe();
+  document.getElementById("spielerAnzahl").textContent =
+    `${spieler.length} / 4 Spieler`;
+}
+
+
 function renderSetupListe() {
+  const liste = document.getElementById("spielerListe");
+
   if (spieler.length === 0) {
-    document.getElementById("spielerListe").innerHTML = "<li>Noch keine Spieler hinzugefügt</li>";
+    liste.innerHTML = "<li>Noch keine Spieler hinzugefügt</li>";
   } else {
-    document.getElementById("spielerListe").innerHTML =
-      spieler.map(s => `<li>${s}</li>`).join("");
+    liste.innerHTML = spieler.map((name, index) => `
+      <li style="display:flex; align-items:center;">
+        <span style="flex:1; text-align:center;">${name}</span>
+        <button 
+          class="remove-btn"
+          onclick="spielerEntfernen(${index})">
+          ✖
+        </button>
+      </li>
+    `).join("");
   }
+
   document.getElementById("startBtn").disabled = spieler.length < 2;
 }
+
 
 function spielStarten() {
   if (spieler.length < 2) {
@@ -397,12 +420,10 @@ function resetTracker() {
 // Ja → zurücksetzen
 function resetBestaetigt() {
 
-  // 🔥 Liste wieder sichtbar machen
   const liste = document.getElementById("spielerListe");
   liste.style.display = "block";
   liste.classList.remove("hidden");
 
-  // Counter reset
   spieler.forEach(name => {
     trinkCounter[name] = { schluecke: 0, exen: 0 };
   });
@@ -410,7 +431,6 @@ function resetBestaetigt() {
   localStorage.setItem('wiiPartySpieler', JSON.stringify(spieler));
   localStorage.setItem('wiiPartyCounter', JSON.stringify(trinkCounter));
 
-  // UI zurück ins Setup
   document.getElementById("spiel").classList.add("hidden");
   document.getElementById("setup").classList.remove("hidden");
   document.getElementById("resetButtonContainer").style.display = "none";
@@ -420,7 +440,7 @@ function resetBestaetigt() {
     `${spieler.length} / 4 Spieler`;
 
   updateLeaderboard();
-  zeigeMeldung("Tracker wurde zurückgesetzt! Neue Runde startet!", 3000);
+  zeigeMeldung("Leaderboard wurde zurückgesetzt!", 3000);
   document.getElementById("resetOverlay").classList.add("hidden");
 }
 
