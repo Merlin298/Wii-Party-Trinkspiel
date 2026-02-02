@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
-.hidden { display: none !important; }
+
+.hidden {
+  display: none !important;
+}
 
 body {
   margin: 0;
@@ -12,57 +15,182 @@ body {
   box-sizing: border-box;
 }
 
-h1 { font-size: 3rem; margin: 10px; text-shadow: 3px 3px #000; }
-.disclaimer { font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px; }
+h1 {
+  font-size: 3rem;
+  margin: 10px;
+  text-shadow: 3px 3px #000;
+}
 
-.container { max-width: 650px; margin: 0 auto; }
-input { padding: 12px; width: 60%; font-size: 1.2rem; border-radius: 10px; border: none; }
+.disclaimer {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.container {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+input {
+  padding: 12px;
+  width: 60%;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: none;
+}
+
 button {
-  height: 50px;                            /* feste Höhe der Button*/
-  line-height: 50px;                       /* Text vertikal zentrieren */
-  padding: 0 20px;                         /* Größe der Button */
-  margin: 12px 8px;                         /* Abstand zwischen den Button (oben/unten dann rechts/links)*/
-  font-size: 1.2rem;                       /* Schriftgröße */
+  height: 50px;
+  /* feste Höhe der Button*/
+  line-height: 50px;
+  /* Text vertikal zentrieren */
+  padding: 0 20px;
+  /* Größe der Button */
+  margin: 12px 8px;
+  /* Abstand zwischen den Button (oben/unten dann rechts/links)*/
+  font-size: 1.2rem;
+
+  /* Schriftgröße */
   background: #ff4757;
   color: white;
   border: none;
-  border-radius: 20px;                     /* Button werden runder */
+  border-radius: 20px;
+  /* Button werden runder */
   cursor: pointer;
-  box-shadow: 0 4px #b33939;               /* Stärke des Schattens */      
-  min-width: 120px;                        /* MIndestbreite */
+  box-shadow: 0 4px #b33939;
+  /* Stärke des Schattens */
+  min-width: 120px;
+  /* MIndestbreite */
   transition: all 0.2s;
 }
 
-button:hover { 
-                transform: translateY(-4px);
-                box-shadow: 0 12px #b33939;
-             }
+button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px #b33939;
+}
 
 button:active {
-                transform: translateY(4px);
-                box-shadow: 0 0 #b33939;
-              }
+  transform: translateY(4px);
+  box-shadow: 0 0 #b33939;
+}
 
-button.big {height: 80px;
-            line-height: 80px;
-            /*padding: 30px;*/
-            font-size: 1.7rem;
-            background: #ffa502;
-            min-width: 350px; 
-           }
+button.big {
+  height: 80px;
+  line-height: 80px;
+  /*padding: 30px;*/
+  font-size: 1.7rem;
+  background: #ffa502;
+  min-width: 350px;
+}
 
-ul { list-style: none; padding: 0; }
-li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10px; font-size: 1.3rem; }
+/* ==================== SPIEL LOG (VERLAUF) ==================== */
 
-.hidden { display: none; }
-.tracker { margin: 30px 0; }
+/* Container für das Spiel muss relativ sein, damit Log sich daran orientieren kann */
+#spiel {
+  position: relative;
+}
+
+.log-column {
+  /* Desktop: Float right outside container */
+  position: absolute;
+  left: 100%;
+  top: 0;
+  /* Align with Leaderboard visual start (margin collapsed) */
+  bottom: 0;
+  /* Stretch to bottom of container (buttons) */
+  margin-left: 30px;
+  /* Abstand zum Main Container */
+
+  width: 250px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: auto;
+  /* Dynamic height */
+  display: flex;
+  flex-direction: column;
+}
+
+.log-column h3 {
+  margin: 0 0 8px 0;
+  text-align: center;
+  color: #ffa502;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 5px;
+}
+
+#gameLogList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  /* No scrollbar, items just disappear */
+  flex: 1;
+}
+
+#gameLogList li {
+  background: rgba(255, 255, 255, 0.05);
+  /* Lighter bg */
+  margin: 4px 0;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  animation: fadeIn 0.3s ease-out;
+  border-left: 3px solid #ff4757;
+}
+
+#gameLogList li:first-child {
+  background: rgba(255, 165, 2, 0.15);
+  border-left: 3px solid #ffa502;
+  font-weight: bold;
+}
+
+/* Mobile / Tablet: Wenn nicht genug Platz ist, Log nach unten */
+/* Annahme: Container (650) + Log (250) + Margin (30) = ~930px Platz nötig */
+@media (max-width: 950px) {
+  .log-column {
+    position: static;
+    /* Zurück in den Fluss */
+    width: 100%;
+    max-width: 500px;
+    margin: 30px auto 0 auto;
+    height: 300px;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: rgba(0, 0, 0, 0.3);
+  margin: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1.3rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.tracker {
+  margin: 30px 0;
+}
 
 .meldung {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.9);
   color: white;
   padding: 30px 50px;
   border-radius: 20px;
@@ -76,9 +204,17 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 @keyframes pop {
-  0% { transform: translate(-50%, -50%) scale(0); }
-  70% { transform: translate(-50%, -50%) scale(1.1); }
-  100% { transform: translate(-50%, -50%) scale(1); }
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  70% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .aktuell {
@@ -91,14 +227,24 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
 }
 
 #kugelOverlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.95);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,7 +266,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   justify-content: center;
   font-size: 6rem;
   margin: 0 auto 40px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
   animation: roll 2s infinite linear;
 }
 
@@ -131,18 +277,35 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 @keyframes roll {
-  0% { transform: translateX(-300px) rotate(0deg); }
-  100% { transform: translateX(300px) rotate(360deg); }
+  0% {
+    transform: translateX(-300px) rotate(0deg);
+  }
+
+  100% {
+    transform: translateX(300px) rotate(360deg);
+  }
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-30px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-30px);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .kugel-ergebnis {
@@ -151,21 +314,37 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   color: #ff4757;
 }
 
-.spieler-wahl { margin: 20px 0; }
-#spielerButtons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 15px 0; }
+.spieler-wahl {
+  margin: 20px 0;
+}
+
+#spielerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 15px 0;
+}
+
 .spieler-btn {
   min-width: 200px;
-  height: 80px;              /* 🔥 macht den Button deutlich dicker */
+  height: 80px;
+  /* 🔥 macht den Button deutlich dicker */
 
-  display: flex;             /* 🔥 sorgt für echtes Zentrieren */
-  align-items: center;       /* vertikal mittig */
-  justify-content: center;   /* horizontal mittig */
+  display: flex;
+  /* 🔥 sorgt für echtes Zentrieren */
+  align-items: center;
+  /* vertikal mittig */
+  justify-content: center;
+  /* horizontal mittig */
 
-  padding: 0 28px;           /* kein vertikales Padding mehr */
+  padding: 0 28px;
+  /* kein vertikales Padding mehr */
   font-size: 1.7rem;
   font-family: 'Luckiest Guy', cursive;
   letter-spacing: 1px;
-  line-height: 1;            /* wichtig für vertikale Mitte */
+  line-height: 1;
+  /* wichtig für vertikale Mitte */
 
   background: linear-gradient(180deg, #555, #222);
   color: white;
@@ -177,6 +356,12 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   cursor: pointer;
 
   transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+
+  /* Handle long names */
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -191,14 +376,17 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   box-shadow: 0 2px #000;
 }
 
-#kugelOverlay { 
-  display: none; 
+#kugelOverlay {
+  display: none;
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0; 
-  background: rgba(0,0,0,0.97); 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.97);
   align-items: center;
-  justify-content: center; 
-  z-index: 9999; 
+  justify-content: center;
+  z-index: 9999;
 }
 
 #kugelOverlay[style*="flex"] {
@@ -207,9 +395,15 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 /* ==================== GLÜCKSRAD ==================== */
 #glueckradOverlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.97);
-  display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.97);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 10000;
 }
 
@@ -221,9 +415,9 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 #glueckradPfeil {
   position: absolute;
-  top: -62px;               
+  top: -62px;
   left: calc(50% + 11px);
-  transform: translateX(-50%) rotate(180deg);  
+  transform: translateX(-50%) rotate(180deg);
   font-size: 5.5rem;
   color: #ff4757;
   text-shadow: 4px 4px #000;
@@ -233,44 +427,50 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 @keyframes arrow-blink {
-  0% { opacity: 0.6; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 #glueckrad {
   width: 340px;
   height: 340px;
   border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    #ff6b6b 0deg 32.727deg,
-    #4ecdc4 32.727deg 65.455deg,
-    #45b7d1 65.455deg 98.182deg,
-    #96ceb4 98.182deg 130.909deg,
-    #feca57 130.909deg 163.636deg,
-    #ff9ff3 163.636deg 196.363deg,
-    #54a0ff 196.363deg 229.091deg,
-    #5f27cd 229.091deg 261.818deg,
-    #00d2d3 261.818deg 294.545deg,
-    #ff9f43 294.545deg 327.273deg,
-    #ff4757 327.273deg 360deg
-  );
+  background: conic-gradient(from 0deg,
+      #ff6b6b 0deg 32.727deg,
+      #4ecdc4 32.727deg 65.455deg,
+      #45b7d1 65.455deg 98.182deg,
+      #96ceb4 98.182deg 130.909deg,
+      #feca57 130.909deg 163.636deg,
+      #ff9ff3 163.636deg 196.363deg,
+      #54a0ff 196.363deg 229.091deg,
+      #5f27cd 229.091deg 261.818deg,
+      #00d2d3 261.818deg 294.545deg,
+      #ff9f43 294.545deg 327.273deg,
+      #ff4757 327.273deg 360deg);
   position: relative;
   border: 12px solid #222;
-  box-shadow: 0 0 80px rgba(255,71,87,0.6);
+  box-shadow: 0 0 80px rgba(255, 71, 87, 0.6);
   animation: none;
   transform: rotate(0deg);
 }
 
 .rad-labels {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .label {
   position: absolute;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   font-size: 2.6rem;
   font-weight: bold;
   color: white;
@@ -278,16 +478,17 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: 
-    rotate(calc(var(--i) * 32.727deg + 16.3635deg))
-    translateY(-135px)
+  transform:
+    rotate(calc(var(--i) * 32.727deg + 16.3635deg)) translateY(-135px)
 }
 
 #glueckrad::after {
   content: "";
   position: absolute;
-  top: 50%; left: 50%;
-  width: 90px; height: 90px;
+  top: 50%;
+  left: 50%;
+  width: 90px;
+  height: 90px;
   background: #111;
   border-radius: 50%;
   transform: translate(-50%, -50%);
@@ -312,8 +513,13 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(var(--rotation, 2160deg)); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(var(--rotation, 2160deg));
+  }
 }
 
 #doubleOverlay {
@@ -332,18 +538,19 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   transform: rotateY(0deg);
 }
 
-.front, .back {
+.front,
+.back {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   backface-visibility: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Luckiest Guy', cursive;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 /* Leaderboard / Rangliste */
@@ -351,7 +558,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   margin: 30px 0 20px 0;
   padding: 15px 15px 5px 15px;
   padding-bottom: 0.5px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 30px;
   max-width: 800px;
   width: 95%;
@@ -367,10 +574,11 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   font-size: 1.4rem;
 }
 
-#leaderboard th, #leaderboard td {
+#leaderboard th,
+#leaderboard td {
   padding: 12px;
   text-align: center;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -378,22 +586,53 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 #leaderboard th {
-  background: rgba(255,71,87,0.3);
+  background: rgba(255, 71, 87, 0.3);
   color: #fff;
-  font-size: 1.3rem;           /* etwas kleiner als Body, damit's nicht zu dominant ist */
+  font-size: 1.3rem;
+  /* etwas kleiner als Body, damit's nicht zu dominant ist */
   font-weight: bold;
-  text-align: center;          /* Text mittig */
-  white-space: nowrap;         /* Text bricht nicht um */
-  overflow: visible;            /* lange Wörter werden nicht abgeschnitten */
-  text-overflow: clip;     /* bei sehr langen Texten ... am Ende (ellipsis)*/
-  padding: 12px 8px;           /* etwas mehr horizontaler Padding für volle Wörter */
+  text-align: center;
+  /* Text mittig */
+  white-space: nowrap;
+  /* Text bricht nicht um */
+  overflow: visible;
+  /* lange Wörter werden nicht abgeschnitten */
+  text-overflow: clip;
+  /* bei sehr langen Texten ... am Ende (ellipsis)*/
+  padding: 12px 8px;
+  /* etwas mehr horizontaler Padding für volle Wörter */
 }
 
-#leaderboard th:nth-child(1), #leaderboard td:nth-child(1) { width: 10%; } /* Platz */
-#leaderboard th:nth-child(2), #leaderboard td:nth-child(2) { width: 35%; } /* Name – mehr Platz */
-#leaderboard th:nth-child(3), #leaderboard td:nth-child(3) { width: 20%; } /* Schlücke */
-#leaderboard th:nth-child(4), #leaderboard td:nth-child(4) { width: 16%; } /* Exen */
-#leaderboard th:nth-child(5), #leaderboard td:nth-child(5) { width: 19%; } /* Punkte */
+#leaderboard th:nth-child(1),
+#leaderboard td:nth-child(1) {
+  width: 10%;
+}
+
+/* Platz */
+#leaderboard th:nth-child(2),
+#leaderboard td:nth-child(2) {
+  width: 35%;
+}
+
+/* Name – mehr Platz */
+#leaderboard th:nth-child(3),
+#leaderboard td:nth-child(3) {
+  width: 20%;
+}
+
+/* Schlücke */
+#leaderboard th:nth-child(4),
+#leaderboard td:nth-child(4) {
+  width: 16%;
+}
+
+/* Exen */
+#leaderboard th:nth-child(5),
+#leaderboard td:nth-child(5) {
+  width: 19%;
+}
+
+/* Punkte */
 
 
 #leaderboard tr {
@@ -405,7 +644,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   color: #000;
   font-weight: bold;
   transform: scale(1.03);
-  box-shadow: 0 4px 15px rgba(255,215,0,0.5);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
 }
 
 #leaderboard .rank-1 td:first-child {
@@ -413,12 +652,13 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 }
 
 #punkteHinweis {
-  color: rgba(255,255,255,1);          
+  color: rgba(255, 255, 255, 1);
   margin-top: 10px;
   margin-bottom: 18px;
   font-size: 1.3rem;
   text-align: center;
-  opacity: 1;                     /* opacity 1 statt 0.8 – volle Deckkraft */
+  opacity: 1;
+  /* opacity 1 statt 0.8 – volle Deckkraft */
 }
 
 
@@ -449,7 +689,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   cursor: pointer;
   font-family: 'Luckiest Guy', cursive;
   letter-spacing: 1px;
-  box-shadow: 0 6px rgba(0,0,0,0.4);
+  box-shadow: 0 6px rgba(0, 0, 0, 0.4);
   transition: transform 0.15s, box-shadow 0.15s;
   line-height: 1;
   padding-top: 14px;
@@ -458,12 +698,12 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 .double-buttons button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px rgba(0,0,0,0.4);
+  box-shadow: 0 10px rgba(0, 0, 0, 0.4);
 }
 
 .double-buttons button:active {
   transform: translateY(3px);
-  box-shadow: 0 2px rgba(0,0,0,0.4);
+  box-shadow: 0 2px rgba(0, 0, 0, 0.4);
 }
 
 /* Ja-Button */
@@ -498,7 +738,7 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   }
 
   /* Setup Eingabefeld + Buttons */
-  #setup input, 
+  #setup input,
   #setup button {
     width: 100%;
     max-width: 300px;
@@ -549,21 +789,28 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
   }
 
   /* Kugel-Animation & Glücksrad zentral skalieren */
-  #kugelContainer, #glueckradContainer {
+  #kugelContainer,
+  #glueckradContainer {
     max-width: 90%;
     margin: 0 auto;
   }
 
-  #kugel, #kugelText, #radText {
+  #kugel,
+  #kugelText,
+  #radText {
     font-size: 1.2rem;
   }
 
   /* Overlays lesbar & Buttons größer */
-  #resetOverlay div, #doubleOverlay div, #doubleConfirmOverlay div {
+  #resetOverlay div,
+  #doubleOverlay div,
+  #doubleConfirmOverlay div {
     padding: 20px;
   }
 
-  #resetOverlay button, #doubleConfirmOverlay button, #doubleOverlay button {
+  #resetOverlay button,
+  #doubleConfirmOverlay button,
+  #doubleOverlay button {
     font-size: 1.2rem;
     padding: 12px 20px;
     width: 100%;
@@ -590,4 +837,32 @@ li { background: rgba(0,0,0,0.3); margin: 8px; padding: 12px; border-radius: 10p
 
 .remove-btn:hover {
   background: #ff6b81;
+}
+
+/* Modus Auswahl Styles */
+.modus-btn {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modus-btn[data-game="insel"] {
+  background: linear-gradient(135deg, #00d2d3, #2e86de);
+}
+
+.modus-btn:disabled {
+  background: #555 !important;
+  color: #aaa;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+#modusAuswahl h2 {
+  color: white;
+  margin-bottom: 30px;
 }
