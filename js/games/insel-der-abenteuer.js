@@ -805,10 +805,10 @@ export function dino() {
     <h2 style="font-size: 3.5rem; margin-bottom: 20px; text-shadow:3px 3px #000;">🦖 Welcher Dino?</h2>
     <div style="display:flex; gap:40px; flex-wrap:wrap; justify-content:center;">
         <button id="dinoBlau" style="padding:15px; min-height:100px; font-size:2rem; background:#0984e3; color:white; border:none; border-radius:20px; box-shadow:0 10px #000; min-width:250px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.2;">
-            🦅 Pterodactylus<br><span style="font-size:1rem; margin-top:5px;">(10 Verteilen)</span>
+            🦅 Pyrotaxi<br><span style="font-size:1rem; margin-top:5px;">(10 Verteilen)</span>
         </button>
         <button id="dinoRot" style="padding:15px; min-height:100px; font-size:2rem; background:#d63031; color:white; border:none; border-radius:20px; box-shadow:0 10px #000; min-width:250px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.2;">
-            🦖 T-Rex<br><span style="font-size:1rem; margin-top:5px;">(10 Trinken)</span>
+            🦖 Fiesosaurus<br><span style="font-size:1rem; margin-top:5px;">(10 Trinken)</span>
         </button>
     </div>
     <button onclick="document.getElementById('dinoOverlay').remove()" style="margin-top:20px; background:#333; padding:0px 30px 30px 30px; border-radius:15px; border:none; color:white; font-size: 1.3rem;">Abbrechen</button>
